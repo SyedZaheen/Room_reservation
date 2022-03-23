@@ -3,6 +3,7 @@ public abstract class Room {
 
     protected boolean occupied = false;
     protected int roomNumber;
+    protected double fare;
 
     Room(int roomNumber)
     {

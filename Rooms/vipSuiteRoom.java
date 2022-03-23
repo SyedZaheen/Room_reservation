@@ -1,7 +1,7 @@
 package Rooms;
 
-public class vipSuite extends Room {
-    public vipSuite(int roomNumber)
+public class vipSuiteRoom extends Room {
+    public vipSuiteRoom(int roomNumber)
     {
         super(roomNumber);
         this.roomNumber = roomNumber;

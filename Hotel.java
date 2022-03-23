@@ -11,12 +11,10 @@ public class Hotel {
             singleRooms[i] = new SingleRoom(i);
             doubleRooms[i] = new DoubleRoom(i+12);
             deluxeRooms[i] = new DeluxeRoom(i+24);
-            vipSuiteRooms[i] = new vipSuiteRoom(i+26);
+            vipSuiteRooms[i] = new vipSuiteRoom(i+36);
         }
     }
 
-    public showAvailableSingleRooms(){
-
-    }
+    
 
 }
