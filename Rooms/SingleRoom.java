@@ -2,10 +2,9 @@ package Rooms;
 
 public class SingleRoom extends Room {    
 
-    public SingleRoom(int roomNumber)
+    public SingleRoom(int roomNumber, BedTypes bedType)
     {
-        super(roomNumber);
-        this.roomNumber = roomNumber;
+        super(roomNumber, bedType);
         this.fare = 100;
     }
     
