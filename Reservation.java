@@ -1,4 +1,6 @@
 import Rooms.Room;
+import java.util.Scanner;
+
 public class Reservation {
     private Guest guest;
     private Room room;
@@ -35,4 +37,6 @@ public class Reservation {
     public double totalRoomFare(){
         
     }
+
+    
 }

@@ -32,6 +32,9 @@ public abstract class Room {
     public void setStatus(Statuses status) {
         this.status = status;
     }
+    public Statuses getStatus(){
+        return this.status;
+    }
 
 }
 

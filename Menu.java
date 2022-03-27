@@ -47,11 +47,7 @@ public class Menu {
 
     public void display() {
         for(int i = 1; i <= menuSize; i++) {
-            System.out.println("ItemID " + i + ":");
-            System.out.println("Name of Menu Item: " + items.get(i).itemName);
-            System.out.println("Description of Menu Item: " + items.get(i).description);
-            System.out.println("Price: $" + String.format("%.2f", items.get(i).price));
-            System.out.println();
+            items.get(i).toString();
         }
     }
 }

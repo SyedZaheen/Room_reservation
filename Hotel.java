@@ -1,8 +1,10 @@
 import Rooms.*;
+import java.util.Scanner;
+
 
 
 public class Hotel {
-    Hotel() {
+    public Hotel() {
         SingleRoom singleRooms[] = new SingleRoom[12];
         DoubleRoom doubleRooms[] = new DoubleRoom[12];
         DeluxeRoom deluxeRooms[] = new DeluxeRoom[12];
@@ -15,6 +17,57 @@ public class Hotel {
         }
     }
 
+    public Reservation makeReservation() {
+        Scanner sc = new Scanner(System.in);
+
+        //to get vacant room 
+        /*
+        System.out.println("Enter room type: ");
+        System.out.println("(1) Single: ");
+        System.out.println("(2) Double: ");
+        System.out.println("(3) Deluxe: ");
+        System.out.println("(4) VIP Suite: ");
+        int choice = sc.nextInt();
     
+        
+        switch(choice) {
+            case 1:
+                for (int i = 0; i < 12; i++) {
+                    if(singleRooms[i].getStatus() == Room.Statuses.VACANT) {
+                        SingleRoom room = singleRooms[i];
+                        break;
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 12; i++) {
+                    if(doubleRooms[i].getStatus() == Room.Statuses.VACANT) {
+                        DoubleRoom room = doubleRooms[i];
+                        break;
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 12; i++) {
+                    if(deluxeRooms[i].getStatus() == Room.Statuses.VACANT) {
+                        DeluxeRoom room = deluxeRooms[i];
+                        break;
+                    }
+                }
+                break;
+            case 4:
+                for (int i = 0; i < 12; i++) {
+                    if(vipSuiteRooms[i].getStatus() == Room.Statuses.VACANT) {
+                        vipSuiteRoom room = vipSuiteRooms[i];
+                        break;
+                    }
+                }
+                break;
+        }
+        */
+
+        Creator create = new Creator();
+        Guest guest = create.createGuest();
+    }
 
 }
