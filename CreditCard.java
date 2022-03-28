@@ -1,6 +1,6 @@
 public class CreditCard {
     private String name; 
-    private long creditCardDetails;
+    private long creditCardNum;
     private String creditCardExpiry;
     private int creditCardCVV;
     private String creditCardType;
