@@ -44,7 +44,7 @@ public class Hotel {
                     if(doubleRooms[i].getStatus() == Room.Statuses.VACANT) {
                         DoubleRoom room = doubleRooms[i];
                         break;
-                    }
+                    }9
                 }
                 break;
             case 3:
@@ -68,6 +68,7 @@ public class Hotel {
 
         Creator create = new Creator();
         Guest guest = create.createGuest();
+        
     }
 
 }
