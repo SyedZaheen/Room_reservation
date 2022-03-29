@@ -35,7 +35,8 @@ public class Reservation {
     }
     
     public double totalRoomFare(){
-        
+        return 0.1;
+
     }
 
     
