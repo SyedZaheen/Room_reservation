@@ -12,8 +12,8 @@ public class CreditCard {
     public CreditCard(long creditCardNum, String expiryDate, int cvv, String creditCardType, String name) {
         super();
         this.creditCardNum = creditCardNum;
-        this.creditCardExpiry = creditCardExpiry; 
-        this.creditCardCVV = creditCardCVV;
+        this.creditCardExpiry = expiryDate; 
+        this.creditCardCVV = cvv;
         this.creditCardType = creditCardType;
         this.name = name;
         
