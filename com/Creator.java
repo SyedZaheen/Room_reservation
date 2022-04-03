@@ -1,4 +1,7 @@
+package com;
 import java.util.Scanner;
+
+import com.models.Guest;
 
 public class Creator {
     

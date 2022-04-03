@@ -1,4 +1,4 @@
-package Rooms;
+package com.models.room;
 public abstract class Room {
 
     protected int roomNumber;

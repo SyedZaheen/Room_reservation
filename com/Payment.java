@@ -1,3 +1,4 @@
+package com;
 
 public class Payment {
     private Reservation reservation;

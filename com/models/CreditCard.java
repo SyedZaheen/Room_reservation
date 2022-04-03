@@ -1,3 +1,4 @@
+package com.models;
 public class CreditCard {
     private String name; 
     private long creditCardNum;

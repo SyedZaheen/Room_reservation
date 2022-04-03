@@ -1,4 +1,4 @@
-package Rooms;
+package com.models.room;
 
 public class DoubleRoom extends Room {
     public DoubleRoom(int roomNumber, BedTypes bedType)

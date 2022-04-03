@@ -1,3 +1,4 @@
+package com.db;
 import java.util.ArrayList;
 
 public interface DB<T> {

@@ -1,7 +1,7 @@
+package com.db;
 import java.util.ArrayList;
-import Rooms.Room;
 
-public class RoomDB implements DB<Room> {
+public class ReservationDB implements DB{
 
     @Override
     public boolean createEntry() {
@@ -10,7 +10,7 @@ public class RoomDB implements DB<Room> {
     }
 
     @Override
-    public ArrayList<Room> readEntries() {
+    public ArrayList readEntries() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -22,9 +22,9 @@ public class RoomDB implements DB<Room> {
     }
 
     @Override
-    public Room deleteEntry() {
+    public Object deleteEntry() {
         // TODO Auto-generated method stub
         return null;
     }
-        
+    
 }

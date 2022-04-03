@@ -1,7 +1,8 @@
-import Rooms.*;
+package com;
 import java.util.Scanner;
 
-
+import com.models.Guest;
+import com.models.room.*;
 
 public class Hotel {
     public Hotel() {
@@ -68,7 +69,6 @@ public class Hotel {
 
         Creator create = new Creator();
         Guest guest = create.createGuest();
-        
     }
 
 }

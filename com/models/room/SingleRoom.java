@@ -1,4 +1,4 @@
-package Rooms;
+package com.models.room;
 
 public class SingleRoom extends Room {    
 
@@ -6,6 +6,10 @@ public class SingleRoom extends Room {
     {
         super(roomNumber, bedType);
         this.fare = 100;
+    }
+
+    public boolean getIsOccupied() {
+        return false;
     }
     
 

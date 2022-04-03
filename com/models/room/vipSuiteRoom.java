@@ -1,4 +1,4 @@
-package Rooms;
+package com.models.room;
 
 public class vipSuiteRoom extends Room {
     public vipSuiteRoom(int roomNumber, BedTypes bedType)

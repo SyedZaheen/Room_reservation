@@ -1,5 +1,8 @@
-import Rooms.Room;
+package com;
 import java.util.Scanner;
+
+import com.models.Guest;
+import com.models.room.Room;
 
 public class Reservation {
     private Guest guest;
