@@ -3,13 +3,9 @@ import java.util.HashMap;
 
 public class Guest implements Entity<Guest> {
     
-    private String name, address;
-    private Integer creditCardDetails;
-    private String country;
-    private String gender;
-    private String identity;
-    private String nationality;
-    private Integer contact;
+    public String name, address, country, gender, identity, nationality;
+    public Integer creditCardDetails, contact;
+
 
     public Guest(String name, Integer creditCardDetails, String address, String country, String gender, String identity, String nationality, Integer contact) {
         this.name = name;
