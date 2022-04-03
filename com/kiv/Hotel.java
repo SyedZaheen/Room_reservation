@@ -1,7 +1,8 @@
-package com;
+package com.kiv;
 import java.util.Scanner;
 
 import com.models.Guest;
+import com.models.Reservation;
 import com.models.room.*;
 
 public class Hotel {

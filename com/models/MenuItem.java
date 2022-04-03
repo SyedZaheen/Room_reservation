@@ -1,4 +1,4 @@
-package com;
+package com.models;
 public class MenuItem {
     private String name;
     private String description;

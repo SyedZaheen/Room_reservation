@@ -82,11 +82,13 @@ public abstract class GuestControl {
                     "Error. Please enter 4 characters only",
                     i -> MiscUtils.stringWithinLength(i, 4, 4),
                     "String");
+                    
         // we format the data in a way to send to the database
 
-        System.out.println("The following is the data so far: ");
-        Guest guest = new Guest(name, creditCardDetails, address, country, gender, identity, nationality, contact);
-        System.out.println(guest.name+ guest.contact.toString()+ guest.address+ guest.creditCardDetails.toString()+ guest.identity);
+        // FOR TESTING (change the data below to PUBLIC before running the following code for testing)
+        // System.out.println("The following is the data so far: ");
+        // Guest guest = new Guest(name, creditCardDetails, address, country, gender, identity, nationality, contact);
+        // System.out.println(guest.name+ guest.contact.toString()+ guest.address+ guest.creditCardDetails.toString()+ guest.identity);
     }
 
     private static void manageUpdateGuest() {

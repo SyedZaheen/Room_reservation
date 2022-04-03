@@ -1,4 +1,4 @@
-package com;
+package com.kiv;
 import java.util.Scanner;
 
 import com.models.Guest;

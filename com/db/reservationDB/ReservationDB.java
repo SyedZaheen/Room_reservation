@@ -1,10 +1,10 @@
-package com;
-import java.util.ArrayList;
+package com.db.reservationDB;
+import java.util.List;
 
 import com.db.DB;
-import com.models.room.Room;
+import com.models.Reservation;
 
-public class RoomDB implements DB<Room> {
+public class ReservationDB implements DB<Reservation>{
 
     @Override
     public boolean createEntry() {
@@ -13,7 +13,7 @@ public class RoomDB implements DB<Room> {
     }
 
     @Override
-    public ArrayList<Room> readEntries() {
+    public List<Reservation> readEntries() {
         // TODO Auto-generated method stub
         return null;
     }
@@ -25,9 +25,9 @@ public class RoomDB implements DB<Room> {
     }
 
     @Override
-    public Room deleteEntry() {
+    public Reservation deleteEntry() {
         // TODO Auto-generated method stub
         return null;
     }
-        
+    
 }

@@ -1,7 +1,6 @@
-package com;
+package com.models;
 import java.util.Scanner;
 
-import com.models.Guest;
 import com.models.room.Room;
 
 public class Reservation {

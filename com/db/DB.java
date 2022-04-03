@@ -1,9 +1,9 @@
 package com.db;
-import java.util.ArrayList;
+import java.util.List;
 
 public interface DB<T> {
     public abstract boolean createEntry();
-    public abstract ArrayList<T> readEntries();
+    public abstract List<T> readEntries();
     public abstract boolean updateEntry();
     public abstract T deleteEntry();
 }

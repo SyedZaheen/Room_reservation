@@ -1,13 +1,15 @@
 package com.models;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 public class Guest implements Entity<Guest> {
-    
-    public String name, address, country, gender, identity, nationality;
-    public Integer creditCardDetails, contact;
 
+    private String name, address, country, gender, identity, nationality;
+    private Integer creditCardDetails, contact;
 
-    public Guest(String name, Integer creditCardDetails, String address, String country, String gender, String identity, String nationality, Integer contact) {
+    public Guest(String name, Integer creditCardDetails, String address, String country, String gender, String identity,
+            String nationality, Integer contact) {
         this.name = name;
         this.creditCardDetails = creditCardDetails;
         this.address = address;
@@ -28,6 +30,5 @@ public class Guest implements Entity<Guest> {
         // TODO Auto-generated method stub
         return null;
     }
-
 
 }

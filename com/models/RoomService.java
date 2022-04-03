@@ -1,5 +1,4 @@
-package com;
-import java.util.HashMap;
+package com.models;
 
 public class RoomService {
     private double[] orders;

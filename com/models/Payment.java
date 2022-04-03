@@ -1,4 +1,4 @@
-package com;
+package com.models;
 
 public class Payment {
     private Reservation reservation;
