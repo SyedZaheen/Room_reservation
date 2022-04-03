@@ -3,16 +3,15 @@ import java.util.HashMap;
 
 public class Guest implements Entity<Guest> {
     
-    private String name;
-    private long creditCardDetails;
-    private String address;
+    private String name, address;
+    private Integer creditCardDetails;
     private String country;
     private String gender;
     private String identity;
     private String nationality;
-    private long contact;
+    private Integer contact;
 
-    public Guest(String name, long creditCardDetails, String address, String country, String gender, String identity, String nationality, long contact) {
+    public Guest(String name, Integer creditCardDetails, String address, String country, String gender, String identity, String nationality, Integer contact) {
         this.name = name;
         this.creditCardDetails = creditCardDetails;
         this.address = address;
