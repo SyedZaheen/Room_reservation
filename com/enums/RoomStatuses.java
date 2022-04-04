@@ -7,7 +7,7 @@ public enum RoomStatuses {
     MAINTENANCE("Maintenance"),
     RESERVED("Reserved");
 
-    final String inString;
+    final public String inString;
 
     RoomStatuses (String inString)
     {

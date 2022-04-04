@@ -1,13 +1,15 @@
 package com.utils;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 
 public abstract class FrontendUtils {
 
     public static int getUserChoice(String[] choices) {
-        @SuppressWarnings("resource") /*Java does some dumb shit when I close the scanner on the first 
-        function run. So I won't close the scanner, just suppress the warning.*/
+        @SuppressWarnings("resource") /*
+                                       * Java does some dumb shit when I close the scanner on the first
+                                       * function run. So I won't close the scanner, just suppress the warning.
+                                       */
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
@@ -23,67 +25,91 @@ public abstract class FrontendUtils {
             } catch (InputMismatchException ime) {
                 System.out.println("Please enter a NUMBER only!!");
                 sc.nextLine();
-                choice = choices.length+1;
+                choice = choices.length + 1;
                 continue;
             }
 
-            if (choice > choices.length) System.out.printf("Please enter a number between 1 and %d only\n", choices.length);
+            if (choice > choices.length)
+                System.out.printf("Please enter a number between 1 and %d only\n", choices.length);
 
         } while (choice > choices.length);
 
         return choice;
     }
-    
+
     // This function here is a little complicated. I'll go through step-by-step
-    
-    // The generic type here refers to what type of field we want. Name will be string, phone no will be integer, etc
-    
+
+    // The generic type here refers to what type of field we want. Name will be
+    // string, phone no will be integer, etc
+
     @SuppressWarnings("unchecked") // Java does not like that I am casting generic Object choice to T at the end
-    public static <T> T getEachFieldFromUser (
-        // This is the prompt that users will see
-        String prompt,
-        String errorPrompt,
-        // This is the function that will return true if data entered is valid, false otherwise
-        AnonymousFunction< Boolean, T> validator,
-        String type
-    )
-    {
-        @SuppressWarnings("resource")
-        Scanner sc = new Scanner(System.in);
-        boolean valid = false;
-        Object choice = new Object();
+    public static <T> T getEachFieldFromUser(
+            // This is the prompt that users will see
+            String prompt,
+            String errorPrompt,
+            // This is the function that will return true if data entered is valid, false
+            // otherwise
+            AnonymousFunction<Boolean, T> validator,
+            String type) {
 
-        do {
-            System.out.println();
-            System.out.println(prompt);
+        try {
+            @SuppressWarnings("resource")
+            Scanner sc = new Scanner(System.in);
+            boolean valid = false;
+            Object choice = new Object();
 
-            try {
-                switch (type) {
-                    case "Integer":
-                        choice = sc.nextInt();
-                        valid = validator.execute((T)choice);
-                        break;
-                    case "String":
-                        choice = sc.nextLine();
-                        valid = validator.execute((T)choice);
-                        break;
-                    case "Long":
-                        choice = sc.nextLong();
-                        valid = validator.execute((T)choice);
-                        break;
-                    default:
-                        break;
+            do {
+                System.out.println();
+                System.out.println(prompt);
+
+                try {
+                    switch (type) {
+                        case "Integer":
+                            choice = sc.nextInt();
+                            valid = validator.execute((T) choice);
+                            break;
+                        case "String":
+                            choice = sc.nextLine();
+                            valid = validator.execute((T) choice);
+                            break;
+                        case "Long":
+                            choice = sc.nextLong();
+                            valid = validator.execute((T) choice);
+                            break;
+                        default:
+                            break;
+                    }
+
+                } catch (InputMismatchException ime) {
+                    System.out.println(errorPrompt);
+                    sc.nextLine();
+                    continue;
                 }
 
-            } catch (InputMismatchException ime) {
-                System.out.println(errorPrompt);
-                sc.nextLine();
-                continue;
-            }
+                if (!valid)
+                    System.out.println(errorPrompt);
+            } while (!valid);
 
-            if (!valid) System.out.println(errorPrompt);
-        } while (!valid);
+            return (T) choice;
+        } catch (ClassCastException cce) {
 
-        return (T)choice;
+            System.out.println("There was a ClassCastException. Contact the administrators");
+        }
+        return null;
+
+    }
+
+    public static <T> boolean userDoubleConfirmDetails(T details) {
+        System.out.println(
+                "\nPlease confirm that the following data is correct: ");
+        System.out.println(details);
+
+        int confirmchoice = getUserChoice(new String[] {
+                "Enter 1 if the above data are all correct",
+                "Enter 2 if the data needs to be entered again"
+        });
+
+        // todo: Fun fact the user can continuously click 2 and get a stack overflow
+        return confirmchoice == 1 ? true : false;
     }
 }

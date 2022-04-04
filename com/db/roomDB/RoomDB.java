@@ -7,27 +7,16 @@ import com.models.room.Room;
 public class RoomDB implements DB<Room> {
 
     @Override
-    public boolean createEntry() {
+    public boolean createEntry(Room room) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public List<Room> readEntries() {
+    public List<Room> findAllEntries() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public boolean updateEntry() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public Room deleteEntry() {
-        // TODO Auto-generated method stub
-        return null;
-    }
         
 }

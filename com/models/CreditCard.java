@@ -1,9 +1,10 @@
 package com.models;
+
 import java.util.HashMap;
 
 public class CreditCard implements Model<CreditCard> {
   private String name;
-  private long creditCardNum;
+  private Long creditCardNum;
   private String expiryDate;
   private String creditCardType;
 
@@ -22,10 +23,28 @@ public class CreditCard implements Model<CreditCard> {
   }
 
   @Override
-    public String toString()
-    {
-        // TODO define method
-        return null;
+  public String toString() {
+    String[] keys = new String[] {
+        "Name",
+        "Credit Card Number (16-digit)",
+        "Expiry Date",
+        "Credit Card Type"
+    };
+    String[] values = new String[] {
+        name,
+        creditCardNum.toString(),
+        expiryDate,
+        creditCardType
+    };
+
+    String finalString = "";
+
+    System.out.println("\nThe following is the credit card data: ");
+    for (int i = 0; i < keys.length; i++) {
+      finalString = finalString.concat(
+          keys[i] + " : " + values[i] + "\n");
     }
+    return finalString;
+  }
 
 }

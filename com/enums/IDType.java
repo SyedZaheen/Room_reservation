@@ -4,7 +4,7 @@ public enum IDType {
     DRIVING_LICENSE("Driving License"), 
     PASSPORT("Passport");
 
-    final String inString;
+    final public String inString;
 
     IDType (String inString)
     {

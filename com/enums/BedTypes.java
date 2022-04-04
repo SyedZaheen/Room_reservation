@@ -5,7 +5,7 @@ public enum BedTypes {
     DOUBLE("Double"),
     MASTER("Master");
 
-    final String inString;
+    final public String inString;
 
     BedTypes (String inString)
     {
