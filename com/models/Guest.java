@@ -1,33 +1,46 @@
 package com.models;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
-public class Guest implements Entity<Guest> {
+import com.enums.IDType;
+
+public class Guest implements Model<Guest> {
 
     private String name, address, country, gender, identity, nationality;
-    private Integer creditCardDetails, contact;
+    private int contact;
+    private IDType idType;
+    private boolean isPayingGuest;
+    private CreditCard creditCard;
 
-    public Guest(String name, Integer creditCardDetails, String address, String country, String gender, String identity,
-            String nationality, Integer contact) {
+    public Guest(
+            String name,
+            String address,
+            String country,
+            String gender,
+            String nationality,
+            int contact,
+            IDType idType,
+            String identity,
+            boolean isPayingGuest,
+            CreditCard creditCard)
+
+    {
         this.name = name;
-        this.creditCardDetails = creditCardDetails;
         this.address = address;
         this.country = country;
         this.gender = gender;
-        this.identity = identity;
         this.nationality = nationality;
+        this.identity = identity;
         this.contact = contact;
+        this.idType = idType;
+        this.isPayingGuest = isPayingGuest;
+        this.creditCard = isPayingGuest ? creditCard : null;
     }
 
     @Override
-    public HashMap<String, String> toHashMap() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public static Guest fromHash(HashMap<String, String> hMap) {
-        // TODO Auto-generated method stub
+    public String toString()
+    {
+        // TODO define method
         return null;
     }
 

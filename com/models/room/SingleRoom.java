@@ -1,5 +1,7 @@
 package com.models.room;
 
+import com.enums.BedTypes;
+
 public class SingleRoom extends Room {    
 
     public SingleRoom(int roomNumber, BedTypes bedType)

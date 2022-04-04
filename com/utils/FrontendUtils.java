@@ -67,6 +67,10 @@ public abstract class FrontendUtils {
                         choice = sc.nextLine();
                         valid = validator.execute((T)choice);
                         break;
+                    case "Long":
+                        choice = sc.nextLong();
+                        valid = validator.execute((T)choice);
+                        break;
                     default:
                         break;
                 }

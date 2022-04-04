@@ -1,6 +1,7 @@
 package com.models;
 import java.util.Scanner;
 
+import com.enums.RoomStatuses;
 import com.models.room.Room;
 
 public class Reservation {
@@ -19,7 +20,7 @@ public class Reservation {
         this.date[1] = checkOut;
         this.guest = guest;
         this.room = room;
-        room.setStatus(Room.Statuses.RESERVED);
+        room.setStatus(RoomStatuses.RESERVED);
     }
     
 
@@ -31,9 +32,9 @@ public class Reservation {
     public void setReservationStatus(ReservationStatus reservationStatus) {
         this.reservationStatus = reservationStatus;
         if(this.reservationStatus == Reservation.ReservationStatus.CHECKED_IN) 
-            room.setStatus(Room.Statuses.OCCUPIED);
+            room.setStatus(RoomStatuses.OCCUPIED);
         else if(this.reservationStatus == Reservation.ReservationStatus.EXPIRED) 
-            room.setStatus(Room.Statuses.VACANT);
+            room.setStatus(RoomStatuses.VACANT);
     }
     
     public double totalRoomFare(){

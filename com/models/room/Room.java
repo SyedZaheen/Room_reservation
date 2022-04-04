@@ -1,4 +1,7 @@
 package com.models.room;
+import com.enums.BedTypes;
+import com.enums.RoomStatuses;
+
 public abstract class Room {
 
     protected int roomNumber;
@@ -6,17 +9,9 @@ public abstract class Room {
     protected boolean wifiEnabled;
     protected boolean facingView;
     protected boolean smokingEnabled;
-    protected Statuses status;
+    protected RoomStatuses status;
     protected BedTypes bedType;
-    public enum Statuses {
-        OCCUPIED,
-        VACANT,
-        MAINTENANCE,
-        RESERVED,
-    }
-    public enum BedTypes {
-        SINGLE, DOUBLE, MASTER,
-    }
+    
 
     Room(int roomNumber, BedTypes bedType)
     {
@@ -29,10 +24,10 @@ public abstract class Room {
         return roomNumber;
     }
 
-    public void setStatus(Statuses status) {
+    public void setStatus(RoomStatuses status) {
         this.status = status;
     }
-    public Statuses getStatus(){
+    public RoomStatuses getStatus(){
         return this.status;
     }
 
