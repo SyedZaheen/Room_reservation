@@ -12,7 +12,6 @@ public class HotelApp {
             case 1:
                 GuestControl.process();
                 break;
-        
             default:
                 break;
         }

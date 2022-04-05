@@ -39,7 +39,6 @@ public class CreditCard implements Model<CreditCard> {
 
     String finalString = "";
 
-    System.out.println("\nThe following is the credit card data: ");
     for (int i = 0; i < keys.length; i++) {
       finalString = finalString.concat(
           keys[i] + " : " + values[i] + "\n");

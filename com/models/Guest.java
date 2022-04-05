@@ -61,8 +61,6 @@ public class Guest implements Model<Guest> {
             isPayingGuest.toString(),
         };
         String finalString = "";
-
-        System.out.println("\nThe following is the guest data: ");
         for (int i = 0; i < keys.length; i++) {
             finalString = finalString.concat(
                 keys[i] + " : " + values[i] + "\n"

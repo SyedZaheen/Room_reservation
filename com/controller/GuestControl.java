@@ -17,6 +17,7 @@ public abstract class GuestControl {
                 int choice = FrontendUtils.getUserChoice(new String[] {
                                 "Create a new guest",
                                 "Update guest details",
+                                "See all guest details",
                                 "Delete guest"
                 });
                 // For each, we call the corresponding function.
@@ -47,6 +48,13 @@ public abstract class GuestControl {
                                         System.out.println(
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
                                 break;
+                        case 3:
+                                System.out.println("The following are all the available guest data so far: ");
+                                for (Guest eachGuest : new GuestDB().findAllEntries() ) {
+                                        System.out.println("");
+                                        System.out.println(eachGuest);
+                                }
+                                break;
                         default:
                                 break;
                 }
@@ -62,21 +70,21 @@ public abstract class GuestControl {
 
                 // First we ask the user to give us the simple data that we want
                 name = FrontendUtils.<String>getEachFieldFromUser(
-                                "Please enter the name: ",
-                                "Error. please enter a string between 5 and 50 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 5, 50),
+                                "Please enter the full name: ",
+                                "Error. please enter a string between 3 and 50 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 3, 50),
                                 "String");
 
                 address = FrontendUtils.<String>getEachFieldFromUser(
                                 "Please enter the address: ",
-                                "Error. please enter a string between 5 and 50 characters long",
+                                "Error. Please enter a string between 5 and 50 characters long",
                                 i -> MiscUtils.stringWithinLength(i, 5, 50),
                                 "String");
 
                 country = FrontendUtils.<String>getEachFieldFromUser(
                                 "Please enter the country: ",
                                 "Error. please enter a string less than 20 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 1, 20),
+                                i -> MiscUtils.stringWithinLength(i, 2, 20),
                                 "String");
 
                 gender = FrontendUtils.<String>getEachFieldFromUser(
