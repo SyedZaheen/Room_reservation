@@ -10,7 +10,7 @@ import com.utils.MiscUtils;
 public abstract class GuestControl {
 
         public static void process() {
-                Guest guest = null;
+                Guest newguest = null;
                 boolean success = false;
 
                 // First, we need to see if we need to create, read, update or delete guest.
@@ -23,27 +23,27 @@ public abstract class GuestControl {
                 // For each, we call the corresponding function.
                 switch (choice) {
                         case 1:
-                                guest = manageCreateGuest();
+                                newguest = manageCreateGuest();
                                 // Let's send the guest to the database.
                                 // todo: This design is pretty shit but idk how to fix it.
-                                success = new GuestDB().createEntry(guest);
+                                success = new GuestDB().createEntry(newguest);
 
                                 if (success) {
                                         System.out.println(
                                                         "A new guest was sucessfully created! These are the saved guest data: ");
-                                        System.out.println(guest);
+                                        System.out.println(newguest);
                                 } else
                                         System.out.println(
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
                                 break;
                         case 2:
-                                guest = manageUpdateGuest();
-                                success = new GuestDB().updateEntry(guest);
+                                newguest = manageUpdateGuest();
+                                success = new GuestDB().updateEntry(newguest);
 
                                 if (success) {
                                         System.out.println(
                                                         "A new guest was sucessfully created! These are the current guest data: ");
-                                        System.out.println(guest);
+                                        System.out.println(newguest);
                                 } else
                                         System.out.println(
                                                         "Something went wrong trying to save the guest data. Contact the administrators");

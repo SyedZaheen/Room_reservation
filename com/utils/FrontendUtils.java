@@ -25,7 +25,6 @@ public abstract class FrontendUtils {
             } catch (InputMismatchException ime) {
                 System.out.println("Please enter a NUMBER only!!");
                 sc.nextLine();
-                choice = choices.length + 1;
                 continue;
             }
 
