@@ -10,7 +10,7 @@ import com.enums.OrderStatus;
 
 public class RoomServiceController implements Controller{
 
-    private Menu menu;
+    private Menu menu = new Menu();
 
     @Override
     public RoomService manageCreateEntry() {
@@ -30,7 +30,8 @@ public class RoomServiceController implements Controller{
         ArrayList<MenuItem> orderlist = new ArrayList<>();
         String finalOrderList = "";
         do {
-            choice = FrontendUtils.getUserChoice(new Menu().getAllItemsInString());
+            choice = FrontendUtils.getUserChoice(menu.getAllItemsInString());
+            if (choice == -1) break;
             orderlist.add(menu.items.get(choice - 1));
             System.out.println("Key in -1 to exit");
         } while (choice != -1);

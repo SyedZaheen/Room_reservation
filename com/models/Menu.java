@@ -60,7 +60,7 @@ public class Menu {
 
     public String[] getAllItemsInString() {
         String[] s = new String[menuSize];
-        for(int i = 1; i <= menuSize; i++) {
+        for(int i = 0; i < menuSize; i++) {
             s[i] = items.get(i).toString();
         }
         return s;
