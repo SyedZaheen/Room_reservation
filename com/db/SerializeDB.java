@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class SerializeDB {
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> readSerializedObject(String filename) {
-		List<T> pDetails = null;
+		List<T> objectFromFile = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
 		try {
 			fis = new FileInputStream(filename);
 			in = new ObjectInputStream(fis);
-			pDetails = (ArrayList<T>) in.readObject();
+			objectFromFile = (ArrayList<T>) in.readObject();
 			in.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -30,9 +30,9 @@ public class SerializeDB {
 			ex.printStackTrace();
 		}
 		// print out the size
-		// System.out.println(" Details Size: " + pDetails.size());
+		// System.out.println(" Details Size: " + objectFromFile.size());
 		// System.out.println();
-		return pDetails;
+		return objectFromFile;
 	}
 
 	public static <T> boolean writeSerializedObject(String filename, List<T> list) {
