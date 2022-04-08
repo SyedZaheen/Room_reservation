@@ -27,4 +27,6 @@ public class GuestDB implements DB<Guest> {
     public boolean updateEntry(Guest guest) {
         return false;
     }
+
+
 }

@@ -4,9 +4,10 @@ import com.models.CreditCard;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-public abstract class CreditCardControl {
+public class CreditCardControl implements Controller{
 
-    public static CreditCard manageCreateCreditCard() {
+        @Override 
+    public CreditCard manageCreateEntry() {
         String name;
         long creditCardNum;
         String expiryDate;
@@ -42,9 +43,10 @@ public abstract class CreditCardControl {
         CreditCard newCC = new CreditCard(name, creditCardNum, expiryDate, creditCardType);
         
         if (!FrontendUtils.<CreditCard>userDoubleConfirmDetails(newCC))
-            newCC = manageCreateCreditCard();
+            newCC = manageCreateEntry();
 
         return newCC;
     }
+
 
 }

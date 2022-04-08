@@ -2,12 +2,24 @@ package com.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.List;
 
 public class Menu {
     private int menuSize = 0;
-    private HashMap <Integer, MenuItem> items = new HashMap <Integer, MenuItem> (); //id = key, value = "name, description of how it's prepared, price"
-
-    public Menu() {}
+    public ArrayList <MenuItem> items; //id = key, value = "name, description of how it's prepared, price"
+    
+    
+    public Menu() {
+        this.items = new ArrayList<>();
+        items.add(new MenuItem("Chicken", "chicken", 4));
+        menuSize++;
+        items.add(new MenuItem("Fish", "seafood", 5));
+        menuSize++;
+        items.add(new MenuItem("Beef", "cow", 6));
+        menuSize++;
+        items.add(new MenuItem("Mutton", "lamb", 7));
+        menuSize++;
+    }
     
     public Menu(int menuSize) {
         this.menuSize = menuSize;
@@ -28,7 +40,7 @@ public class Menu {
         MenuItem newItem = new MenuItem(itemName, description, price);
         this.menuSize++;
 
-        items.put(this.menuSize, newItem);
+        items.add(newItem);
     }
 
     public void removeItem() {
@@ -41,14 +53,16 @@ public class Menu {
         items.remove(foodID);
         
         for(int i = foodID; i < menuSize - 1; i++) // After removal, the MenuItem that follows after will be shifted upwards.
-            items.put(i, items.get(i + 1));
+            items.add(i, items.get(i + 1));
 
         this.menuSize--;
     }
 
-    public void display() {
+    public String[] getAllItemsInString() {
+        String[] s = new String[menuSize];
         for(int i = 1; i <= menuSize; i++) {
-            items.get(i).toString();
+            s[i] = items.get(i).toString();
         }
+        return s;
     }
 }

@@ -1,5 +1,7 @@
 package com.utils;
 
+import com.models.MenuItem;
+
 public abstract class MiscUtils {
     public static boolean isValidSingaporeNumber(int j)
     {
@@ -11,3 +13,4 @@ public abstract class MiscUtils {
         return str.length() >= min && str.length() <= max;
     }
 }
+

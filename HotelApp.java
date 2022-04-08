@@ -1,6 +1,8 @@
 
 import com.controller.GuestControl;
+import com.controller.RoomServiceController;
 import com.utils.FrontendUtils;
+
 
 public class HotelApp {
     public static void main(String[] args) {
@@ -12,6 +14,8 @@ public class HotelApp {
             case 1:
                 GuestControl.process();
                 break;
+            case 2:
+                new RoomServiceController().manageCreateEntry();
             default:
                 break;
         }
@@ -22,7 +26,7 @@ public class HotelApp {
         return FrontendUtils.getUserChoice(new String[]{
             "Manage Guest",
             "Manage Reservations",
-            "Manage Room Service",
+            "Create Room Service",
             "Manage Payment",
             "Manage Rooms"
         });
