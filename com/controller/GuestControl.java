@@ -7,9 +7,9 @@ import com.models.Guest;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-public abstract class GuestControl {
+public class GuestControl implements Controller<Guest> {
 
-        public static void process() {
+        public void process() {
                 Guest newguest = null;
                 boolean success = false;
 
@@ -23,7 +23,7 @@ public abstract class GuestControl {
                 // For each, we call the corresponding function.
                 switch (choice) {
                         case 1:
-                                newguest = manageCreateGuest();
+                                newguest = manageCreateEntry();
                                 // Let's send the guest to the database.
                                 // todo: This design is pretty shit but idk how to fix it.
                                 success = new GuestDB().createEntry(newguest);
@@ -42,7 +42,7 @@ public abstract class GuestControl {
 
                                 if (success) {
                                         System.out.println(
-                                                        "A new guest was sucessfully created! These are the current guest data: ");
+                                                        "The guest details were successfully updated! These are the current guest data: ");
                                         System.out.println(newguest);
                                 } else
                                         System.out.println(
@@ -60,7 +60,8 @@ public abstract class GuestControl {
                 }
         }
 
-        private static Guest manageCreateGuest() {
+        @Override
+        public Guest manageCreateEntry() {
                 // Initialise the guest data that we want
                 String name, address, country, gender, nationality, identity;
                 int contact;
@@ -133,7 +134,7 @@ public abstract class GuestControl {
 
                 // Next, if the guest is paying, then we get their credit card info
                 if (isPayingGuest) {
-                        creditCard = CreditCardControl.manageCreateCreditCard();
+                        creditCard = new CreditCardControl().manageCreateEntry();
                 } else
                         creditCard = null;
 
@@ -141,7 +142,7 @@ public abstract class GuestControl {
                                 isPayingGuest, creditCard);
 
                 if (!FrontendUtils.<Guest>userDoubleConfirmDetails(newGuest))
-                        newGuest = manageCreateGuest();
+                        newGuest = manageCreateEntry();
                 return newGuest;
         }
 
