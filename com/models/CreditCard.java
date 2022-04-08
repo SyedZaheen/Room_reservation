@@ -1,17 +1,10 @@
 package com.models;
 
-import java.util.HashMap;
-
 public class CreditCard implements Model<CreditCard> {
   private String name;
   private Long creditCardNum;
   private String expiryDate;
   private String creditCardType;
-
-  // todo: what is this?
-  // public CreditCard(){
-  // super();
-  // }
 
   // todo: explain what we can or cannot store. CANNOT store cvv!!
   // https://www.chargebee.com/blog/db-credit-card-vault/

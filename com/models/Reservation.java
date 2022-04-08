@@ -2,7 +2,6 @@ package com.models;
 import java.util.Scanner;
 
 import com.enums.RoomStatuses;
-import com.models.room.Room;
 
 public class Reservation {
     private Guest guest;
