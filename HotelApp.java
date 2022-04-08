@@ -17,7 +17,7 @@ public class HotelApp {
         }
 
     }
-
+    
     public static int showMainMenuAndReturnChoice() {
         return FrontendUtils.getUserChoice(new String[]{
             "Manage Guest",
@@ -26,6 +26,7 @@ public class HotelApp {
             "Manage Payment",
             "Manage Rooms"
         });
+
     }
 
     
