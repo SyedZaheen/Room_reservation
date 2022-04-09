@@ -25,17 +25,17 @@ public class RoomServiceDB implements DB<RoomService> {
         return SerializeDB.<RoomService>readSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME);
     }
 
-    /*public boolean updateEntry(RoomService rs) {
+    public boolean updateEntry(RoomService rs) {
         listOfOrders = findAllEntries();
-        for (Guest g : listOfGuests) {
-            if(guest.getID() == g.getID()) {
-                g = guest;
-                SerializeDB.<Guest>writeSerializedObject(DB.FILE_PATH+GUEST_DB_FILE_NAME, listOfGuests);
+        for (RoomService eachRoomService : listOfOrders) {
+            if(rs.getOrderID() == eachRoomService.getOrderID()) {
+                eachRoomService = rs;
+                SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME, listOfOrders);
                 return true;
             }
         }
         return false;
-    } */
+    } 
 
 
 }

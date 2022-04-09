@@ -2,6 +2,7 @@ package com.models;
 
 import java.util.Random;
 
+import com.controller.GuestControl;
 import com.enums.IDType;
 import com.enums.PaymentType;
 
@@ -42,6 +43,7 @@ public class Guest implements Model<Guest> {
         this.isPayingGuest = isPayingGuest;
         this.paymentType = isPayingGuest ? paymentType : null;
         this.creditCard = paymentType == PaymentType.CREDITCARD ? creditCard : null;
+        this.guestID = setGuestID();
     }
 
     @Override
@@ -88,6 +90,13 @@ public class Guest implements Model<Guest> {
         return finalString;
     }
 
+    private int setGuestID(){
+        int id = new Random().nextInt(1000000);
+        if (GuestControl.checkDuplicateId(id)) {
+            return id;
+        }
+        else return setGuestID();
+    }
     public int getID() {
         return this.guestID;
     }
@@ -103,4 +112,7 @@ public class Guest implements Model<Guest> {
     public PaymentType getPaymentType() {
         return paymentType;
     }
+
+    
+
 }
