@@ -6,6 +6,7 @@ public class Payment implements Model<Payment> {
     private final double TAX = 1.17;
     private long bill;
     
+    
     @Override
     public String toString()
     {
@@ -13,6 +14,11 @@ public class Payment implements Model<Payment> {
         return null;
     }
 
+    public Reservation getReservation(){
+        return reservation;
+    }
+
+    public double getTaxedTotal() {
     
     }
 

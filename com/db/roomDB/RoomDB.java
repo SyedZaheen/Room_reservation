@@ -5,7 +5,10 @@ import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
 import com.models.Room;
+<<<<<<< Updated upstream
 import com.utils.AnonymousFunction;
+=======
+>>>>>>> Stashed changes
 
 public class RoomDB implements DB<Room> {
 
@@ -14,7 +17,11 @@ public class RoomDB implements DB<Room> {
     // todo: Create entry doesnt make sense here
     @Override
     public boolean createEntry(Room room) {
+<<<<<<< Updated upstream
 
+=======
+        
+>>>>>>> Stashed changes
         return false;
     }
 
@@ -24,6 +31,7 @@ public class RoomDB implements DB<Room> {
                 DB.FILE_PATH + ROOM_DB_FILE_NAME);
     }
 
+<<<<<<< Updated upstream
 
     // public Room findRoomByVacancy(
             
@@ -38,4 +46,6 @@ public class RoomDB implements DB<Room> {
     //     return null;
     // }
 
+=======
+>>>>>>> Stashed changes
 }
