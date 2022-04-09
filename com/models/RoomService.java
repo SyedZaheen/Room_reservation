@@ -14,5 +14,7 @@ public class RoomService {
         this.orders = orders;
     };
 
-    
+    public HashMap<MenuItem, OrderStatus> getOrders() {
+        return this.orders;
+    }
 }
