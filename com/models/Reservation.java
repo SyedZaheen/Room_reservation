@@ -1,6 +1,7 @@
 package com.models;
 
 import com.enums.ReservationStatuses;
+import com.enums.PaymentType;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -8,8 +9,9 @@ import java.util.ArrayList;
 public class Reservation implements Model<Reservation> {
 
     private Integer reservationID, numberOfAdults, numberOfChildren;
-    private ArrayList<Guest> guests;
+    private ArrayList <Guest> guests;
     private Room reservedRoom;
+    private PaymentType paymentType;
     private CreditCard creditCardUsed;
     private Date checkInDate, checkOutDate;
     private ReservationStatuses reservationStatus;
@@ -19,8 +21,9 @@ public class Reservation implements Model<Reservation> {
             Integer reservationID,
             Integer numberOfAdults,
             Integer numberOfChildren,
-            ArrayList<Guest> guests,
+            ArrayList <Guest> guests,
             Room reservedRoom,
+            PaymentType paymentType,
             CreditCard creditCardUsed,
             Date checkInDate,
             Date checkOutDate,
@@ -32,6 +35,7 @@ public class Reservation implements Model<Reservation> {
         this.numberOfChildren = numberOfChildren;
         this.guests = guests;
         this.reservedRoom = reservedRoom;
+        this.paymentType = paymentType;
         this.creditCardUsed = creditCardUsed;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -48,7 +52,7 @@ public class Reservation implements Model<Reservation> {
                     "Guest " + (i + 1) + " : \n" + guests.get(i).toString() + "\n");
         }
 
-        String creditCardUsedString = creditCardUsed != null ? creditCardUsed.toString() : "No Credit Card";
+        String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString() : "No Credit Card";
 
         String[] keys = new String[] {
                 "Reservation ID",
@@ -57,6 +61,7 @@ public class Reservation implements Model<Reservation> {
                 "Number of Children",
                 "Reserved Room",
                 "Guests",
+                "Payment Type",
                 "Credit Card Used",
                 "Check-in Date",
                 "Check-out Date",
@@ -70,6 +75,7 @@ public class Reservation implements Model<Reservation> {
                 numberOfChildren.toString(),
                 reservedRoom.toString(),
                 allGuests,
+                paymentType.inString,
                 creditCardUsedString,
                 checkInDate.toString(),
                 checkOutDate.toString(),
@@ -85,8 +91,7 @@ public class Reservation implements Model<Reservation> {
         return finalString;
     }
 
-    public Guest getPayingGuest()
-    {
+    public Guest getPayingGuest() {
         return guests.get(guests.size() - 1);
     }
 
@@ -101,21 +106,27 @@ public class Reservation implements Model<Reservation> {
     public Integer getNumberOfAdults() {
         return numberOfAdults;
     }
+
     public Integer getNumberOfChildren() {
         return numberOfChildren;
     }
+
     public CreditCard getCreditCardUsed() {
         return creditCardUsed;
     }
+
     public ReservationStatuses getReservationStatus() {
         return reservationStatus;
     }
+
     public Room getReservedRoom() {
         return reservedRoom;
     }
+
     public ArrayList<RoomService> getRoomServices() {
         return roomServices;
     }
+
     public Date getCheckOutDate() {
         return this.checkOutDate;
     }
@@ -126,5 +137,9 @@ public class Reservation implements Model<Reservation> {
 
     public ArrayList<Guest> getGuests() {
         return guests;
+    }
+
+    public void setReservationStatus(ReservationStatuses reservationStatus) {
+        this.reservationStatus = reservationStatus;
     }
 }

@@ -55,4 +55,17 @@ public abstract class MiscUtils {
 
         return date;
     }
+
+    public static boolean roomNumberExists(Integer i) {
+        if(i < 100 || i > 999)
+            return false;
+
+        i %= 100;
+        if(i < 1 || i > 12)
+            return false;
+
+        return true;
+    }
+
+
 }

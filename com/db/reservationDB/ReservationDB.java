@@ -12,7 +12,7 @@ import java.sql.Date;
 
 public class ReservationDB implements DB <Reservation> {
 
-    private final String RESERVATION_DB_FILE_NAME = "roomDB/all_rooms_data.ser";
+    private final String RESERVATION_DB_FILE_NAME = "reservationDB/all_reservations_data.ser";
     private List<Reservation> listOfReservations = new ArrayList<>();
 
     @Override
@@ -32,10 +32,12 @@ public class ReservationDB implements DB <Reservation> {
             DB.FILE_PATH + RESERVATION_DB_FILE_NAME);
     }
 
+    // TODO : To implement method
     public boolean updateEntry(Reservation resv) {
         return false;
     }
 
+    // TODO : Flawed logic for time series.
     public boolean searchByDate(Date checkInDate) {
         Date start, end;
         int startDay, endDay;
@@ -74,8 +76,7 @@ public class ReservationDB implements DB <Reservation> {
         return false;
     }
 
-    public boolean deleteEntry(Reservation r)
-    {
+    public boolean deleteEntry(Reservation r) {
         // TODO
         return false;
     }

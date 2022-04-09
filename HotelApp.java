@@ -1,9 +1,6 @@
 import com.controller.GuestControl;
-<<<<<<< Updated upstream
 import com.controller.ReservationControl;
-=======
 import com.controller.PaymentControl;
->>>>>>> Stashed changes
 import com.utils.FrontendUtils;
 
 public class HotelApp {
@@ -20,13 +17,11 @@ public class HotelApp {
             case 2:
                 new ReservationControl().process();
                 break;
-<<<<<<< Updated upstream
 
-=======
             case 4:
                 PaymentControl.process();
                 break;
->>>>>>> Stashed changes
+
             default:
                 break;
         }

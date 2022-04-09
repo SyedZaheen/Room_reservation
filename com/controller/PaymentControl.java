@@ -1,120 +1,133 @@
 package com.controller;
 
-import java.util.List;
-import java.util.Scanner;
-
-import com.db.guestDB.GuestDB;
-import com.db.paymentDB.PaymentDB;
 import com.db.reservationDB.ReservationDB;
-import com.enums.RoomTypes;
-import com.models.Guest;
-import com.models.Payment;
+import com.enums.PaymentType;
+import com.enums.RoomStatuses;
 import com.models.Reservation;
-import com.models.RoomService;
 import com.utils.FrontendUtils;
-import com.utils.MiscUtils;
 
 public abstract class PaymentControl {
 
-    public static void checkOut() {
-        Reservation r = getReservation();
+    public static void process() {
 
-        if (r == null) {
-            System.out.println("That room is unoccupied");
+        int choice = FrontendUtils.getUserChoice(new String[] {
+                "Check out from room",
+                "Print payment slip"
+        });
+
+        switch (choice) {
+            case 1:
+                checkOut();
+                break;
+
+            case 2:
+                printBill();
+                break;
+        }
+    }
+
+    public static void checkOut() {
+        int reservationID = FrontendUtils.<Integer>getEachFieldFromUser(
+                "Please enter the reservation ID: ",
+                "Error. Please enter a 6 digit number.",
+                i -> (i >= 1e6 && i < 1e7),
+                "Integer");
+
+        Reservation toCheckOut = new ReservationDB().findReservationByID(reservationID);
+        if (toCheckOut == null) {
+            System.out.println("Reservation ID is invalid!");
             return;
         }
 
+        toCheckOut.getReservedRoom().setStatus(RoomStatuses.VACANT);
+        // After checkout is done, user must return to Main Menu, go to Reservation
+        // Menu, and delete reservation.
     }
 
-    public static Reservation getReservation() {
-        int checkOutRoomNumber = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Enter the Room Number for check out: ",
-                "Invalid room number. Check your number",
-                i -> MiscUtils.roomNumberExists(i), "Integer");
+    public static void printBill() {
+        int reservationID = FrontendUtils.<Integer>getEachFieldFromUser(
+                "Please enter the reservation ID: ",
+                "Error. Please enter a 6 digit number.",
+                i -> (i >= 1e6 && i < 1e7),
+                "Integer");
 
-        return new ReservationDB().findSingleEntryByNumber(checkOutRoomNumber);
+        Reservation toBill = new ReservationDB().findReservationByID(reservationID);
+
+        int discountChoice = FrontendUtils.<Integer>getEachFieldFromUser(
+                "Do you wish to apply a discount? (1) Apply discount.\n(2) Do not have discount.",
+                "Error. Please enter either 1 or 2.",
+                i -> (i == 1 || i == 2),
+                "Integer");
+
+        double discount = 1;
+        if (discountChoice == 1) {
+            discount = FrontendUtils.<Double>getEachFieldFromUser(
+                    "Enter discount rate: ",
+                    "Error. Please enter a valid double value!",
+                    i -> (i > 0 && i < 1),
+                    "Double");
+        }
+
+        System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
+        System.out.printf("Net Total Room Charges: %.2f\n", computeRoomCharges(toBill));
+        System.out.println("");
+        System.out.printf("Net Total Room Service Charges: %.2f\n", computeRoomServiceCharges(toBill));
+        System.out.println("");
+        System.out.printf("Additional Surcharges: %.2f\n", computeTax(toBill));
+
+        if (discount != 1) {
+            System.out.println((discount * 100) + "% Discount applied!");
+            System.out.printf("Grand Total: %.2f\n", (1 - discount)
+                    * (computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill)));
+            System.out.println("");
+        } else {
+            System.out.printf("Grand Total: %.2f\n",
+                    computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill));
+            System.out.println("");
+        }
+
+        if (toBill.getPayingGuest().getPaymentType() == PaymentType.CREDITCARD) {
+            System.out.println("Payment billed to:");
+            System.out.println(toBill.getPayingGuest().getCreditCard());
+        } else if (toBill.getPayingGuest().getPaymentType() == PaymentType.CASH)
+            System.out.println("Payment by Cash (SGD only).");
+
+        System.out.println("Please confirm that the above bill is correct: ");
+        int choice = FrontendUtils.getUserChoice(new String[] {
+                "Enter 1 if the above data are all correct",
+                "Enter 2 if the data has errors"
+        });
+
+        if (choice == 1)
+            System.out.println("Payment Successful! Thank you for staying with us.");
+
+        if (choice == 2)
+            printBill();
+    }
+
+    // TODO : To amend after receiving Zaheen's implementation of calculation of
+    // time
+    private static double computeRoomCharges(Reservation r) {
+        return 0;
+    }
+
+    // TODO : To amend after receiving Jayden's code.
+    private static double computeRoomServiceCharges(Reservation r) {
+        return 0;
+    }
+
+    private static double computeTax(Reservation r) {
+        final double TAX = 17;
+        return ((TAX / 100.0) * (computeRoomCharges(r) + computeRoomServiceCharges(r)));
+
     }
 
     // Ask the user for the name of the guest paying
-
     // Find the guest we want
-
     // if paying guest is not a paying guest do again.
-
     // Show the payment details
-
     // ^call the functions below
-
     // Confirm that the guest has payed, Payment is always successful (assumption)
-
     // total = (room service + days) * 1.17 - svc charge
     // parameter for below needs to be discussed
-    public static void printCheckOut(Reservation r) {
-        Scanner sc = new Scanner(System.in);
-        // prints out all the required details
-        System.out.printf("Your total Room Service Bill is: %f%n", getRoomServiceTotal(r));
-        System.out.printf("Your total Room Charges are: %f%n", getRoomTotal(r));
-        System.out.printf("Service Charges (17%): %f%n",getServiceChargeTotal(r));
-        System.out.printf("Grand Total: %f", getTotal(r));
-
-        Guest = 
-        
-        if (Guest.isPayingGuest.creditCardUsed) {// creditcard registered then Y/N, otherwise cash
-            System.out.printf("You have the following credit card registered: %f, Press Y to confirm, N to review again " ), }
-        else (){
-            System.out.printf("Pay with cash, no credit card registered, Press Y to confirm, N to review again");
-        }
-        
-        char choice = sc.next().charAt(0); 
-        
-        switch(choice){
-            case 'Y':
-                System.out.println("Payment and Check-Out Successful. Thank you for staying with us.");
-                // set ROOM TO VACANT (RoomStatuses)
-                break;
-            case 'N':
-                printCheckOut(r);
-                break;
-            default: 
-                System.out.println("Invalid input. Try again.");
-        }
-
-
-
-
-        
-    }
-
-    private static double getRoomServiceTotal(Reservation r) { // kiv
-        List<RoomService> roomServiceList = null; // fix this, from jayds
-
-        double total = 0.0;
-        for (RoomService rs : roomServiceList) 
-            total += rs.; // need a method to get the value for those reservations 
-
-        return total;
-    }
-
-    private static double getServiceChargeTotal(Reservation r) {
-        final double TAX = 17;
-        return ((TAX / 100.0) * (getTotal(r) + getRoomTotal(r)));
-
-    }
-
-    private static double getRoomTotal(Reservation r) {
-        try {
-            long difference = r.getCheckOutDate().getTime() - r.getCheckInDate().getTime();
-            double numberOfDays = (difference / (1000 * 60 * 60 * 24));
-            return numberOfDays * r.getReservedRoom().getRoomType().getRatePerNight();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-
-    }
-    
-    public static double getTotal(Reservation r) {
-        return getRoomTotal(r) + getServiceChargeTotal(r) + getRoomServiceTotal(r);
-    }
-    
 }

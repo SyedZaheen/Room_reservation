@@ -1,6 +1,7 @@
 package com.models;
 
 import com.enums.IDType;
+import com.enums.PaymentType;
 
 public class Guest implements Model<Guest> {
 
@@ -8,6 +9,7 @@ public class Guest implements Model<Guest> {
     private Integer contact;
     private IDType idType;
     private Boolean isPayingGuest;
+    private PaymentType paymentType;
     private CreditCard creditCard;
 
     public Guest(
@@ -20,6 +22,7 @@ public class Guest implements Model<Guest> {
             IDType idType,
             String identity,
             boolean isPayingGuest,
+            PaymentType paymentType,
             CreditCard creditCard)
 
     {
@@ -32,7 +35,8 @@ public class Guest implements Model<Guest> {
         this.contact = contact;
         this.idType = idType;
         this.isPayingGuest = isPayingGuest;
-        this.creditCard = isPayingGuest ? creditCard : null;
+        this.paymentType = isPayingGuest ? paymentType : null;
+        this.creditCard = paymentType == PaymentType.CREDITCARD ? creditCard : null;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class Guest implements Model<Guest> {
                 "ID Number",
                 "Is Paying"
         };
+
         String[] values = new String[] {
                 name,
                 address,
@@ -59,14 +64,21 @@ public class Guest implements Model<Guest> {
                 identity,
                 isPayingGuest.toString(),
         };
+
         String finalString = "";
         for (int i = 0; i < keys.length; i++) {
             finalString = finalString.concat(
                     keys[i] + " : " + values[i] + "\n");
         }
 
-        if (isPayingGuest)
-            finalString = finalString.concat(creditCard.toString());
+        if (isPayingGuest) {
+            if (paymentType == PaymentType.CREDITCARD)
+                finalString = finalString.concat("Payment Type: \n" + creditCard.toString());
+
+            else if (paymentType == PaymentType.CASH)
+                finalString = finalString.concat("Payment Type: Cash");
+        } else
+            paymentType = PaymentType.NA;
 
         return finalString;
     }
@@ -77,5 +89,9 @@ public class Guest implements Model<Guest> {
 
     public String getName() {
         return name;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
     }
 }

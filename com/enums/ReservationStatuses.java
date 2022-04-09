@@ -1,9 +1,10 @@
 package com.enums;
 
 public enum ReservationStatuses {
-    RESERVED("Reserved"),
-    PENDING("Pending"),
-    REJECTED("Rejected");
+    CONFIRMED("Confirmed"),
+    IN_WAITLIST("In Waitlist"),
+    CHECKED_IN("Checked-in"),
+    EXPIRED("Expired");
 
     final public String inString;
 

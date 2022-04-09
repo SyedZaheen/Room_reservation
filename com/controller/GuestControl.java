@@ -2,6 +2,7 @@ package com.controller;
 
 import com.db.guestDB.GuestDB;
 import com.enums.IDType;
+import com.enums.PaymentType;
 import com.models.CreditCard;
 import com.models.Guest;
 import com.utils.FrontendUtils;
@@ -67,6 +68,7 @@ public class GuestControl implements Controller<Guest> {
                 int contact;
                 IDType idType;
                 boolean isPayingGuest;
+                PaymentType paymentType = PaymentType.NA;
                 CreditCard creditCard = null;
 
                 // First we ask the user to give us the simple data that we want
@@ -134,12 +136,23 @@ public class GuestControl implements Controller<Guest> {
 
                 // Next, if the guest is paying, then we get their credit card info
                 if (isPayingGuest) {
-                        creditCard = new CreditCardControl().manageCreateEntry();
+                        int paymentTypeChoice = FrontendUtils.getUserChoice(new String[] {
+                                        "Enter 1 if the guest is paying by creditcard for the reservation",
+                                        "Enter 2 if the guest is paying by cash for the reservation"
+                        });
+
+                        if (paymentTypeChoice == 1) {
+                                paymentType = PaymentType.CREDITCARD;
+                                creditCard = new CreditCardControl().manageCreateEntry();
+                        } else if (paymentTypeChoice == 2) {
+                                paymentType = PaymentType.CASH;
+                                creditCard = null;
+                        }
                 } else
-                        creditCard = null;
+                        paymentType = PaymentType.NA;
 
                 Guest newGuest = new Guest(name, address, country, gender, nationality, contact, idType, identity,
-                                isPayingGuest, creditCard);
+                                isPayingGuest, paymentType, creditCard);
 
                 if (!FrontendUtils.<Guest>userDoubleConfirmDetails(newGuest))
                         newGuest = manageCreateEntry();
@@ -151,6 +164,7 @@ public class GuestControl implements Controller<Guest> {
                 String name, address, country, gender, nationality, identity;
                 int contact;
                 IDType idType;
+                PaymentType paymentType = PaymentType.NA;
                 CreditCard creditCard = null;
 
                 // First we ask the user to give us the simple data that we want
@@ -211,15 +225,27 @@ public class GuestControl implements Controller<Guest> {
 
                 // Next, if the guest is paying, then we get their credit card info
                 if (isPaying) {
-                        creditCard = new CreditCardControl().manageCreateEntry();
+                        int paymentTypeChoice = FrontendUtils.getUserChoice(new String[] {
+                                        "Enter 1 if the guest is paying by creditcard for the reservation",
+                                        "Enter 2 if the guest is paying by cash for the reservation"
+                        });
+
+                        if (paymentTypeChoice == 1) {
+                                paymentType = PaymentType.CREDITCARD;
+                                creditCard = new CreditCardControl().manageCreateEntry();
+                        } else if (paymentTypeChoice == 2) {
+                                paymentType = PaymentType.CASH;
+                                creditCard = null;
+                        }
                 } else
-                        creditCard = null;
+                        paymentType = PaymentType.NA;
 
                 Guest newGuest = new Guest(name, address, country, gender, nationality, contact, idType, identity,
-                                isPaying, creditCard);
+                                isPaying, paymentType, creditCard);
 
                 if (!FrontendUtils.<Guest>userDoubleConfirmDetails(newGuest))
                         newGuest = manageCreateEntry();
+
                 return newGuest;
         }
 

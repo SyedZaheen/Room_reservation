@@ -3,6 +3,7 @@ package com.controller;
 import com.db.reservationDB.ReservationDB;
 import com.db.roomDB.RoomDB;
 import com.enums.ReservationStatuses;
+import com.enums.PaymentType;
 import com.models.CreditCard;
 import com.models.Guest;
 import com.models.Reservation;
@@ -10,7 +11,6 @@ import com.models.Room;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-import java.io.InvalidClassException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +78,7 @@ public class ReservationControl implements Controller<Reservation> {
                         System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
                     }
 
-                } 
-                catch (NullPointerException npe) {
+                } catch (NullPointerException npe) {
                     System.out.println("There are no reservations currently");
                 }
 
@@ -113,6 +112,7 @@ public class ReservationControl implements Controller<Reservation> {
 
         Integer numberOfAdults, numberOfChildren, year, monthIn, monthOut, day;
         ArrayList<Guest> guests = new ArrayList<>();
+        PaymentType paymentType;
         CreditCard creditCardUsed;
         Room reservedRoom;
         Date checkInDate, checkOutDate;
@@ -138,6 +138,8 @@ public class ReservationControl implements Controller<Reservation> {
         System.out.println("Please enter the details for the paying adult: ");
         payingGuest = new GuestControl().manageCreateEntry(true);
         guests.add(payingGuest);
+
+        paymentType = payingGuest.getPaymentType();
 
         creditCardUsed = payingGuest.getCreditCard();
 
@@ -181,8 +183,8 @@ public class ReservationControl implements Controller<Reservation> {
 
         checkOutDate = Date.valueOf(MiscUtils.dateConvertor(year, monthOut, day));
 
-        boolean hotelisfull = new RoomDB().checkIfHotelIsFull(checkInDate, checkOutDate);
-        if (hotelisfull) {
+        boolean hotelIsFull = new RoomDB().checkIfHotelIsFull(checkInDate, checkOutDate);
+        if (hotelIsFull) {
             System.out.println(
                     "It seems that all of the hotel rooms are full during this timing! Select from the options below: ");
             int choice = FrontendUtils.getUserChoice(new String[] {
@@ -198,26 +200,26 @@ public class ReservationControl implements Controller<Reservation> {
 
         reservedRoom = new RoomControl().manageCreateEntry(checkInDate, checkOutDate);
 
-        reservationStatus = ReservationStatuses.RESERVED;
+        reservationStatus = ReservationStatuses.CONFIRMED;
 
         double lowerBound = 1e5, upperBound = 1e6;
         Integer reservationID = (int) Math.floor(Math.random() * (upperBound - lowerBound + 1) + lowerBound);
 
         Reservation newReservation = new Reservation(reservationID, numberOfAdults, numberOfChildren, guests,
-                reservedRoom, creditCardUsed, checkInDate, checkOutDate, reservationStatus);
+                reservedRoom, paymentType, creditCardUsed, checkInDate, checkOutDate, reservationStatus);
+
+        if (!FrontendUtils.<Reservation>userDoubleConfirmDetails(newReservation))
+            newReservation = manageCreateEntry();
 
         return newReservation;
     }
 
     private Reservation manageUpdateEntry() {
 
-        int day, monthIn, monthOut, year;
-        Date checkInDate, checkOutDate;
-
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = FrontendUtils.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
-                "Error. please enter a 6 digit number.",
+                "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
                 "Integer");
 
@@ -227,79 +229,33 @@ public class ReservationControl implements Controller<Reservation> {
             return null;
         }
 
-        System.out.println("Please enter the new details: ");
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the year (For Check-In): ",
-                "Error. Please enter a valid year!",
-                i -> MiscUtils.isValidYear(i),
-                "Integer");
+        System.out.println("Please update reservation details: ");
+        int choice = FrontendUtils.getUserChoice(new String[] {
+                "Reservation in Waitlist.",
+                "Reservation Confirmed.",
+                "Reservation Checked-in.",
+                "Reservation Expired"
+        });
 
-        monthIn = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the month (For Check-In): ",
-                "Error. Please enter a valid month!",
-                i -> MiscUtils.isValidMonth(i),
-                "Integer");
+        switch (choice) {
+            case 1:
+                toUpdate.setReservationStatus(ReservationStatuses.IN_WAITLIST);
+                break;
 
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the day (For Check-In): ",
-                "Error. Please enter a valid day!",
-                i -> MiscUtils.isValidDay(i, monthIn),
-                "Integer");
+            case 2:
+                toUpdate.setReservationStatus(ReservationStatuses.CONFIRMED);
+                break;
 
-        checkInDate = Date.valueOf(MiscUtils.dateConvertor(year, monthIn, day));
+            case 3:
+                toUpdate.setReservationStatus(ReservationStatuses.CHECKED_IN);
+                break;
 
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the year (For Check-Out): ",
-                "Error. Please enter a valid year!",
-                i -> MiscUtils.isValidYear(i),
-                "Integer");
-
-        monthOut = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the month (For Check-Out): ",
-                "Error. Please enter a valid month!",
-                i -> MiscUtils.isValidMonth(i),
-                "Integer");
-
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
-                "Please enter the day (For Check-Out): ",
-                "Error. Please enter a valid day!",
-                i -> MiscUtils.isValidDay(i, monthOut),
-                "Integer");
-
-        checkOutDate = Date.valueOf(MiscUtils.dateConvertor(year, monthOut, day));
-
-        if (!new ReservationDB().deleteEntry(toUpdate))
-            return null;
-
-        boolean hotelisfull = new RoomDB().checkIfHotelIsFull(checkInDate, checkOutDate);
-        if (hotelisfull) {
-            System.out.println(
-                    "It seems that all of the hotel rooms are full during this timing! Select from the options below: ");
-            int choice = FrontendUtils.getUserChoice(new String[] {
-                    "Choose new date",
-                    "Go back to Main Menu"
-            });
-
-            if (choice == 1) {
-                new ReservationDB().createEntry(toUpdate);
-                return manageUpdateEntry();
-            } else
-                return null;
+            case 4:
+                toUpdate.setReservationStatus(ReservationStatuses.EXPIRED);
+                break;
         }
 
-        Room newlyReservedRoom = new RoomControl().manageCreateEntry(checkInDate, checkOutDate);
-
-        double lowerBound = 1e5, upperBound = 1e6;
-        Integer reservationID = (int) Math.floor(Math.random() * (upperBound - lowerBound + 1) + lowerBound);
-
-        Reservation newReservation = new Reservation(reservationID, toUpdate.getNumberOfAdults(),
-                toUpdate.getNumberOfChildren(),
-                toUpdate.getGuests(),
-                newlyReservedRoom, toUpdate.getCreditCardUsed(), checkInDate, checkOutDate,
-                ReservationStatuses.RESERVED);
-
-        new ReservationDB().createEntry(newReservation);
-        return newReservation;
+        return toUpdate;
     }
 
 }
