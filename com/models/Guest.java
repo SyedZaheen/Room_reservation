@@ -1,6 +1,9 @@
 package com.models;
 
+import java.util.Random;
+
 import com.enums.IDType;
+import com.enums.PaymentType;
 
 public class Guest implements Model<Guest> {
 
@@ -8,7 +11,9 @@ public class Guest implements Model<Guest> {
     private Integer contact;
     private IDType idType;
     private Boolean isPayingGuest;
+    private PaymentType paymentType;
     private CreditCard creditCard;
+    private final int guestID = new Random().nextInt(1,1000);
 
     public Guest(
             String name,
@@ -20,6 +25,7 @@ public class Guest implements Model<Guest> {
             IDType idType,
             String identity,
             boolean isPayingGuest,
+            PaymentType paymentType,
             CreditCard creditCard)
 
     {
@@ -32,44 +38,67 @@ public class Guest implements Model<Guest> {
         this.contact = contact;
         this.idType = idType;
         this.isPayingGuest = isPayingGuest;
-        this.creditCard = isPayingGuest ? creditCard : null;
+        this.paymentType = isPayingGuest ? paymentType : null;
+        this.creditCard = paymentType == PaymentType.CREDITCARD ? creditCard : null;
     }
 
     @Override
-    public String toString()
-    {
-        String [] keys = new String[] {
-            "Name",
-            "Address",
-            "Country",
-            "Gender",
-            "Nationality",
-            "Contact Number",
-            "ID Type",
-            "ID Number",
-            "Is Paying"
+    public String toString() {
+        String[] keys = new String[] {
+                "Name",
+                "Address",
+                "Country",
+                "Gender",
+                "Nationality",
+                "Contact Number",
+                "ID Type",
+                "ID Number",
+                "Is Paying"
         };
-        String [] values = new String[] {
-            name,
-            address,
-            country,
-            gender,
-            nationality,
-            contact.toString(),
-            idType.inString,
-            identity,
-            isPayingGuest.toString(),
+
+        String[] values = new String[] {
+                name,
+                address,
+                country,
+                gender,
+                nationality,
+                contact.toString(),
+                idType.inString,
+                identity,
+                isPayingGuest.toString(),
         };
+
         String finalString = "";
         for (int i = 0; i < keys.length; i++) {
             finalString = finalString.concat(
-                keys[i] + " : " + values[i] + "\n"
-            );
+                    keys[i] + " : " + values[i] + "\n");
         }
 
-        if (isPayingGuest) finalString = finalString.concat(creditCard.toString());
+        if (isPayingGuest) {
+            if (paymentType == PaymentType.CREDITCARD)
+                finalString = finalString.concat("Payment Type: \n" + creditCard.toString());
+
+            else if (paymentType == PaymentType.CASH)
+                finalString = finalString.concat("Payment Type: Cash");
+        } else
+            paymentType = PaymentType.NA;
 
         return finalString;
     }
 
+    public int getID() {
+        return this.guestID;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
 }

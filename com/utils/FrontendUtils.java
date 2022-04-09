@@ -67,14 +67,21 @@ public abstract class FrontendUtils {
                             choice = sc.nextInt();
                             valid = validator.execute((T) choice);
                             break;
+
                         case "String":
                             choice = sc.nextLine();
                             valid = validator.execute((T) choice);
                             break;
+
                         case "Long":
                             choice = sc.nextLong();
                             valid = validator.execute((T) choice);
                             break;
+
+                        case "Double":
+                            choice = sc.nextDouble();
+                            valid = validator.execute((T) choice);
+
                         default:
                             break;
                     }

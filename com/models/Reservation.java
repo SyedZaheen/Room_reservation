@@ -1,45 +1,145 @@
 package com.models;
-import java.util.Scanner;
 
-import com.enums.RoomStatuses;
+import com.enums.ReservationStatuses;
+import com.enums.PaymentType;
 
-public class Reservation {
-    private Guest guest;
-    private Room room;
-    private long[] date; //import date type
-    private int[] guestArray; //first element = number of adults, second element = number of children
-    private ReservationStatus reservationStatus;
-    private RoomService roomService;
-    public enum ReservationStatus {
-        CONFIRMED, WAIT_LIST, CHECKED_IN, EXPIRED
-    }
+import java.sql.Date;
+import java.util.ArrayList;
 
-    public Reservation(Room room, Guest guest, long checkIn, long checkOut){
-        this.date[0] = checkIn;
-        this.date[1] = checkOut;
-        this.guest = guest;
-        this.room = room;
-        room.setStatus(RoomStatuses.RESERVED);
-    }
-    
+public class Reservation implements Model<Reservation> {
 
-    public String printReceipt(){
-        return String.format("Guest details: %s, %nRoom details: %s, %nDate of reservation: %d - %d, %nNumber of adults: %d, %nNumber of children: %d", 
-        this.guest, this.room, this.date[0], this.date[1], this.guestArray[0], this.guestArray[1]);
-    }
+    private Integer reservationID, numberOfAdults, numberOfChildren;
+    private ArrayList <Guest> guests;
+    private Room reservedRoom;
+    private PaymentType paymentType;
+    private CreditCard creditCardUsed;
+    private Date checkInDate, checkOutDate;
+    private ReservationStatuses reservationStatus;
+    private ArrayList<RoomService> roomServices;
 
-    public void setReservationStatus(ReservationStatus reservationStatus) {
+    public Reservation(
+            Integer reservationID,
+            Integer numberOfAdults,
+            Integer numberOfChildren,
+            ArrayList <Guest> guests,
+            Room reservedRoom,
+            PaymentType paymentType,
+            CreditCard creditCardUsed,
+            Date checkInDate,
+            Date checkOutDate,
+            ReservationStatuses reservationStatus)
+
+    {
+        this.reservationID = reservationID;
+        this.numberOfAdults = numberOfAdults;
+        this.numberOfChildren = numberOfChildren;
+        this.guests = guests;
+        this.reservedRoom = reservedRoom;
+        this.paymentType = paymentType;
+        this.creditCardUsed = creditCardUsed;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
         this.reservationStatus = reservationStatus;
-        if(this.reservationStatus == Reservation.ReservationStatus.CHECKED_IN) 
-            room.setStatus(RoomStatuses.OCCUPIED);
-        else if(this.reservationStatus == Reservation.ReservationStatus.EXPIRED) 
-            room.setStatus(RoomStatuses.VACANT);
-    }
-    
-    public double totalRoomFare(){
-        return 0.1;
-
+        this.roomServices = new ArrayList<>();
     }
 
-    
+    @Override
+    public String toString() {
+
+        String allGuests = "";
+        for (int i = 0; i < (numberOfAdults + numberOfChildren); i++) {
+            allGuests = allGuests.concat(
+                    "Guest " + (i + 1) + " : \n" + guests.get(i).toString() + "\n");
+        }
+
+        String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString() : "No Credit Card";
+
+        String[] keys = new String[] {
+                "Reservation ID",
+                "Paying Guest Name",
+                "Number of Adults",
+                "Number of Children",
+                "Reserved Room",
+                "Guests",
+                "Payment Type",
+                "Credit Card Used",
+                "Check-in Date",
+                "Check-out Date",
+                "Reservation Status"
+        };
+
+        String[] values = new String[] {
+                reservationID.toString(),
+                guests.get(guests.size() - 1).getName(),
+                numberOfAdults.toString(),
+                numberOfChildren.toString(),
+                reservedRoom.toString(),
+                allGuests,
+                paymentType.inString,
+                creditCardUsedString,
+                checkInDate.toString(),
+                checkOutDate.toString(),
+                reservationStatus.inString,
+        };
+
+        String finalString = "";
+        for (int j = 0; j < keys.length; j++) {
+            finalString = finalString.concat(
+                    keys[j] + " : " + values[j] + "\n");
+        }
+
+        return finalString;
+    }
+
+    public Guest getPayingGuest() {
+        return guests.get(guests.size() - 1);
+    }
+
+    public Date getCheckInDate() {
+        return this.checkInDate;
+    }
+
+    public void addRoomServices(RoomService r) {
+        roomServices.add(r);
+    }
+
+    public Integer getNumberOfAdults() {
+        return numberOfAdults;
+    }
+
+    public Integer getNumberOfChildren() {
+        return numberOfChildren;
+    }
+
+    public CreditCard getCreditCardUsed() {
+        return creditCardUsed;
+    }
+
+    public ReservationStatuses getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public Room getReservedRoom() {
+        return reservedRoom;
+    }
+
+    public ArrayList<RoomService> getRoomServices() {
+        return roomServices;
+    }
+
+    public Date getCheckOutDate() {
+        return this.checkOutDate;
+    }
+
+    public int getReservationID() {
+        return 0;
+    }
+
+    public ArrayList<Guest> getGuests() {
+        return guests;
+    }
+
+    public void setReservationStatus(ReservationStatuses reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
 }

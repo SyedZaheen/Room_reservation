@@ -25,6 +25,15 @@ public class GuestDB implements DB<Guest> {
     }
 
     public boolean updateEntry(Guest guest) {
+        listOfGuests = findAllEntries();
+        for (Guest g : listOfGuests) {
+            if(guest.getID() == g.getID()) {
+                g = guest;
+                SerializeDB.<Guest>writeSerializedObject(DB.FILE_PATH+GUEST_DB_FILE_NAME, listOfGuests);
+                return true;
+            }
+        }
         return false;
     }
+
 }
