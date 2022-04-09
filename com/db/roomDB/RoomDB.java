@@ -1,11 +1,13 @@
 package com.db.roomDB;
 
 import java.util.List;
+import java.sql.Date;
 
 import com.db.DB;
 import com.db.SerializeDB;
+import com.enums.RoomStatuses;
+import com.enums.RoomTypes;
 import com.models.Room;
-import com.utils.AnonymousFunction;
 
 public class RoomDB implements DB<Room> {
 
@@ -14,7 +16,6 @@ public class RoomDB implements DB<Room> {
     // todo: Create entry doesnt make sense here
     @Override
     public boolean createEntry(Room room) {
-
         return false;
     }
 
@@ -24,18 +25,24 @@ public class RoomDB implements DB<Room> {
                 DB.FILE_PATH + ROOM_DB_FILE_NAME);
     }
 
+    public Room findVacantRoomByType(RoomTypes type) {
+        List<Room> allEntries = findAllEntries();
+        for (Room room : allEntries) 
+            if (room.getStatus() == RoomStatuses.VACANT && room.getRoomType() == type) 
+                return room;
 
-    // public Room findRoomByVacancy(
-            
-    //         AnonymousFunction<Boolean, Room> validator
-            
-    //         ) {
-    //     List<Room> allEntries = findAllEntries();
-    //     for (Room room : allEntries) {
-    //         if (validator.execute(room))
-    //             return room;
-    //     }
-    //     return null;
-    // }
+        return null;
+    }
+
+    public boolean checkIfHotelIsFull(Date checkInDate, Date checkOutDate) {
+        return false;
+    }
+
+    public Room findVacantRoom(RoomTypes rType, Date cID, Date cOD) {
+        return null;
+    }
+
+    public void updateRoomStatus(Room vacantRoom, RoomStatuses occupied) {
+    }
 
 }

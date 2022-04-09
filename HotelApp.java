@@ -1,6 +1,7 @@
 import com.controller.GuestControl;
 import com.controller.RoomServiceController;
 import com.controller.ReservationControl;
+import com.controller.PaymentControl;
 import com.utils.FrontendUtils;
 
 
@@ -20,6 +21,10 @@ public class HotelApp {
                 break;
             case 3:
                 new RoomServiceController().manageCreateEntry();
+
+            case 4:
+                PaymentControl.process();
+                break;
 
             default:
                 break;
