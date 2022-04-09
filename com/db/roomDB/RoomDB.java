@@ -1,9 +1,12 @@
 package com.db.roomDB;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.db.DB;
 import com.db.SerializeDB;
+import com.enums.RoomStatuses;
+import com.enums.RoomTypes;
 import com.models.Room;
 import com.utils.AnonymousFunction;
 
@@ -24,18 +27,23 @@ public class RoomDB implements DB<Room> {
                 DB.FILE_PATH + ROOM_DB_FILE_NAME);
     }
 
+    public Room findVacantRoom(RoomTypes rType, Date cID, Date cOD) {
+        return null;
+    }
 
-    // public Room findRoomByVacancy(
-            
-    //         AnonymousFunction<Boolean, Room> validator
-            
-    //         ) {
-    //     List<Room> allEntries = findAllEntries();
-    //     for (Room room : allEntries) {
-    //         if (validator.execute(room))
-    //             return room;
-    //     }
-    //     return null;
-    // }
+    public Room findVacantRoomByType(RoomTypes type) {
+        List<Room> allEntries = findAllEntries();
+        for (Room room : allEntries) 
+            if (room.getStatus() == RoomStatuses.VACANT && room.getRoomType() == type) 
+                return room;
+
+        return null;
+    }
+
+    public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst)
+    {
+        return false;
+    }
+
 
 }
