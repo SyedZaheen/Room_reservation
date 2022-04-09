@@ -9,12 +9,13 @@ import com.models.Menu;
 import com.models.MenuItem;
 import com.models.RoomService;
 import com.utils.FrontendUtils;
-import com.db.RoomServiceDB;
+import com.utils.MiscUtils;
+import com.db.roomserviceDB.RoomServiceDB;
 import com.enums.OrderStatus;
 
 
 
-public class RoomServiceController implements Controller{
+public class RoomServiceController implements Controller<RoomService>{
 
     private Menu menu = new Menu();
 
@@ -49,11 +50,35 @@ public class RoomServiceController implements Controller{
                     RoomServiceController.printOrder();
                     break;
                 case 3:
-                    Scanner sc = new Scanner(System.in);
-                    RoomServiceController.printOrder();
-                    System.out.println("Enter which order you wish to delete: ");
+                //this is some shitty ass code jesus christ
 
+                    int count = 1;     
+                    int orderID = FrontendUtils.<Integer>getEachFieldFromUser(
+                                "Please enter your OrderID: ",
+                                "Error. please enter a number 1 to 1000 characters long",
+                                i -> MiscUtils.isValidInteger((int) i),
+                                "Integer");
+                    RoomService rs = getRoomServiceFromDB(orderID);
 
+                    int itemNumber = FrontendUtils.<Integer>getEachFieldFromUser(
+                                "Please enter the Item number you wish to remove: ",
+                                "Error. Please return a valid item number",
+                                i -> MiscUtils.isValidIntegerFromStartToEnd(1, rs.getOrders().size(), (int) i),
+                                "Integer");
+                  
+                    if (rs != null) {
+                        for (MenuItem menuitem : rs.getOrders().keySet()) {
+                            if(count == itemNumber) {
+                                rs.removeItemFromOrder(menuitem);
+                            }
+                            count++;
+                        }
+                    }
+                    
+                    break;
+
+                    //update roomservice item in database
+            
                 default:
                         break;
         }
@@ -73,8 +98,10 @@ public class RoomServiceController implements Controller{
         do {
             orderID = new Random().nextInt(1,1000);
             for (RoomService rs : new RoomServiceDB().findAllEntries()) {
-                if(orderID == rs.getOrderID()) {
-                    break;
+                if(rs != null) {
+                    if(orderID == rs.getOrderID()) {
+                        break;
+                    }
                 }
             }
             success = true;
@@ -117,23 +144,31 @@ public class RoomServiceController implements Controller{
     }
 
     public static void printOrder() {
-                    int count = 1;
-                    int orderID;
-                    Scanner sc = new Scanner(System.in);
-                    System.out.println("Enter OrderID: ");
-                    orderID = sc.nextInt();
-                    System.out.println("Orders: ");
-                    // can abstract this out maybe
-                    for (RoomService eachRoomService : new RoomServiceDB().findAllEntries() ) {
-                            if (orderID == eachRoomService.getOrderID()) { 
-                                for (MenuItem menuitem : eachRoomService.getOrders().keySet()) {
-                                    System.out.println(count + "." + menuitem); //print order with number
-                                    count++;
-                                }
-                            }
-                            break;
-                            
+        int count = 1;
+        int orderID;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter OrderID: ");
+        orderID = sc.nextInt();
+        System.out.println("Orders: ");
+        // can abstract this out maybe
+        for (RoomService eachRoomService : new RoomServiceDB().findAllEntries() ) {
+                if (orderID == eachRoomService.getOrderID()) { 
+                    for (MenuItem menuitem : eachRoomService.getOrders().keySet()) {
+                        System.out.println(count + "." + menuitem); //print order with number
+                        count++;
                     }
+                }
+                break;
+                
+        }
     }
 
+    public static RoomService getRoomServiceFromDB(int OrderID) {
+        for (RoomService eachRoomService : new RoomServiceDB().findAllEntries() ) {
+            if (OrderID == eachRoomService.getOrderID()) {
+                return eachRoomService;
+            }
+        }
+        return null;
+    }
 }

@@ -17,6 +17,10 @@ public abstract class MiscUtils {
         return i > 0;
     }
 
+    public static boolean isValidIntegerFromStartToEnd(int start, int end, int i) {
+        return i > start && i < end;
+    }
+
     public static boolean isValidYear(int i) {
         return i >= 1900 && i <= 2022;
     }

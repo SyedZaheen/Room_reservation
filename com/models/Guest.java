@@ -1,5 +1,7 @@
 package com.models;
 
+import java.util.Random;
+
 import com.enums.IDType;
 
 public class Guest implements Model<Guest> {
@@ -9,6 +11,7 @@ public class Guest implements Model<Guest> {
     private IDType idType;
     private Boolean isPayingGuest;
     private CreditCard creditCard;
+    private final int guestID = new Random().nextInt(1,1000);
 
     public Guest(
             String name,
@@ -33,6 +36,7 @@ public class Guest implements Model<Guest> {
         this.idType = idType;
         this.isPayingGuest = isPayingGuest;
         this.creditCard = isPayingGuest ? creditCard : null;
+
     }
 
     @Override
@@ -70,6 +74,10 @@ public class Guest implements Model<Guest> {
         if (isPayingGuest) finalString = finalString.concat(creditCard.toString());
 
         return finalString;
+    }
+
+    public int getID() {
+        return this.guestID;
     }
 
 }
