@@ -1,5 +1,4 @@
 package com.db;
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,7 +27,7 @@ public class SerializeDB {
 			ex.printStackTrace();
 		} catch (ClassCastException ex) {
 			ex.printStackTrace();
-		}
+		} 
 		// print out the size
 		// System.out.println(" Details Size: " + objectFromFile.size());
 		// System.out.println();

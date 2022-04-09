@@ -7,9 +7,9 @@ import com.models.Guest;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-public class GuestControl implements Controller {
+public class GuestControl implements Controller<Guest> {
 
-        public static void process() {
+        public void process() {
                 Guest newguest = null;
                 boolean success = false;
 
@@ -23,7 +23,7 @@ public class GuestControl implements Controller {
                 // For each, we call the corresponding function.
                 switch (choice) {
                         case 1:
-                                newguest = new GuestControl().manageCreateEntry();
+                                newguest = manageCreateEntry();
                                 // Let's send the guest to the database.
                                 // todo: This design is pretty shit but idk how to fix it.
                                 success = new GuestDB().createEntry(newguest);
@@ -37,12 +37,12 @@ public class GuestControl implements Controller {
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
                                 break;
                         case 2:
-                                newguest = manageUpdateGuest();
+                                newguest = manageUpdateEntry();
                                 success = new GuestDB().updateEntry(newguest);
 
                                 if (success) {
                                         System.out.println(
-                                                        "A new guest was sucessfully created! These are the current guest data: ");
+                                                        "The guest details were successfully updated! These are the current guest data: ");
                                         System.out.println(newguest);
                                 } else
                                         System.out.println(
@@ -50,7 +50,7 @@ public class GuestControl implements Controller {
                                 break;
                         case 3:
                                 System.out.println("The following are all the available guest data so far: ");
-                                for (Guest eachGuest : new GuestDB().findAllEntries() ) {
+                                for (Guest eachGuest : new GuestDB().findAllEntries()) {
                                         System.out.println("");
                                         System.out.println(eachGuest);
                                 }
@@ -60,6 +60,7 @@ public class GuestControl implements Controller {
                 }
         }
 
+        @Override
         public Guest manageCreateEntry() {
                 // Initialise the guest data that we want
                 String name, address, country, gender, nationality, identity;
@@ -88,7 +89,7 @@ public class GuestControl implements Controller {
                                 "String");
 
                 gender = FrontendUtils.<String>getEachFieldFromUser(
-                                "Please enter the gender (may not be male or female): ",
+                                "Please e8nter the gender (may not be male or female): ",
                                 "Error. Please enter a string less than 10 characters long",
                                 i -> MiscUtils.stringWithinLength(i, 1, 10),
                                 "String");
@@ -145,7 +146,7 @@ public class GuestControl implements Controller {
                 return newGuest;
         }
 
-        private static Guest manageUpdateGuest() {
+        public Guest manageUpdateEntry() {
                 return null;
         }
 }

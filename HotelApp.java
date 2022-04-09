@@ -1,6 +1,6 @@
-
 import com.controller.GuestControl;
 import com.controller.RoomServiceController;
+import com.controller.ReservationControl;
 import com.utils.FrontendUtils;
 
 
@@ -12,16 +12,21 @@ public class HotelApp {
         // For each choice of the menu, execute what we want to do.
         switch (choice) {
             case 1:
-                GuestControl.process();
+                new GuestControl().process();
                 break;
+
             case 2:
+                new ReservationControl().process();
+                break;
+            case 3:
                 new RoomServiceController().manageCreateEntry();
+
             default:
                 break;
         }
 
     }
-    
+
     public static int showMainMenuAndReturnChoice() {
         return FrontendUtils.getUserChoice(new String[]{
             "Manage Guest",
@@ -30,7 +35,6 @@ public class HotelApp {
             "Manage Payment",
             "Manage Rooms"
         });
-
     }
 
     
