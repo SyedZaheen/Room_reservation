@@ -1,16 +1,18 @@
 package com.db.reservationDB;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.db.DB;
 import com.db.SerializeDB;
+import com.db.roomDB.RoomDB;
 import com.models.Reservation;
+import com.models.Room;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.Date;
 
-public class ReservationDB implements DB<Reservation> {
+public class ReservationDB implements DB <Reservation> {
 
-    private final String RESERVATION_DB_FILE_NAME = "listOfReservations";
+    private final String RESERVATION_DB_FILE_NAME = "roomDB/all_rooms_data.ser";
     private List<Reservation> listOfReservations = new ArrayList<>();
 
     @Override
@@ -26,7 +28,8 @@ public class ReservationDB implements DB<Reservation> {
 
     @Override
     public List<Reservation> findAllEntries() {
-        return SerializeDB.<Reservation>readSerializedObject(RESERVATION_DB_FILE_NAME);
+        return SerializeDB.readSerializedObject(
+            DB.FILE_PATH + RESERVATION_DB_FILE_NAME);
     }
 
     public boolean updateEntry(Reservation resv) {
@@ -43,11 +46,11 @@ public class ReservationDB implements DB<Reservation> {
             if(checkInDate == start)
                 return true;
 
-            startDay = (start.toString().charAt(8) - '0') + 
-                       (start.toString().charAt(9));
+            startDay = ((start.toString().charAt(8) - '0') * 10) + 
+                       (start.toString().charAt(9) - '0');
 
-            endDay = (end.toString().charAt(8) - '0') + 
-                     (end.toString().charAt(9));
+            endDay = ((end.toString().charAt(8) - '0') * 10) + 
+                     (end.toString().charAt(9) -  '0');
 
             for(int i = startDay + 1; i < endDay; i++) {
                 int secondDigit = i % 10;
@@ -69,5 +72,35 @@ public class ReservationDB implements DB<Reservation> {
         }
 
         return false;
+    }
+
+    public boolean deleteEntry(Reservation r)
+    {
+        // TODO
+        return false;
+    }
+
+    // TODO: Unimplmented function
+    public boolean searchByRoom(Room requestedRoom) {
+        if(new RoomDB().findVacantRoomByType(requestedRoom.getRoomType()) == null)
+            return true;
+        
+        return false;
+    }
+
+    public boolean isOccupied(Room requestedRoom, Date checkInDate) {
+        if(searchByRoom(requestedRoom) && searchByDate(checkInDate))
+            return true;
+
+        return false;
+    }
+
+    public Reservation findReservationByID(Integer reservationID) {
+        for(Reservation eachReservation : findAllEntries()) {
+            if(reservationID == eachReservation.getReservationID())
+                return eachReservation;
+        }
+
+        return null;
     }
 }

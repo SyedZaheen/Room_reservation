@@ -146,6 +146,83 @@ public class GuestControl implements Controller<Guest> {
                 return newGuest;
         }
 
+        public Guest manageCreateEntry(boolean isPaying) {
+                // Initialise the guest data that we want
+                String name, address, country, gender, nationality, identity;
+                int contact;
+                IDType idType;
+                CreditCard creditCard = null;
+
+                // First we ask the user to give us the simple data that we want
+                name = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please enter the full name: ",
+                                "Error. please enter a string between 3 and 50 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 3, 50),
+                                "String");
+
+                address = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please enter the address: ",
+                                "Error. Please enter a string between 5 and 50 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 5, 50),
+                                "String");
+
+                country = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please enter the country: ",
+                                "Error. please enter a string less than 20 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 2, 20),
+                                "String");
+
+                gender = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please e8nter the gender (may not be male or female): ",
+                                "Error. Please enter a string less than 10 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 1, 10),
+                                "String");
+
+                nationality = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please enter the nationality: ",
+                                "Error. please enter a string less than 20 characters long",
+                                i -> MiscUtils.stringWithinLength(i, 1, 20),
+                                "String");
+
+                contact = FrontendUtils.<Integer>getEachFieldFromUser(
+                                "Please enter a valid Singapore number (without country code, +65): ",
+                                "Error. Please enter a valid Singapore number (8 digits starting with 6, 8 or 9)",
+                                i -> MiscUtils.isValidSingaporeNumber(i),
+                                "Integer");
+
+                // Now, we have to handle credit cards and IDs
+
+                // Lets handle ID first
+                // Note that guests have a "composition" relationship with IDs.
+                int idChoice = FrontendUtils.getUserChoice(new String[] {
+                                "Enter 1 if the guest's ID for registration is a passport",
+                                "Enter 2 if the guest's ID for registration is a driving license"
+                });
+                idType = idChoice == 1 ? IDType.PASSPORT : IDType.DRIVING_LICENSE;
+
+                // todo: Find discuss the validation of identity number
+                identity = FrontendUtils.<String>getEachFieldFromUser(
+                                "Please enter the last 4 characters of the ID number: ",
+                                "Error. Please enter 4 characters only",
+                                i -> MiscUtils.stringWithinLength(i, 4, 4),
+                                "String");
+
+                // Now, we settle the credit card info.
+
+                // Next, if the guest is paying, then we get their credit card info
+                if (isPaying) {
+                        creditCard = new CreditCardControl().manageCreateEntry();
+                } else
+                        creditCard = null;
+
+                Guest newGuest = new Guest(name, address, country, gender, nationality, contact, idType, identity,
+                                isPaying, creditCard);
+
+                if (!FrontendUtils.<Guest>userDoubleConfirmDetails(newGuest))
+                        newGuest = manageCreateEntry();
+                return newGuest;
+        }
+
         public Guest manageUpdateEntry() {
                 return null;
         }

@@ -36,40 +36,46 @@ public class Guest implements Model<Guest> {
     }
 
     @Override
-    public String toString()
-    {
-        String [] keys = new String[] {
-            "Name",
-            "Address",
-            "Country",
-            "Gender",
-            "Nationality",
-            "Contact Number",
-            "ID Type",
-            "ID Number",
-            "Is Paying"
+    public String toString() {
+        String[] keys = new String[] {
+                "Name",
+                "Address",
+                "Country",
+                "Gender",
+                "Nationality",
+                "Contact Number",
+                "ID Type",
+                "ID Number",
+                "Is Paying"
         };
-        String [] values = new String[] {
-            name,
-            address,
-            country,
-            gender,
-            nationality,
-            contact.toString(),
-            idType.inString,
-            identity,
-            isPayingGuest.toString(),
+        String[] values = new String[] {
+                name,
+                address,
+                country,
+                gender,
+                nationality,
+                contact.toString(),
+                idType.inString,
+                identity,
+                isPayingGuest.toString(),
         };
         String finalString = "";
         for (int i = 0; i < keys.length; i++) {
             finalString = finalString.concat(
-                keys[i] + " : " + values[i] + "\n"
-            );
+                    keys[i] + " : " + values[i] + "\n");
         }
 
-        if (isPayingGuest) finalString = finalString.concat(creditCard.toString());
+        if (isPayingGuest)
+            finalString = finalString.concat(creditCard.toString());
 
         return finalString;
     }
 
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

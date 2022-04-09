@@ -7,8 +7,9 @@ public class Room implements Model<Room> {
 
     private RoomStatuses status;
     private RoomTypes roomType;
+    private Integer roomNumber;
 
-    Room(RoomStatuses status, RoomTypes roomType) {
+    Room(RoomStatuses status, RoomTypes roomType, Integer roomNumber) {
 
         this.status = status;
         this.roomType = roomType;
@@ -24,5 +25,9 @@ public class Room implements Model<Room> {
 
     public RoomStatuses getStatus() {
         return status;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
     }
 }
