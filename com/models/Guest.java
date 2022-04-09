@@ -69,7 +69,6 @@ public class Guest implements Model<Guest> {
 
         if (isPayingGuest) finalString = finalString.concat(creditCard.toString());
 
-        // TODO define method
         return finalString;
     }
 

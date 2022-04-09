@@ -5,6 +5,7 @@ import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
 public class CreditCardControl implements Controller<CreditCard> {
+        
         @Override
         public CreditCard manageCreateEntry() {
                 String name;

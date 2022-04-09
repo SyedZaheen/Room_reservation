@@ -7,10 +7,10 @@ import com.models.Guest;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-public class GuestControl implements Controller <Guest> {
+public class GuestControl implements Controller<Guest> {
 
         public void process() {
-                Guest guest = null;
+                Guest newguest = null;
                 boolean success = false;
 
                 // First, we need to see if we need to create, read, update or delete guest.
@@ -23,27 +23,27 @@ public class GuestControl implements Controller <Guest> {
                 // For each, we call the corresponding function.
                 switch (choice) {
                         case 1:
-                                guest = manageCreateEntry();
+                                newguest = manageCreateEntry();
                                 // Let's send the guest to the database.
                                 // todo: This design is pretty shit but idk how to fix it.
-                                success = new GuestDB().createEntry(guest);
+                                success = new GuestDB().createEntry(newguest);
 
                                 if (success) {
                                         System.out.println(
                                                         "A new guest was sucessfully created! These are the saved guest data: ");
-                                        System.out.println(guest);
+                                        System.out.println(newguest);
                                 } else
                                         System.out.println(
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
                                 break;
                         case 2:
-                                guest = manageUpdateEntry();
-                                success = new GuestDB().updateEntry(guest);
+                                newguest = manageUpdateEntry();
+                                success = new GuestDB().updateEntry(newguest);
 
                                 if (success) {
                                         System.out.println(
-                                                        "A new guest was sucessfully created! These are the current guest data: ");
-                                        System.out.println(guest);
+                                                        "The guest details were successfully updated! These are the current guest data: ");
+                                        System.out.println(newguest);
                                 } else
                                         System.out.println(
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
@@ -89,7 +89,7 @@ public class GuestControl implements Controller <Guest> {
                                 "String");
 
                 gender = FrontendUtils.<String>getEachFieldFromUser(
-                                "Please enter the gender (may not be male or female): ",
+                                "Please e8nter the gender (may not be male or female): ",
                                 "Error. Please enter a string less than 10 characters long",
                                 i -> MiscUtils.stringWithinLength(i, 1, 10),
                                 "String");
