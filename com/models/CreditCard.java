@@ -1,7 +1,5 @@
 package com.models;
 
-import java.util.HashMap;
-
 public class CreditCard implements Model<CreditCard> {
   private String name;
   private Long creditCardNum;

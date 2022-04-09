@@ -10,4 +10,49 @@ public abstract class MiscUtils {
     {
         return str.length() >= min && str.length() <= max;
     }
+
+    public static boolean isValidInteger(int i) {
+        return i > 0;
+    }
+
+    public static boolean isValidYear(int i) {
+        return i >= 1900 && i <= 2022;
+    }
+
+    public static boolean isValidMonth(int i) {
+        return i >= 1 && i <= 12;
+    }
+
+    public static boolean isValidDay(int i, Integer month) {
+
+        boolean value;
+        switch(month) {
+            case 2:
+                value = i >= 1 && i <= 29;
+                break;
+
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                value = i >= 1 && i <= 30;
+                break;
+
+            default:
+                value = i >= 1 && i <= 31;
+                break;
+        }
+
+        return value;
+    }
+
+    public static String dateConvertor(Integer year, Integer month, Integer day) {
+        String date = "";
+        
+        date = date.concat(
+            year.toString() + "-" + month.toString() + "-" + day.toString()
+        );
+
+        return date;
+    }
 }

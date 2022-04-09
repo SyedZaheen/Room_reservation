@@ -1,46 +1,90 @@
 package com.models;
-import java.util.Scanner;
 
-import com.enums.RoomStatuses;
-import com.models.room.Room;
+import com.enums.ReservationStatuses;
 
-public class Reservation {
-    private Guest guest;
-    private Room room;
-    private long[] date; //import date type
-    private int[] guestArray; //first element = number of adults, second element = number of children
-    private ReservationStatus reservationStatus;
-    private RoomService roomService;
-    public enum ReservationStatus {
-        CONFIRMED, WAIT_LIST, CHECKED_IN, EXPIRED
-    }
+import java.sql.Date;
 
-    public Reservation(Room room, Guest guest, long checkIn, long checkOut){
-        this.date[0] = checkIn;
-        this.date[1] = checkOut;
-        this.guest = guest;
-        this.room = room;
-        room.setStatus(RoomStatuses.RESERVED);
-    }
-    
+public class Reservation implements Model<Reservation> {
 
-    public String printReceipt(){
-        return String.format("Guest details: %s, %nRoom details: %s, %nDate of reservation: %d - %d, %nNumber of adults: %d, %nNumber of children: %d", 
-        this.guest, this.room, this.date[0], this.date[1], this.guestArray[0], this.guestArray[1]);
-    }
+    private Integer reservationID, numberOfAdults, numberOfChildren;
+    private Guest guests[];
+    private Room reservedRoom;
+    private CreditCard creditCardUsed;
+    private Date checkInDate, checkOutDate;
+    private ReservationStatuses reservationStatus;
 
-    public void setReservationStatus(ReservationStatus reservationStatus) {
+    public Reservation(
+            Integer reservationID,
+            Integer numberOfAdults,
+            Integer numberOfChildren,
+            Guest guests[],
+            Room reservedRoom,
+            CreditCard creditCardUsed,
+            Date checkInDate,
+            Date checkOutDate,
+            ReservationStatuses reservationStatus)
+
+    {
+        this.reservationID = reservationID;
+        this.numberOfAdults = numberOfAdults;
+        this.numberOfChildren = numberOfChildren;
+        this.guests = guests;
+        this.reservedRoom = reservedRoom;
+        this.creditCardUsed = creditCardUsed;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
         this.reservationStatus = reservationStatus;
-        if(this.reservationStatus == Reservation.ReservationStatus.CHECKED_IN) 
-            room.setStatus(RoomStatuses.OCCUPIED);
-        else if(this.reservationStatus == Reservation.ReservationStatus.EXPIRED) 
-            room.setStatus(RoomStatuses.VACANT);
-    }
-    
-    public double totalRoomFare(){
-        return 0.1;
-
     }
 
-    
+    @Override
+    public String toString() {
+
+        String allGuests = "";
+        for (int i = 0; i < (numberOfAdults + numberOfChildren); i++) {
+            allGuests = allGuests.concat(
+                    "Guest " + (i + 1) + " : \n" + guests[i].toString() + "\n");
+        }
+
+        String creditCardUsedString = creditCardUsed != null ? creditCardUsed.toString() : "No Credit Card";
+
+        String[] keys = new String[] {
+                "Reservation ID",
+                "Number of Adults",
+                "Number of Children",
+                "Reserved Room",
+                "Guests",
+                "Credit Card Used",
+                "Check-in Date",
+                "Check-out Date",
+                "Reservation Status"
+        };
+
+        String[] values = new String[] {
+                reservationID.toString(),
+                numberOfAdults.toString(),
+                numberOfChildren.toString(),
+                reservedRoom.toString(),
+                allGuests,
+                creditCardUsedString,
+                checkInDate.toString(),
+                checkOutDate.toString(),
+                reservationStatus.inString,
+        };
+
+        String finalString = "";
+        for (int j = 0; j < keys.length; j++) {
+            finalString = finalString.concat(
+                    keys[j] + " : " + values[j] + "\n");
+        }
+
+        return finalString;
+    }
+
+    public Date getCheckInDate() {
+        return this.checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return this.checkOutDate;
+    }
 }

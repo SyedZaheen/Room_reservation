@@ -7,9 +7,9 @@ import com.models.Guest;
 import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
-public abstract class GuestControl {
+public class GuestControl implements Controller <Guest> {
 
-        public static void process() {
+        public void process() {
                 Guest guest = null;
                 boolean success = false;
 
@@ -23,7 +23,7 @@ public abstract class GuestControl {
                 // For each, we call the corresponding function.
                 switch (choice) {
                         case 1:
-                                guest = manageCreateGuest();
+                                guest = manageCreateEntry();
                                 // Let's send the guest to the database.
                                 // todo: This design is pretty shit but idk how to fix it.
                                 success = new GuestDB().createEntry(guest);
@@ -37,7 +37,7 @@ public abstract class GuestControl {
                                                         "Something went wrong trying to save the guest data. Contact the administrators");
                                 break;
                         case 2:
-                                guest = manageUpdateGuest();
+                                guest = manageUpdateEntry();
                                 success = new GuestDB().updateEntry(guest);
 
                                 if (success) {
@@ -50,7 +50,7 @@ public abstract class GuestControl {
                                 break;
                         case 3:
                                 System.out.println("The following are all the available guest data so far: ");
-                                for (Guest eachGuest : new GuestDB().findAllEntries() ) {
+                                for (Guest eachGuest : new GuestDB().findAllEntries()) {
                                         System.out.println("");
                                         System.out.println(eachGuest);
                                 }
@@ -60,7 +60,8 @@ public abstract class GuestControl {
                 }
         }
 
-        private static Guest manageCreateGuest() {
+        @Override
+        public Guest manageCreateEntry() {
                 // Initialise the guest data that we want
                 String name, address, country, gender, nationality, identity;
                 int contact;
@@ -133,7 +134,7 @@ public abstract class GuestControl {
 
                 // Next, if the guest is paying, then we get their credit card info
                 if (isPayingGuest) {
-                        creditCard = CreditCardControl.manageCreateCreditCard();
+                        creditCard = new CreditCardControl().manageCreateEntry();
                 } else
                         creditCard = null;
 
@@ -141,11 +142,11 @@ public abstract class GuestControl {
                                 isPayingGuest, creditCard);
 
                 if (!FrontendUtils.<Guest>userDoubleConfirmDetails(newGuest))
-                        newGuest = manageCreateGuest();
+                        newGuest = manageCreateEntry();
                 return newGuest;
         }
 
-        private static Guest manageUpdateGuest() {
+        public Guest manageUpdateEntry() {
                 return null;
         }
 }
