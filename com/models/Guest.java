@@ -13,7 +13,9 @@ public class Guest implements Model<Guest> {
     private Boolean isPayingGuest;
     private PaymentType paymentType;
     private CreditCard creditCard;
-    private final int guestID = new Random().nextInt(1,1000);
+    private final int guestID = new Random().nextInt(1000000); // Because youre making this final, note that if we want to update 
+                                                                // the guest using GuestDB.updateEntry(), we will need to query the entire
+                                                                // DB for that single guest object we want and edit its attributes
 
     public Guest(
             String name,
