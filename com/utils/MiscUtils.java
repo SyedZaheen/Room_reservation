@@ -18,6 +18,9 @@ public abstract class MiscUtils {
     }
 
     public static boolean isValidIntegerFromStartToEnd(int start, int end, int i) {
+        if (end < start) {
+            return false;
+        }
         return i > start && i < end;
     }
 

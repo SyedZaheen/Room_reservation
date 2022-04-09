@@ -252,4 +252,13 @@ public class GuestControl implements Controller<Guest> {
         public Guest manageUpdateEntry() {
                 return null;
         }
+
+        public static boolean checkDuplicateId(int number) {
+                for (Guest eachGuest : new GuestDB().findAllEntries() ) {
+                    if (number == eachGuest.getID()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
 }

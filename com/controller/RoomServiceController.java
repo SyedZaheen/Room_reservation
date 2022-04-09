@@ -58,11 +58,12 @@ public class RoomServiceController implements Controller<RoomService>{
                                 "Error. please enter a number 1 to 1000 characters long",
                                 i -> MiscUtils.isValidInteger((int) i),
                                 "Integer");
+
                     RoomService rs = getRoomServiceFromDB(orderID);
 
                     int itemNumber = FrontendUtils.<Integer>getEachFieldFromUser(
                                 "Please enter the Item number you wish to remove: ",
-                                "Error. Please return a valid item number",
+                                "Error. Please check if you have entered a valid order number!",
                                 i -> MiscUtils.isValidIntegerFromStartToEnd(1, rs.getOrders().size(), (int) i),
                                 "Integer");
                   
@@ -82,7 +83,7 @@ public class RoomServiceController implements Controller<RoomService>{
                 default:
                         break;
         }
-}
+    }
 
     @Override
     public RoomService manageCreateEntry() {
