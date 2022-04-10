@@ -20,8 +20,11 @@ public class HotelApp {
                 break;
             case 3:
                 new RoomServiceControl().manageCreateEntry();
-
+                break;
             case 4:
+                new RoomServiceControl().manageUpdateOrderStatus();
+                break;
+            case 5:
                 PaymentControl.process();
                 break;
 
@@ -36,6 +39,7 @@ public class HotelApp {
                 "Manage Guest",
                 "Manage Reservations",
                 "Create Room Service",
+                "Manage Room Service Orders",
                 "Manage Payment",
                 "Manage Rooms"
         });

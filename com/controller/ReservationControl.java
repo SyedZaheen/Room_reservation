@@ -26,7 +26,8 @@ public class ReservationControl implements Controller<Reservation> {
                 "Update reservation",
                 "Print all reservation IDs and paying guest name",
                 "Find reservation by guest name",
-                "Delete reservation"
+                "Delete reservation",
+                "Go back to main menu" // TODO: implement case
         });
 
         switch (choice) {
@@ -65,7 +66,7 @@ public class ReservationControl implements Controller<Reservation> {
                             "Something went wrong trying to save the reservation data. Contact the administrators.");
 
                 break;
-
+            
             case 3:
                 try {
                     List<Reservation> r = new ReservationDB().findAllEntries();
@@ -104,6 +105,8 @@ public class ReservationControl implements Controller<Reservation> {
             case 5:
                 // Reservation toDelete = new
                 // reservation = manageDeleteEntry(toDelete);
+
+            case 6: return;
         }
     }
 
@@ -131,9 +134,11 @@ public class ReservationControl implements Controller<Reservation> {
                 i -> (i >= 0 && i <= 5),
                 "Integer");
 
-        System.out.println("Please enter the details for the non-paying guests: ");
-        for (int j = 0; j < numberOfAdults + numberOfChildren; j++)
-            guests.add(new GuestControl().manageCreateEntry(false));
+        if (numberOfAdults + numberOfChildren != 0) {
+            System.out.println("Please enter the details for the non-paying guests: ");
+            for (int j = 0; j < numberOfAdults + numberOfChildren; j++)
+                guests.add(new GuestControl().manageCreateEntry(false));
+        }
 
         System.out.println("Please enter the details for the paying adult: ");
         payingGuest = new GuestControl().manageCreateEntry(true);
@@ -215,6 +220,7 @@ public class ReservationControl implements Controller<Reservation> {
     }
 
     private Reservation manageUpdateEntry() {
+        // TODO: Print out all the reservations currently
 
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = Views.getEachFieldFromUser(

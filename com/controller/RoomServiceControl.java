@@ -164,4 +164,7 @@ public class RoomServiceControl implements Controller<RoomService> {
         }
         return null;
     }
+
+    public void manageUpdateOrderStatus() {
+    }
 }
