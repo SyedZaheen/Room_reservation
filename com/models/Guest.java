@@ -14,7 +14,7 @@ public class Guest implements Model<Guest> {
     private Boolean isPayingGuest;
     private PaymentType paymentType;
     private CreditCard creditCard;
-    private final int guestID = new Random().nextInt(1000000); // Because youre making this final, note that if we want to update 
+    private final int guestID = setGuestID(); // Because youre making this final, note that if we want to update 
                                                                 // the guest using GuestDB.updateEntry(), we will need to query the entire
                                                                 // DB for that single guest object we want and edit its attributes
 
@@ -43,7 +43,7 @@ public class Guest implements Model<Guest> {
         this.isPayingGuest = isPayingGuest;
         this.paymentType = isPayingGuest ? paymentType : null;
         this.creditCard = paymentType == PaymentType.CREDITCARD ? creditCard : null;
-        this.guestID = setGuestID();
+ 
     }
 
     @Override

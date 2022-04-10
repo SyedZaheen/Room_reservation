@@ -26,10 +26,11 @@ public class RoomServiceDB implements DB<RoomService> {
     }
 
     public boolean updateEntry(RoomService rs) {
+        int rsID = rs.getOrderID();
         listOfOrders = findAllEntries();
-        for (RoomService eachRoomService : listOfOrders) {
-            if(rs.getOrderID() == eachRoomService.getOrderID()) {
-                eachRoomService = rs;
+        for (int i = 0; i < listOfOrders.size(); i++) {
+            if(rsID == listOfOrders.get(i).getOrderID()) {
+                listOfOrders.set(i,rs);
                 SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME, listOfOrders);
                 return true;
             }
@@ -39,3 +40,4 @@ public class RoomServiceDB implements DB<RoomService> {
 
 
 }
+
