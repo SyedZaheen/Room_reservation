@@ -5,14 +5,14 @@ import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.Reservation;
-
+import java.time.*;
 
 public abstract class PaymentControl {
 
     public static void process() {
 
         int choice = Views.getUserChoice(new String[] {
-                "Check out from room",
+                "- Make payment and check out from room",
                 "Print payment slip"
         });
 
@@ -45,6 +45,7 @@ public abstract class PaymentControl {
         // Menu, and delete reservation.
     }
 
+    // TODO: Complete this - not done because number of days need to be calculated
     public static void printBill() {
         int reservationID = Views.<Integer>getEachFieldFromUser(
                 "Please enter the reservation ID: ",

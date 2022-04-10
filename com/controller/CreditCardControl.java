@@ -4,7 +4,7 @@ import com.Views;
 import com.models.CreditCard;
 import com.utils.MiscUtils;
 
-public class CreditCardControl implements Controller<CreditCard> {
+public class CreditCardControl implements CreatorController<CreditCard> {
         
         @Override
         public CreditCard manageCreateEntry() {
@@ -40,7 +40,7 @@ public class CreditCardControl implements Controller<CreditCard> {
                                 i -> MiscUtils.stringWithinLength(i, 3, 20),
                                 "String");
 
-                CreditCard newCC = new CreditCard(name, creditCardNum, expiryDate, creditCardType);
+                CreditCard newCC = new CreditCard(name.toUpperCase(), creditCardNum, expiryDate, creditCardType);
 
                 if (!Views.<CreditCard>userDoubleConfirmDetails(newCC))
                         newCC = manageCreateEntry();

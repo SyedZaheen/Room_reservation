@@ -15,7 +15,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationControl implements Controller<Reservation> {
+public class ReservationControl implements CreatorController<Reservation> {
 
     public void process() {
         Reservation reservation = null;

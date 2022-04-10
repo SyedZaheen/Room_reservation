@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.List;
+
 import com.Views;
 import com.db.guestDB.GuestDB;
 import com.enums.IDType;
@@ -8,56 +10,79 @@ import com.models.CreditCard;
 import com.models.Guest;
 import com.utils.MiscUtils;
 
-public class GuestControl implements Controller<Guest> {
+public class GuestControl implements CreatorController<Guest>, UpdatorController<Guest> {
 
         public void process() {
                 Guest newguest = null;
                 boolean success = false;
+                GuestDB db = new GuestDB();
 
-                // First, we need to see if we need to create, read, update or delete guest.
-                int choice = Views.getUserChoice(new String[] {
-                                "Create a new guest",
-                                "Update guest details",
-                                "See all guest details",
-                                "Delete guest"
-                });
-                // For each, we call the corresponding function.
-                switch (choice) {
-                        case 1:
-                                newguest = manageCreateEntry();
-                                // Let's send the guest to the database.
-                                // todo: This design is pretty shit but idk how to fix it.
-                                success = new GuestDB().createEntry(newguest);
+                int choice;
 
-                                if (success) {
-                                        System.out.println(
-                                                        "A new guest was sucessfully created! These are the saved guest data: ");
-                                        System.out.println(newguest);
-                                } else
-                                        System.out.println(
-                                                        "Something went wrong trying to save the guest data. Contact the administrators");
-                                break;
-                        case 2:
-                                newguest = manageUpdateEntry();
-                                success = new GuestDB().updateEntry(newguest);
+                MiscUtils.printTransition();
+                while (true) {
+                        choice = Views.getUserChoice(new String[] {
+                                        "See all guest details",
+                                        "Update guest details",
+                                        "Find guest by name",
+                                        "Return to main menu"
+                        });
 
-                                if (success) {
-                                        System.out.println(
-                                                        "The guest details were successfully updated! These are the current guest data: ");
-                                        System.out.println(newguest);
-                                } else
-                                        System.out.println(
-                                                        "Something went wrong trying to save the guest data. Contact the administrators");
-                                break;
-                        case 3:
-                                System.out.println("The following are all the available guest data so far: ");
-                                for (Guest eachGuest : new GuestDB().findAllEntries()) {
-                                        System.out.println("");
-                                        System.out.println(eachGuest);
-                                }
-                                break;
-                        default:
-                                break;
+                        // For each, we call the corresponding function.
+                        switch (choice) {
+                                case 1:
+                                        if (db.isEmpty()) {
+                                                System.out.println("There are no guests in the hotel currently!");
+                                                break;
+                                        }
+                                        List<Guest> guests = db.findAllEntries();
+                                        System.out.println("The following are all the available guest data so far: ");
+                                        for (Guest eachGuest : guests) {
+                                                System.out.println("");
+                                                System.out.println(eachGuest);
+                                        }
+                                        break;
+                                case 2:
+                                        if (db.isEmpty()) {
+                                                System.out.println("There are no guests in the hotel currently!");
+                                                break;
+                                        }
+                                        newguest = manageUpdateEntry();
+                                        if (newguest == null) break;
+
+                                        success = db.updateEntry(newguest);
+
+                                        if (success) {
+                                                System.out.println(
+                                                                "The guest details were successfully updated! These are the updated guest data: ");
+                                                System.out.println(newguest);
+                                        } else
+                                                System.out.println(
+                                                                "Something went wrong trying to save the guest data. Contact the administrators");
+                                        break;
+                                case 3:
+                                        if (db.isEmpty()) {
+                                                System.out.println("There are no guests in the hotel currently!");
+                                                break;
+                                        }
+                                        String name = Views.<String>getEachFieldFromUser(
+                                                        "Please enter the full name of the guest who you wish to search.",
+                                                        "Error. please enter a string between 3 and 50 characters long",
+                                                        i -> MiscUtils.stringWithinLength(i, 3, 50),
+                                                        "String");
+                                        newguest = db.findSingleEntry(name);
+                                        if (newguest == null)
+                                                System.out.println(
+                                                                "Could not find that guest in the system! Check your spelling maybe?");
+                                        else {
+                                                System.out.println("\nThe following are the guest details requested: \n");
+                                                System.out.println(newguest);
+                                        }
+                                        break;
+                                default:
+                                        return;
+
+                        }
                 }
         }
 
@@ -70,12 +95,13 @@ public class GuestControl implements Controller<Guest> {
                 boolean isPayingGuest;
                 PaymentType paymentType = PaymentType.NA;
                 CreditCard creditCard = null;
+                GuestDB db = new GuestDB();
 
                 // First we ask the user to give us the simple data that we want
                 name = Views.<String>getEachFieldFromUser(
-                                "Please enter the full name: ",
-                                "Error. please enter a string between 3 and 50 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 3, 50),
+                                "Please enter the unique full name: ",
+                                "Error. Please also enter a string between 3 and 50 characters long. That name my be taken already.",
+                                i -> MiscUtils.stringWithinLength(i, 3, 50) && db.checkDuplicate(i),
                                 "String");
 
                 address = Views.<String>getEachFieldFromUser(
@@ -91,7 +117,7 @@ public class GuestControl implements Controller<Guest> {
                                 "String");
 
                 gender = Views.<String>getEachFieldFromUser(
-                                "Please e8nter the gender (may not be male or female): ",
+                                "Please enter the gender (may not be male or female): ",
                                 "Error. Please enter a string less than 10 characters long",
                                 i -> MiscUtils.stringWithinLength(i, 1, 10),
                                 "String");
@@ -249,9 +275,41 @@ public class GuestControl implements Controller<Guest> {
                 return newGuest;
         }
 
-        // TODO: implement
         public Guest manageUpdateEntry() {
+                GuestDB db = new GuestDB();
+                Guest toUpdate = null, newGuest = null;
+                System.out.println("How would you want to find the guest which you'd like to update?");
+                int choice = Views.getUserChoice(new String[] {
+                                "By name",
+                                "By ID"
+                });
+                if (choice == 1) {
+                        String name = Views.<String>getEachFieldFromUser(
+                                        "Please enter the full name of the guest who you wish to search.",
+                                        "Error. please enter a string between 3 and 50 characters long",
+                                        i -> MiscUtils.stringWithinLength(i, 3, 50),
+                                        "String");
+                        toUpdate = db.findSingleEntry(name);
+                } else {
+                        int id = Views.<Integer>getEachFieldFromUser(
+                                        "Please enter the Guest ID of the guest who you wish to search.",
+                                        "Error. Please enter a number 7 digits long",
+                                        i -> MiscUtils.isValidID(i),
+                                        "Integer");
+                        toUpdate = db.findSingleEntry(id);
+                }
+
+                if (toUpdate == null) {
+                        System.out.println("Could not find a guest with that name or ID!");
+                        return null;
+                }
+
+                System.out.println("\nThe following is the current guest object: \n");
+                System.out.println(toUpdate);
+                System.out.println("Please enter all of the relevant updated details about this guest: ");
+                newGuest = manageCreateEntry(toUpdate.getIsPayingGuest());
+                newGuest.setGuestID(toUpdate.getGuestID());
+                if (db.updateEntry(toUpdate)) return newGuest;
                 return null;
         }
 }
-        

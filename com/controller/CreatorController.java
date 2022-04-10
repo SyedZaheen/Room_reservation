@@ -1,5 +1,5 @@
 package com.controller;
 
-public interface Controller<T> {
+public interface CreatorController<T> {
     public abstract T manageCreateEntry();
 }

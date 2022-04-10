@@ -2,7 +2,6 @@ package com.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import com.models.Menu;
 import com.models.MenuItem;
@@ -12,7 +11,7 @@ import com.Views;
 import com.db.roomserviceDB.RoomServiceDB;
 import com.enums.OrderStatus;
 
-public class RoomServiceControl implements Controller<RoomService> {
+public class RoomServiceControl implements CreatorController<RoomService> {
 
     private Menu menu = new Menu();
 
@@ -37,10 +36,11 @@ public class RoomServiceControl implements Controller<RoomService> {
                     System.out.println(
                             "An order was sucessfully created! Here is your receipt: ");
                     System.out.println(roomservice.getOrders().keySet());
-                } else
+                } else {
                     System.out.println(
-                            "Something went wrong trying to save the guest data. Contact the administrators");
-                break;
+                            "Something went wrong trying to save the room service data. Contact the administrators");
+                    return;
+                }
             case 2:
                 RoomServiceControl.printOrder();
                 break;
@@ -91,7 +91,7 @@ public class RoomServiceControl implements Controller<RoomService> {
 
         boolean success = false;
         do {
-            orderID = new Random().nextInt(1000000);
+            orderID = MiscUtils.generateID();
             for (RoomService rs : new RoomServiceDB().findAllEntries()) {
                 if (rs != null) {
                     if (orderID == rs.getOrderID()) {
@@ -121,8 +121,8 @@ public class RoomServiceControl implements Controller<RoomService> {
 
         for (MenuItem menuItem : orderlist) {
             finalOrderList += menuItem.toString() + "\n";
-
         }
+        
         success = Views.<String>userDoubleConfirmDetails(finalOrderList);
         if (!success)
             orderlist = takeOrders();

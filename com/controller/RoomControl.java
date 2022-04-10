@@ -8,7 +8,7 @@ import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
 
-public class RoomControl implements Controller<Room> {
+public class RoomControl implements CreatorController<Room> {
 
     @Override
     public Room manageCreateEntry() {

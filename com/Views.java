@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.utils.AnonymousFunction;
+import com.utils.MiscUtils;
 
 public abstract class Views {
 
@@ -34,7 +35,7 @@ public abstract class Views {
                 System.out.printf("Please enter a number between 1 and %d only\n", choices.length);
 
         } while (choice > choices.length);
-
+        MiscUtils.printLightTransition();
         return choice;
     }
 
@@ -108,6 +109,8 @@ public abstract class Views {
     }
 
     public static <T> boolean userDoubleConfirmDetails(T details) {
+        MiscUtils.printLightTransition();
+
         System.out.println(
                 "\nPlease confirm that the following data is correct: ");
         System.out.println(details);
