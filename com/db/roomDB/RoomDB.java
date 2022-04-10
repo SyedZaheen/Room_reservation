@@ -1,6 +1,6 @@
 package com.db.roomDB;
 
-import java.sql.Date;
+import java.time.*;
 import java.util.List;
 
 import com.db.DB;
@@ -24,29 +24,32 @@ public class RoomDB implements DB<Room> {
         return SerializeDB.readSerializedObject(
                 DB.FILE_PATH + ROOM_DB_FILE_NAME);
     }
-
-
+    @Override
+    public boolean isEmpty() {
+        return findAllEntries().size() == 0;
+    }
     public Room findVacantRoomByType(RoomTypes type) {
         List<Room> allEntries = findAllEntries();
-        for (Room room : allEntries) 
-            if (room.getStatus() == RoomStatuses.VACANT && room.getRoomType() == type) 
+        for (Room room : allEntries)
+            if (room.getStatus() == RoomStatuses.VACANT && room.getRoomType() == type)
                 return room;
 
         return null;
     }
 
-    public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst)
-    {
+    public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst) {
         return false;
     }
 
-
-    public boolean checkIfHotelIsFull(Date checkInDate, Date checkOutDate) {
+    // TODO: implement
+    public boolean checkIfHotelIsFull(LocalDate checkInDate, LocalDate checkOutDate) {
         return false;
     }
 
-    public Room findVacantRoom(RoomTypes rType, Date cID, Date cOD) {
+    public Room findVacantRoom(RoomTypes rType, LocalDate cID, LocalDate cOD) {
         return null;
     }
+
+    
 
 }

@@ -10,7 +10,7 @@ import com.models.CreditCard;
 import com.models.Guest;
 import com.utils.MiscUtils;
 
-public class GuestControl implements CreatorController<Guest>, UpdatorController<Guest> {
+public class GuestControl implements UpdatorController<Guest> {
 
         public void process() {
                 Guest newguest = null;
@@ -48,7 +48,8 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                                                 break;
                                         }
                                         newguest = manageUpdateEntry();
-                                        if (newguest == null) break;
+                                        if (newguest == null)
+                                                break;
 
                                         success = db.updateEntry(newguest);
 
@@ -75,7 +76,8 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                                                 System.out.println(
                                                                 "Could not find that guest in the system! Check your spelling maybe?");
                                         else {
-                                                System.out.println("\nThe following are the guest details requested: \n");
+                                                System.out.println(
+                                                                "\nThe following are the guest details requested: \n");
                                                 System.out.println(newguest);
                                         }
                                         break;
@@ -86,105 +88,6 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                 }
         }
 
-        @Override
-        public Guest manageCreateEntry() {
-                // Initialise the guest data that we want
-                String name, address, country, gender, nationality, identity;
-                int contact;
-                IDType idType;
-                boolean isPayingGuest;
-                PaymentType paymentType = PaymentType.NA;
-                CreditCard creditCard = null;
-                GuestDB db = new GuestDB();
-
-                // First we ask the user to give us the simple data that we want
-                name = Views.<String>getEachFieldFromUser(
-                                "Please enter the unique full name: ",
-                                "Error. Please also enter a string between 3 and 50 characters long. That name my be taken already.",
-                                i -> MiscUtils.stringWithinLength(i, 3, 50) && db.checkDuplicate(i),
-                                "String");
-
-                address = Views.<String>getEachFieldFromUser(
-                                "Please enter the address: ",
-                                "Error. Please enter a string between 5 and 50 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 5, 50),
-                                "String");
-
-                country = Views.<String>getEachFieldFromUser(
-                                "Please enter the country: ",
-                                "Error. please enter a string less than 20 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 2, 20),
-                                "String");
-
-                gender = Views.<String>getEachFieldFromUser(
-                                "Please enter the gender (may not be male or female): ",
-                                "Error. Please enter a string less than 10 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 1, 10),
-                                "String");
-
-                nationality = Views.<String>getEachFieldFromUser(
-                                "Please enter the nationality: ",
-                                "Error. please enter a string less than 20 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 1, 20),
-                                "String");
-
-                contact = Views.<Integer>getEachFieldFromUser(
-                                "Please enter a valid Singapore number (without country code, +65): ",
-                                "Error. Please enter a valid Singapore number (8 digits starting with 6, 8 or 9)",
-                                i -> MiscUtils.isValidSingaporeNumber(i),
-                                "Integer");
-
-                // Now, we have to handle credit cards and IDs
-
-                // Lets handle ID first
-                // Note that guests have a "composition" relationship with IDs.
-                int idChoice = Views.getUserChoice(new String[] {
-                                "Enter 1 if the guest's ID for registration is a passport",
-                                "Enter 2 if the guest's ID for registration is a driving license"
-                });
-                idType = idChoice == 1 ? IDType.PASSPORT : IDType.DRIVING_LICENSE;
-
-                // todo: Find discuss the validation of identity number
-                identity = Views.<String>getEachFieldFromUser(
-                                "Please enter the last 4 characters of the ID number: ",
-                                "Error. Please enter 4 characters only",
-                                i -> MiscUtils.stringWithinLength(i, 4, 4),
-                                "String");
-
-                // Now, we settle the credit card info.
-                // First, we see if the guest is paying or not
-                int payingChoice = Views.getUserChoice(new String[] {
-                                "Enter 1 if the guest is paying for the reservation",
-                                "Enter 2 if the guest is not paying for the reservation"
-                });
-
-                isPayingGuest = payingChoice == 1;
-
-                // Next, if the guest is paying, then we get their credit card info
-                if (isPayingGuest) {
-                        int paymentTypeChoice = Views.getUserChoice(new String[] {
-                                        "Enter 1 if the guest is paying by creditcard for the reservation",
-                                        "Enter 2 if the guest is paying by cash for the reservation"
-                        });
-
-                        if (paymentTypeChoice == 1) {
-                                paymentType = PaymentType.CREDITCARD;
-                                creditCard = new CreditCardControl().manageCreateEntry();
-                        } else if (paymentTypeChoice == 2) {
-                                paymentType = PaymentType.CASH;
-                                creditCard = null;
-                        }
-                } else
-                        paymentType = PaymentType.NA;
-
-                Guest newGuest = new Guest(name, address, country, gender, nationality, contact, idType, identity,
-                                isPayingGuest, paymentType, creditCard);
-
-                if (!Views.<Guest>userDoubleConfirmDetails(newGuest))
-                        newGuest = manageCreateEntry();
-                return newGuest;
-        }
-
         public Guest manageCreateEntry(boolean isPaying) {
                 // Initialise the guest data that we want
                 String name, address, country, gender, nationality, identity;
@@ -192,12 +95,13 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                 IDType idType;
                 PaymentType paymentType = PaymentType.NA;
                 CreditCard creditCard = null;
+                GuestDB db = new GuestDB();
 
                 // First we ask the user to give us the simple data that we want
                 name = Views.<String>getEachFieldFromUser(
                                 "Please enter the full name: ",
-                                "Error. please enter a string between 3 and 50 characters long",
-                                i -> MiscUtils.stringWithinLength(i, 3, 50),
+                                "Error. please enter a string between 3 and 50 characters long. That name may already be taken!",
+                                i -> MiscUtils.stringWithinLength(i, 3, 50) && db.checkDuplicate(i),
                                 "String");
 
                 address = Views.<String>getEachFieldFromUser(
@@ -270,7 +174,7 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                                 isPaying, paymentType, creditCard);
 
                 if (!Views.<Guest>userDoubleConfirmDetails(newGuest))
-                        newGuest = manageCreateEntry();
+                        newGuest = manageCreateEntry(isPaying);
 
                 return newGuest;
         }
@@ -309,7 +213,8 @@ public class GuestControl implements CreatorController<Guest>, UpdatorController
                 System.out.println("Please enter all of the relevant updated details about this guest: ");
                 newGuest = manageCreateEntry(toUpdate.getIsPayingGuest());
                 newGuest.setGuestID(toUpdate.getGuestID());
-                if (db.updateEntry(toUpdate)) return newGuest;
+                if (db.updateEntry(toUpdate))
+                        return newGuest;
                 return null;
         }
 }

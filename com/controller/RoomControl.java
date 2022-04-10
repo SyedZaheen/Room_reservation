@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.sql.Date;
+import java.time.*;
 
 import com.Views;
 import com.db.roomDB.RoomDB;
@@ -62,7 +62,7 @@ public class RoomControl implements CreatorController<Room> {
         return vacantRoom;
     }
 
-    public Room manageCreateEntry(Date cID, Date cOD) {
+    public Room manageCreateEntry(LocalDate cID, LocalDate cOD) {
         RoomTypes rType = null;
         RoomDB rmdb = new RoomDB();
 
@@ -113,7 +113,7 @@ public class RoomControl implements CreatorController<Room> {
         return vacantRoom;
     }
 
-    private boolean all_Rooms_Are_Occupied(Date dt) {
+    private boolean all_Rooms_Are_Occupied(LocalDate dt) {
         return false;
     }
 

@@ -10,12 +10,12 @@ import com.models.Guest;
 import com.models.Reservation;
 import com.models.Room;
 import com.utils.MiscUtils;
-
-import java.sql.Date;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationControl implements CreatorController<Reservation> {
+public class ReservationControl implements CreatorController<Reservation>, UpdatorController<Reservation> {
+    
 
     public void process() {
         Reservation reservation = null;
@@ -25,9 +25,9 @@ public class ReservationControl implements CreatorController<Reservation> {
                 "Create a new reservation",
                 "Update reservation",
                 "Print all reservation IDs and paying guest name",
-                "Find reservation by guest name",
+                "Find reservation by reservation ID or paying guest name",
                 "Delete reservation",
-                "Go back to main menu" // TODO: implement case
+                "Go back to main menu"
         });
 
         switch (choice) {
@@ -66,21 +66,20 @@ public class ReservationControl implements CreatorController<Reservation> {
                             "Something went wrong trying to save the reservation data. Contact the administrators.");
 
                 break;
-            
-            case 3:
-                try {
-                    List<Reservation> r = new ReservationDB().findAllEntries();
-                    if (r.size() == 0) {
-                        System.out.println("There are no reservations currently");
-                        break;
-                    }
-                    for (Reservation eachReservation : r) {
-                        System.out.println("Reservation ID: " + eachReservation.getReservationID());
-                        System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
-                    }
 
-                } catch (NullPointerException npe) {
-                    System.out.println("There are no reservations currently");
+            case 3:
+
+                List<Reservation> r = new ReservationDB().findAllEntries();
+                if (r.size() == 0) {
+                    System.out.println("There are no reservations for any room currently");
+                    break;
+                }
+                MiscUtils.printLightTransition();
+                System.out.println("The following are all the reservations in the DB currently: ");
+                for (Reservation eachReservation : r) {
+                    System.out.println("");
+                    System.out.println("Reservation ID: " + eachReservation.getReservationID());
+                    System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
                 }
 
                 break;
@@ -106,7 +105,8 @@ public class ReservationControl implements CreatorController<Reservation> {
                 // Reservation toDelete = new
                 // reservation = manageDeleteEntry(toDelete);
 
-            case 6: return;
+            case 6:
+                return;
         }
     }
 
@@ -118,7 +118,7 @@ public class ReservationControl implements CreatorController<Reservation> {
         PaymentType paymentType;
         CreditCard creditCardUsed;
         Room reservedRoom;
-        Date checkInDate, checkOutDate;
+        LocalDate checkInDate, checkOutDate;
         ReservationStatuses reservationStatus;
         Guest payingGuest = null;
 
@@ -166,7 +166,7 @@ public class ReservationControl implements CreatorController<Reservation> {
                 i -> MiscUtils.isValidDay(i, monthIn),
                 "Integer");
 
-        checkInDate = Date.valueOf(MiscUtils.dateConvertor(year, monthIn, day));
+        checkInDate = LocalDate.of(year, monthIn, day);
 
         year = Views.<Integer>getEachFieldFromUser(
                 "Please enter the year (For Check-Out): ",
@@ -186,7 +186,7 @@ public class ReservationControl implements CreatorController<Reservation> {
                 i -> MiscUtils.isValidDay(i, monthOut),
                 "Integer");
 
-        checkOutDate = Date.valueOf(MiscUtils.dateConvertor(year, monthOut, day));
+        checkOutDate = LocalDate.of(year, monthOut, day);
 
         boolean hotelIsFull = new RoomDB().checkIfHotelIsFull(checkInDate, checkOutDate);
         if (hotelIsFull) {
@@ -219,7 +219,8 @@ public class ReservationControl implements CreatorController<Reservation> {
         return newReservation;
     }
 
-    private Reservation manageUpdateEntry() {
+    @Override
+    public Reservation manageUpdateEntry() {
         // TODO: Print out all the reservations currently
 
         System.out.println("Reservation to be updated (Search by ID): ");

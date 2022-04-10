@@ -67,7 +67,7 @@ public class GuestDB implements DB<Guest> {
         }
         return match;
     }
-
+@Override
     public boolean isEmpty() {
         return findAllEntries().size() == 0;
     }
