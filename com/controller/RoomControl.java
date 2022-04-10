@@ -1,11 +1,12 @@
 package com.controller;
 
 import java.sql.Date;
+
+import com.Views;
 import com.db.roomDB.RoomDB;
 import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
-import com.utils.FrontendUtils;
 
 public class RoomControl implements Controller<Room> {
 
@@ -26,7 +27,7 @@ public class RoomControl implements Controller<Room> {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = FrontendUtils.getUserChoice(new String[] {
+            int roomchoice = Views.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",
@@ -77,7 +78,7 @@ public class RoomControl implements Controller<Room> {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = FrontendUtils.getUserChoice(new String[] {
+            int roomchoice = Views.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",

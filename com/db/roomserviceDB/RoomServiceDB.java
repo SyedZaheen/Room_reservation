@@ -10,7 +10,7 @@ public class RoomServiceDB implements DB<RoomService> {
 
     private final String ROOMSERVICE_DB_FILE_NAME = "/roomserviceDB/listOfOrders";
     private List<RoomService> listOfOrders = null;
-
+    
     @Override
     public boolean createEntry(RoomService entry) {
         // We want to synchronise the listOfGuests with the files stored inside the .ser

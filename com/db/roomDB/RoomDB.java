@@ -2,7 +2,6 @@ package com.db.roomDB;
 
 import java.sql.Date;
 import java.util.List;
-import java.sql.Date;
 
 import com.db.DB;
 import com.db.SerializeDB;

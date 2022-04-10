@@ -1,16 +1,16 @@
 package com.controller;
 
+import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.Reservation;
-import com.utils.FrontendUtils;
 
 public abstract class PaymentControl {
 
     public static void process() {
 
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Check out from room",
                 "Print payment slip"
         });
@@ -27,7 +27,7 @@ public abstract class PaymentControl {
     }
 
     public static void checkOut() {
-        int reservationID = FrontendUtils.<Integer>getEachFieldFromUser(
+        int reservationID = Views.<Integer>getEachFieldFromUser(
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
@@ -45,7 +45,7 @@ public abstract class PaymentControl {
     }
 
     public static void printBill() {
-        int reservationID = FrontendUtils.<Integer>getEachFieldFromUser(
+        int reservationID = Views.<Integer>getEachFieldFromUser(
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
@@ -53,7 +53,7 @@ public abstract class PaymentControl {
 
         Reservation toBill = new ReservationDB().findReservationByID(reservationID);
 
-        int discountChoice = FrontendUtils.<Integer>getEachFieldFromUser(
+        int discountChoice = Views.<Integer>getEachFieldFromUser(
                 "Do you wish to apply a discount? (1) Apply discount.\n(2) Do not have discount.",
                 "Error. Please enter either 1 or 2.",
                 i -> (i == 1 || i == 2),
@@ -61,7 +61,7 @@ public abstract class PaymentControl {
 
         double discount = 1;
         if (discountChoice == 1) {
-            discount = FrontendUtils.<Double>getEachFieldFromUser(
+            discount = Views.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
                     "Error. Please enter a valid double value!",
                     i -> (i > 0 && i < 1),
@@ -93,7 +93,7 @@ public abstract class PaymentControl {
             System.out.println("Payment by Cash (SGD only).");
 
         System.out.println("Please confirm that the above bill is correct: ");
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Enter 1 if the above data are all correct",
                 "Enter 2 if the data has errors"
         });

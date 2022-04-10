@@ -1,9 +1,8 @@
+import com.Views;
 import com.controller.GuestControl;
-import com.controller.RoomServiceController;
+import com.controller.RoomServiceControl;
 import com.controller.ReservationControl;
 import com.controller.PaymentControl;
-import com.utils.FrontendUtils;
-
 
 public class HotelApp {
     public static void main(String[] args) {
@@ -20,7 +19,7 @@ public class HotelApp {
                 new ReservationControl().process();
                 break;
             case 3:
-                new RoomServiceController().manageCreateEntry();
+                new RoomServiceControl().manageCreateEntry();
 
             case 4:
                 PaymentControl.process();
@@ -33,14 +32,13 @@ public class HotelApp {
     }
 
     public static int showMainMenuAndReturnChoice() {
-        return FrontendUtils.getUserChoice(new String[]{
-            "Manage Guest",
-            "Manage Reservations",
-            "Create Room Service",
-            "Manage Payment",
-            "Manage Rooms"
+        return Views.getUserChoice(new String[] {
+                "Manage Guest",
+                "Manage Reservations",
+                "Create Room Service",
+                "Manage Payment",
+                "Manage Rooms"
         });
     }
 
-    
 }

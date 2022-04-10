@@ -9,7 +9,7 @@ public class GuestDB implements DB<Guest> {
 
     private final String GUEST_DB_FILE_NAME = "guestDB/listOfGuests.ser";
     private List<Guest> listOfGuests = null;
-
+    
     @Override
     public boolean createEntry(Guest entry) {
         // We want to synchronise the listOfGuests with the files stored inside the .ser
@@ -38,6 +38,15 @@ public class GuestDB implements DB<Guest> {
             }
         }
         return false;
+    }
+
+    public boolean checkDuplicateId(int number) {
+        for (Guest eachGuest : findAllEntries() ) {
+            if (number == eachGuest.getID()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

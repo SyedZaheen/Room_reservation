@@ -1,9 +1,11 @@
-package com.utils;
+package com;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public abstract class FrontendUtils {
+import com.utils.AnonymousFunction;
+
+public abstract class Views {
 
     public static int getUserChoice(String[] choices) {
         @SuppressWarnings("resource") /*

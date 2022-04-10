@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.db.roomDB.RoomDB;
 import com.enums.ReservationStatuses;
@@ -8,7 +9,6 @@ import com.models.CreditCard;
 import com.models.Guest;
 import com.models.Reservation;
 import com.models.Room;
-import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
 
 import java.sql.Date;
@@ -21,7 +21,7 @@ public class ReservationControl implements Controller<Reservation> {
         Reservation reservation = null;
         boolean success = false;
 
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Create a new reservation",
                 "Update reservation",
                 "Print all reservation IDs and paying guest name",
@@ -85,7 +85,7 @@ public class ReservationControl implements Controller<Reservation> {
                 break;
 
             case 4:
-                String key = FrontendUtils.getEachFieldFromUser(
+                String key = Views.getEachFieldFromUser(
                         "Please enter the name of the paying adult for the reservation: ",
                         "Error. please enter a string between 3 and 50 characters long.",
                         i -> MiscUtils.stringWithinLength(i, 3, 50),
@@ -119,13 +119,13 @@ public class ReservationControl implements Controller<Reservation> {
         ReservationStatuses reservationStatus;
         Guest payingGuest = null;
 
-        numberOfAdults = FrontendUtils.getEachFieldFromUser(
+        numberOfAdults = Views.getEachFieldFromUser(
                 "Please enter the number of non-paying adults: ",
                 "Please enter a non-negative number up to 5.",
                 i -> (i >= 0 && i <= 5),
                 "Integer");
 
-        numberOfChildren = FrontendUtils.<Integer>getEachFieldFromUser(
+        numberOfChildren = Views.<Integer>getEachFieldFromUser(
                 "Please enter the number of children: ",
                 "Please enter a non-negative number up to 5.",
                 i -> (i >= 0 && i <= 5),
@@ -143,19 +143,19 @@ public class ReservationControl implements Controller<Reservation> {
 
         creditCardUsed = payingGuest.getCreditCard();
 
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
+        year = Views.<Integer>getEachFieldFromUser(
                 "Please enter the year (For Check-In): ",
                 "Error. Please enter a valid year!",
                 i -> MiscUtils.isValidYear(i),
                 "Integer");
 
-        monthIn = FrontendUtils.<Integer>getEachFieldFromUser(
+        monthIn = Views.<Integer>getEachFieldFromUser(
                 "Please enter the month (For Check-In): ",
                 "Error. Please enter a valid month!",
                 i -> MiscUtils.isValidMonth(i),
                 "Integer");
 
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
+        day = Views.<Integer>getEachFieldFromUser(
                 "Please enter the day (For Check-In): ",
                 "Error. Please enter a valid day!",
                 i -> MiscUtils.isValidDay(i, monthIn),
@@ -163,19 +163,19 @@ public class ReservationControl implements Controller<Reservation> {
 
         checkInDate = Date.valueOf(MiscUtils.dateConvertor(year, monthIn, day));
 
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
+        year = Views.<Integer>getEachFieldFromUser(
                 "Please enter the year (For Check-Out): ",
                 "Error. Please enter a valid year!",
                 i -> MiscUtils.isValidYear(i),
                 "Integer");
 
-        monthOut = FrontendUtils.<Integer>getEachFieldFromUser(
+        monthOut = Views.<Integer>getEachFieldFromUser(
                 "Please enter the month (For Check-Out): ",
                 "Error. Please enter a valid month!",
                 i -> MiscUtils.isValidMonth(i),
                 "Integer");
 
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
+        day = Views.<Integer>getEachFieldFromUser(
                 "Please enter the day (For Check-Out): ",
                 "Error. Please enter a valid day!",
                 i -> MiscUtils.isValidDay(i, monthOut),
@@ -187,7 +187,7 @@ public class ReservationControl implements Controller<Reservation> {
         if (hotelIsFull) {
             System.out.println(
                     "It seems that all of the hotel rooms are full during this timing! Select from the options below: ");
-            int choice = FrontendUtils.getUserChoice(new String[] {
+            int choice = Views.getUserChoice(new String[] {
                     "Choose new date",
                     "Go back to Main Menu"
             });
@@ -208,7 +208,7 @@ public class ReservationControl implements Controller<Reservation> {
         Reservation newReservation = new Reservation(reservationID, numberOfAdults, numberOfChildren, guests,
                 reservedRoom, paymentType, creditCardUsed, checkInDate, checkOutDate, reservationStatus);
 
-        if (!FrontendUtils.<Reservation>userDoubleConfirmDetails(newReservation))
+        if (!Views.<Reservation>userDoubleConfirmDetails(newReservation))
             newReservation = manageCreateEntry();
 
         return newReservation;
@@ -217,7 +217,7 @@ public class ReservationControl implements Controller<Reservation> {
     private Reservation manageUpdateEntry() {
 
         System.out.println("Reservation to be updated (Search by ID): ");
-        Integer key = FrontendUtils.getEachFieldFromUser(
+        Integer key = Views.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
@@ -230,7 +230,7 @@ public class ReservationControl implements Controller<Reservation> {
         }
 
         System.out.println("Please update reservation details: ");
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Reservation in Waitlist.",
                 "Reservation Confirmed.",
                 "Reservation Checked-in.",

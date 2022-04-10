@@ -3,6 +3,7 @@ package com.models;
 import java.util.Random;
 
 import com.controller.GuestControl;
+import com.db.guestDB.GuestDB;
 import com.enums.IDType;
 import com.enums.PaymentType;
 
@@ -14,7 +15,7 @@ public class Guest implements Model<Guest> {
     private Boolean isPayingGuest;
     private PaymentType paymentType;
     private CreditCard creditCard;
-    private final int guestID = new Random().nextInt(1000000); // Because youre making this final, note that if we want to update 
+    private final int guestID; // Because youre making this final, note that if we want to update 
                                                                 // the guest using GuestDB.updateEntry(), we will need to query the entire
                                                                 // DB for that single guest object we want and edit its attributes
 
@@ -92,7 +93,7 @@ public class Guest implements Model<Guest> {
 
     private int setGuestID(){
         int id = new Random().nextInt(1000000);
-        if (GuestControl.checkDuplicateId(id)) {
+        if (new GuestDB().checkDuplicateId(id)) {
             return id;
         }
         else return setGuestID();
