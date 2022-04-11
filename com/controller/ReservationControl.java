@@ -25,7 +25,7 @@ public class ReservationControl
             int choice = Views.getUserChoice(new String[] {
                     "Create a new reservation (walk-in or advanced)",
                     "Update reservation status",
-                    "Print all reservation IDs and paying guest name",
+                    "Print all reservations (Reservation IDs and paying guest names)",
                     "Find reservation by reservation ID or paying guest name",
                     "Delete entry",
                     "Go back to main menu"
@@ -222,7 +222,7 @@ public class ReservationControl
 
         checkInDate = LocalDate.now();
         do {
-            if (isWalkIn) {
+            if (!isWalkIn) {
                 year = Views.<Integer>getEachFieldFromUser(
                         "Please enter the year (For Check-In): ",
                         "Error. Please enter a valid year!",
@@ -266,7 +266,7 @@ public class ReservationControl
 
             isValidDates = checkOutDate.compareTo(checkInDate) > 0 && !MiscUtils.dateBeforeNow(checkInDate);
             if (!isValidDates)
-                System.out.println("The check in date is ahead of the checkout date! Try again!\n");
+                System.out.println("The checkin date is ahead of the checkout date OR the checkin date is before today! Try again!\n");
         } while (!isValidDates);
 
         boolean hotelIsFull = db.checkIfHotelIsFull(checkInDate, checkOutDate);

@@ -49,7 +49,7 @@ public class Reservation implements Model<Reservation> {
         String allGuests = "";
         for (int i = 0; i < (numberOfAdults + numberOfChildren +1); i++) {
             allGuests = allGuests.concat(
-                    "\n\n Guest " + (i + 1) + " : " + guests.get(i).toString() + "\n");
+                    "\n\nGuest " + (i + 1) + " : " + guests.get(i).toString() + "\n");
         }
 
         String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString()

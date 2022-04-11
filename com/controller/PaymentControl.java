@@ -66,9 +66,9 @@ public class PaymentControl implements MasterController {
                     i -> (i > 0 && i < 1),
                     "Double");
         }
-
+        MiscUtils.printLightTransition();
         System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
-        System.out.printf("Net Total Room Charges: %.2f\n", computeRoomCharges(toBill));
+        System.out.printf("Net Total Room Charges: %.2d\n", computeRoomCharges(toBill));
         System.out.println("");
         System.out.printf("Net Total Room Service Charges: %.2f\n", computeRoomServiceCharges(toBill));
         System.out.println("");
@@ -85,25 +85,33 @@ public class PaymentControl implements MasterController {
             System.out.println("");
         }
 
+        if (!checkout)
+            return;
+
         if (toBill.getPayingGuest().getPaymentType() == PaymentType.CREDITCARD) {
             System.out.println("Payment billed to:");
             System.out.println(toBill.getPayingGuest().getCreditCard());
         } else if (toBill.getPayingGuest().getPaymentType() == PaymentType.CASH)
-            System.out.println("Payment by Cash (SGD only).");
+            System.out.println("Payment by cash (SGD only)");
 
-        if (!checkout)
-            return;
-
-        System.out.println("Please confirm that the above bill is correct: ");
+        System.out.println("\nPlease confirm that the above bill is correct: ");
         int choice = Views.getUserChoice(new String[] {
                 "Enter 1 if the above data are all correct",
                 "Enter 2 if the data has errors"
         });
 
         if (choice == 1) {
+            System.out.println("Please confirm that the guest has confirmed payment and is checking out: ");
+            int ch2 = Views.getUserChoice(new String[] {
+                    "The guest has payed and has successfully checked out",
+                    "The guest has not payed and is not checking out currently",
+            });
+            if (ch2 == 2)
+                return;
             boolean succ = new ReservationDB().deleteEntry(toBill);
             if (succ)
-                System.out.println("Payment Successful! Thank you for staying with us.");
+                System.out.println(
+                        "Update successful! Remember to thank the guest for staying with us!\n Note that all guest data is now deleted, and room is now vacant");
             else
                 System.out.println("Something went wrong! Contact the administrators.");
             return;
@@ -113,9 +121,9 @@ public class PaymentControl implements MasterController {
             printBill(checkout);
     }
 
-    private static double computeRoomCharges(Reservation r) {
+    private static int computeRoomCharges(Reservation r) {
         int daysOfStay = r.getCheckOutDate().compareTo(r.getCheckInDate());
-        return ((double) daysOfStay) * (double) r.getReservedRoom().getRoomType().getRatePerNight();
+        return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
     }
 
     // TODO : To amend after receiving Jayden's code.
