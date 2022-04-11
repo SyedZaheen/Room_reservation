@@ -8,7 +8,13 @@ import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
 
-public class RoomControl implements CreatorController<Room> {
+public class RoomControl implements CreatorController<Room>, MasterController {
+
+    @Override
+    public void process()
+    {
+
+    }
 
     @Override
     public Room manageCreateEntry() {
@@ -16,12 +22,7 @@ public class RoomControl implements CreatorController<Room> {
         RoomDB rmdb = new RoomDB();
 
         // Display all room options to user
-        System.out.println("The following are the room options avaliable currently: ");
-        System.out.println("");
-        printRoomOptionByType(RoomTypes.SINGLE);
-        printRoomOptionByType(RoomTypes.DOUBLE);
-        printRoomOptionByType(RoomTypes.DELUXE);
-        printRoomOptionByType(RoomTypes.VIPSUITE);
+        displayAllOptions();
 
         // Get the room type from the user
         System.out.println("Please enter your room type choice: ");
@@ -67,12 +68,7 @@ public class RoomControl implements CreatorController<Room> {
         RoomDB rmdb = new RoomDB();
 
         // Display all room options to user
-        System.out.println("The following are the room options for this hotel: ");
-        System.out.println("");
-        printRoomOptionByType(RoomTypes.SINGLE);
-        printRoomOptionByType(RoomTypes.DOUBLE);
-        printRoomOptionByType(RoomTypes.DELUXE);
-        printRoomOptionByType(RoomTypes.VIPSUITE);
+        displayAllOptions();
 
         // Get the room type from the user
         System.out.println("Please enter your room type choice: ");
@@ -116,16 +112,25 @@ public class RoomControl implements CreatorController<Room> {
         return vacantRoom;
     }
 
-
     private void printRoomOptionByType(RoomTypes rt) {
         System.out.println("Type: " + rt.inString);
-        System.out.println("Rate Per Night: " + rt.getRatePerNight());
+        System.out.println("Rate Per Night: SGD$" + rt.getRatePerNight());
         System.out.println("BedType: " + rt.getBedType().inString);
         System.out.println("Has Nice View: " + rt.getWithView().toString());
         System.out.println("Has Wifi Enabled: " + rt.getWifiEnabled().toString());
         System.out.println("Smoking Is Allowed: " + rt.getSmokingIsAllowed().toString());
 
         System.out.println("");
+    }
+
+    public void displayAllOptions()
+    {
+        System.out.println("The following are the room options for this hotel: ");
+        System.out.println("");
+        printRoomOptionByType(RoomTypes.SINGLE);
+        printRoomOptionByType(RoomTypes.DOUBLE);
+        printRoomOptionByType(RoomTypes.DELUXE);
+        printRoomOptionByType(RoomTypes.VIPSUITE);
     }
 
 }

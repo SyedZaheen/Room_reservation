@@ -10,8 +10,8 @@ import com.models.CreditCard;
 import com.models.Guest;
 import com.utils.MiscUtils;
 
-public class GuestControl implements UpdatorController<Guest> {
-
+public class GuestControl implements UpdatorController<Guest>, MasterController {
+@Override
         public void process() {
                 Guest newguest = null;
                 boolean success = false;

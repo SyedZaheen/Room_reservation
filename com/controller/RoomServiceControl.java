@@ -11,11 +11,12 @@ import com.Views;
 import com.db.roomserviceDB.RoomServiceDB;
 import com.enums.OrderStatus;
 
-public class RoomServiceControl implements CreatorController<RoomService> {
+public class RoomServiceControl implements CreatorController<RoomService> ,MasterController{
 
     private Menu menu = new Menu();
 
-    public static void process() {
+@Override
+    public void process() {
         RoomService roomservice = null;
         boolean success = false;
 

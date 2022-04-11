@@ -5,66 +5,64 @@ import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.Reservation;
+import com.utils.MiscUtils;
 
-public abstract class PaymentControl {
+public class PaymentControl implements MasterController {
+    @Override
+    public void process() {
 
-    public static void process() {
+        int choice;
 
-        int choice = Views.getUserChoice(new String[] {
-                "Make payment and check out from room",
-                "Print payment slip"
-        });
+        while (true) {
 
-        switch (choice) {
-            case 1:
-                checkOut();
-                break;
+            choice = Views.getUserChoice(new String[] {
+                    "Make payment and check out from room",
+                    "See payment slip for reservation",
+                    "Return to main menu"
+            });
 
-            case 2:
-                printBill();
-                break;
+            switch (choice) {
+                case 1:
+                    printBill(true);
+                    break;
+
+                case 2:
+                    printBill(false);
+                    break;
+                default:
+                    return;
+            }
         }
     }
 
-    public static void checkOut() {
+    private void printBill(boolean checkout) {
         int reservationID = Views.<Integer>getEachFieldFromUser(
-                "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
-                i -> (i >= 1e6 && i < 1e7),
-                "Integer");
-
-        Reservation toCheckOut = new ReservationDB().findSingleEntry(reservationID);
-        if (toCheckOut == null) {
-            System.out.println("Reservation ID is invalid!");
-            return;
-        }
-
-        toCheckOut.getReservedRoom().setStatus(RoomStatuses.VACANT);
-        // After checkout is done, user must return to Main Menu, go to Reservation
-        // Menu, and delete reservation.
-    }
-
-    // TODO: Complete this - not done because number of days need to be calculated
-    public static void printBill() {
-        int reservationID = Views.<Integer>getEachFieldFromUser(
-                "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
-                i -> (i >= 1e6 && i < 1e7),
+                "Please enter the reservation ID to see reservation bill: ",
+                "Error. Please enter a 7 digit number.",
+                i -> MiscUtils.isValidID(i),
                 "Integer");
 
         Reservation toBill = new ReservationDB().findSingleEntry(reservationID);
+        if (toBill == null) {
+            System.out.println("Could not find a reservation with that ID! Try again");
+            return;
+        }
+
+        System.out.println("\nThe following are the reservation details in full: \n");
+        System.out.println(toBill);
+        System.out.println("");
 
         int discountChoice = Views.<Integer>getEachFieldFromUser(
-                "Do you wish to apply a discount? (1) Apply discount.\n(2) Do not have discount.",
+                "Does the guest have a valid discount? (1) Apply discount.\n(2) Do not have discount.",
                 "Error. Please enter either 1 or 2.",
                 i -> (i == 1 || i == 2),
                 "Integer");
 
-        double discount = 1;
+        double discount = 1D;
         if (discountChoice == 1) {
             discount = Views.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
-                    "Error. Please enter a valid double value!",
+                    "Error. Please enter a valid non-integer value between 0 and 1 (exclusive)!",
                     i -> (i > 0 && i < 1),
                     "Double");
         }
@@ -93,23 +91,31 @@ public abstract class PaymentControl {
         } else if (toBill.getPayingGuest().getPaymentType() == PaymentType.CASH)
             System.out.println("Payment by Cash (SGD only).");
 
+        if (!checkout)
+            return;
+
         System.out.println("Please confirm that the above bill is correct: ");
         int choice = Views.getUserChoice(new String[] {
                 "Enter 1 if the above data are all correct",
                 "Enter 2 if the data has errors"
         });
 
-        if (choice == 1)
-            System.out.println("Payment Successful! Thank you for staying with us.");
+        if (choice == 1) {
+            boolean succ = new ReservationDB().deleteEntry(toBill);
+            if (succ)
+                System.out.println("Payment Successful! Thank you for staying with us.");
+            else
+                System.out.println("Something went wrong! Contact the administrators.");
+            return;
+        }
 
         if (choice == 2)
-            printBill();
+            printBill(checkout);
     }
 
-    // TODO : To amend after receiving Zaheen's implementation of calculation of
-    // time
     private static double computeRoomCharges(Reservation r) {
-        return 0;
+        int daysOfStay = r.getCheckOutDate().compareTo(r.getCheckInDate());
+        return ((double) daysOfStay) * (double) r.getReservedRoom().getRoomType().getRatePerNight();
     }
 
     // TODO : To amend after receiving Jayden's code.

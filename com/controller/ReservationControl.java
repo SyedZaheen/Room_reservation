@@ -14,8 +14,9 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationControl implements CreatorController<Reservation>, UpdatorController<Reservation> {
-
+public class ReservationControl
+        implements MasterController, CreatorController<Reservation>, UpdatorController<Reservation> {
+    @Override
     public void process() {
         Reservation reservation = null;
         boolean success = false;
@@ -179,6 +180,11 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
         ReservationStatuses reservationStatus;
         Guest payingGuest = null;
         boolean isValidDates = false;
+        System.out.println("Is the guest a walk-in or advanced reservation?");
+        boolean isWalkIn = Views.getUserChoice(new String[] {
+                "Walk-in Reservation",
+                "Advanced Reservation"
+        }) == 1;
 
         numberOfAdults = Views.getEachFieldFromUser(
                 "Please enter the number of non-paying adults: ",
@@ -204,34 +210,37 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
         System.out.println("Please enter the details for the paying adult: ");
         payingGuest = new GuestControl().manageCreateEntry(true);
         if (!gdb.createEntry(payingGuest))
-            System.out.println(" TODO: DEBUG ");
+            return null;
         guests.add(payingGuest);
 
         paymentType = payingGuest.getPaymentType();
         creditCardUsed = payingGuest.getCreditCard();
 
+
+        checkInDate = LocalDate.now();
         do {
+            if (isWalkIn) {
+                year = Views.<Integer>getEachFieldFromUser(
+                        "Please enter the year (For Check-In): ",
+                        "Error. Please enter a valid year!",
+                        i -> MiscUtils.isValidYear(i),
+                        "Integer");
 
-            year = Views.<Integer>getEachFieldFromUser(
-                    "Please enter the year (For Check-In): ",
-                    "Error. Please enter a valid year!",
-                    i -> MiscUtils.isValidYear(i),
-                    "Integer");
+                final Integer monthIn = Views.<Integer>getEachFieldFromUser(
+                        "Please enter the month (For Check-In): ",
+                        "Error. Please enter a valid month!",
+                        i -> MiscUtils.isValidMonth(i),
+                        "Integer");
 
-            final Integer monthIn = Views.<Integer>getEachFieldFromUser(
-                    "Please enter the month (For Check-In): ",
-                    "Error. Please enter a valid month!",
-                    i -> MiscUtils.isValidMonth(i),
-                    "Integer");
+                day = Views.<Integer>getEachFieldFromUser(
+                        "Please enter the day (For Check-In): ",
+                        "Error. Please enter a valid day!",
+                        i -> MiscUtils.isValidDay(i, monthIn),
+                        "Integer");
 
-            day = Views.<Integer>getEachFieldFromUser(
-                    "Please enter the day (For Check-In): ",
-                    "Error. Please enter a valid day!",
-                    i -> MiscUtils.isValidDay(i, monthIn),
-                    "Integer");
-
-            checkInDate = LocalDate.of(year, monthIn, day);
-
+                checkInDate = LocalDate.of(year, monthIn, day);
+            }
+            
             year = Views.<Integer>getEachFieldFromUser(
                     "Please enter the year (For Check-Out): ",
                     "Error. Please enter a valid year!",
@@ -252,7 +261,7 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
 
             checkOutDate = LocalDate.of(year, monthOut, day);
 
-            isValidDates = checkOutDate.compareTo(checkInDate) > 0 && !MiscUtils.dateBeforeNow(checkInDate) ;
+            isValidDates = checkOutDate.compareTo(checkInDate) > 0 && !MiscUtils.dateBeforeNow(checkInDate);
             if (!isValidDates)
                 System.out.println("The check in date is ahead of the checkout date! Try again!\n");
         } while (!isValidDates);
@@ -367,7 +376,7 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
         switch (choice) {
             case 1:
                 return toDelete;
-            
+
             default:
                 return null;
         }
