@@ -5,14 +5,13 @@ import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.Reservation;
-import java.time.*;
 
 public abstract class PaymentControl {
 
     public static void process() {
 
         int choice = Views.getUserChoice(new String[] {
-                "- Make payment and check out from room",
+                "Make payment and check out from room",
                 "Print payment slip"
         });
 

@@ -3,7 +3,6 @@ package com.controller;
 import com.Views;
 import com.db.guestDB.GuestDB;
 import com.db.reservationDB.ReservationDB;
-import com.db.roomDB.RoomDB;
 import com.enums.ReservationStatuses;
 import com.enums.PaymentType;
 import com.models.CreditCard;
@@ -316,7 +315,6 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
                 "Reservation Confirmed.",
                 "Reservation Checked-in.",
                 "Reservation Expired",
-                "Reservation Void",
                 "Return to menu"
         });
 
