@@ -4,8 +4,7 @@ public enum ReservationStatuses {
     CONFIRMED("Confirmed"),
     IN_WAITLIST("In Waitlist"),
     CHECKED_IN("Checked-in"),
-    EXPIRED("Expired"),
-    VOID("Voided");
+    EXPIRED("Expired");
 
     final public String inString;
 

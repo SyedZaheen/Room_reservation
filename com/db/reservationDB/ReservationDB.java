@@ -2,8 +2,10 @@ package com.db.reservationDB;
 
 import com.db.DB;
 import com.db.SerializeDB;
+import com.db.guestDB.GuestDB;
 import com.db.roomDB.RoomDB;
 import com.enums.ReservationStatuses;
+import com.enums.RoomStatuses;
 import com.models.Guest;
 import com.models.Reservation;
 import com.models.Room;
@@ -52,16 +54,29 @@ public class ReservationDB implements DB<Reservation> {
     }
 
     public boolean deleteEntry(Reservation r) {
-        // TODO
-        return false;
-    }
+        if (r == null)
+            return false;
+        GuestDB gDb = new GuestDB();
+        RoomDB rDB = new RoomDB();
+        // find the guest, delete
 
-    // TODO: Unimplmented function
-    public boolean searchByRoom(Room requestedRoom) {
-        if (new RoomDB().findVacantRoomByType(requestedRoom.getRoomType()) == null)
-            return true;
+        for (Guest g : r.getGuests()) {
+            gDb.deleteEntry(g);
+        }
 
-        return false;
+        // Find the room, update
+        rDB.updateRoomStatus(r.getReservedRoom(), RoomStatuses.VACANT);
+
+        // delete reservation
+        List<Reservation> newList = new ArrayList<>();
+        for (Reservation res : findAllEntries()) {
+            if (res.getReservationID() == r.getReservationID()) {
+                continue;
+            }
+            newList.add(res);
+        }
+        SerializeDB.writeSerializedObject(DB.FILE_PATH + RESERVATION_DB_FILE_NAME, newList);
+        return true;
     }
 
     public boolean roomIsOccupied(Room requestedRoom, LocalDate checkInDate, LocalDate checkoutDate) {

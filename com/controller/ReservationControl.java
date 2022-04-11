@@ -24,9 +24,10 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
         while (true) {
             int choice = Views.getUserChoice(new String[] {
                     "Create a new reservation",
-                    "Update reservation status/ delete reservation",
+                    "Update reservation status",
                     "Print all reservation IDs and paying guest name",
                     "Find reservation by reservation ID or paying guest name",
+                    "Delete entry",
                     "Go back to main menu"
             });
             switch (choice) {
@@ -49,6 +50,10 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
                     break;
 
                 case 2:
+                    if (rdb.isEmpty()) {
+                        System.out.println("There are no reservations for any room currently");
+                        break;
+                    }
                     reservation = manageUpdateEntry();
                     if (reservation == null)
                         return;
@@ -57,7 +62,7 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
 
                     if (success) {
                         System.out.println(
-                                "A new reservation was successfully updated! These are the current reservation data: ");
+                                "The reservation was successfully updated! These are the current reservation data: ");
 
                         System.out.println(reservation);
                     } else
@@ -131,8 +136,30 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
                             System.out.println("Could not find a reservation with that ID");
                     }
                     break;
-
                 case 5:
+                    if (rdb.isEmpty()) {
+                        System.out.println("There are no reservations for any room currently");
+                        break;
+                    }
+                    reservation = manageDeleteEntry();
+                    if (reservation == null)
+                        return;
+
+                    success = rdb.deleteEntry(reservation);
+
+                    if (success) {
+                        System.out.println(
+                                "The reservation with the following details were successfully deleted: \n");
+
+                        System.out.println(reservation);
+                        System.out.println(
+                                "\nNote: the guest details were also deleted, and the room status has been updated");
+                    } else
+                        System.out.println(
+                                "Something went wrong trying to save the reservation data. Contact the administrators.");
+
+                    break;
+                case 6:
                     return;
             }
         }
@@ -226,7 +253,7 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
 
             checkOutDate = LocalDate.of(year, monthOut, day);
 
-            isValidDates = checkOutDate.compareTo(checkInDate) > 0;
+            isValidDates = checkOutDate.compareTo(checkInDate) > 0 && !MiscUtils.dateBeforeNow(checkInDate) ;
             if (!isValidDates)
                 System.out.println("The check in date is ahead of the checkout date! Try again!\n");
         } while (!isValidDates);
@@ -266,12 +293,11 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
     @Override
     public Reservation manageUpdateEntry() {
 
-        System.out.println("Note: to delete resevation, change reservation status to 'Reservation Void' ");
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = Views.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
-                i -> (i >= 1e6 && i < 1e7),
+                i -> MiscUtils.isValidID(i),
                 "Integer");
 
         Reservation toUpdate = new ReservationDB().findSingleEntry(key);
@@ -310,9 +336,6 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
             case 4:
                 toUpdate.setReservationStatus(ReservationStatuses.EXPIRED);
                 break;
-            case 5:
-                toUpdate.setReservationStatus(ReservationStatuses.VOID);
-                break;
             default:
                 return null;
         }
@@ -320,4 +343,36 @@ public class ReservationControl implements CreatorController<Reservation>, Updat
         return toUpdate;
     }
 
+    public Reservation manageDeleteEntry() {
+        System.out.println("Reservation to be delete (Search by ID): ");
+        Integer key = Views.getEachFieldFromUser(
+                "Please enter the reservation ID: ",
+                "Error. Please enter a 6 digit number.",
+                i -> MiscUtils.isValidID(i),
+                "Integer");
+
+        Reservation toDelete = new ReservationDB().findSingleEntry(key);
+        if (toDelete == null) {
+            System.out.println(
+                    "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
+            return null;
+        }
+
+        System.out.println("\nReservation found! The following are the reservation details: ");
+        System.out.println(toDelete);
+        System.out.println("\nPlease confirm that you would like to delete this reservation: ");
+        int choice = Views.getUserChoice(new String[] {
+                "Confirm delete reservation",
+                "Return to menu"
+        });
+
+        switch (choice) {
+            case 1:
+                return toDelete;
+            
+            default:
+                return null;
+        }
+
+    }
 }

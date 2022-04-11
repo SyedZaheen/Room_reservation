@@ -1,5 +1,6 @@
 package com.db.guestDB;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
@@ -67,9 +68,27 @@ public class GuestDB implements DB<Guest> {
         }
         return match;
     }
-@Override
+
+    @Override
     public boolean isEmpty() {
         return findAllEntries().size() == 0;
+    }
+
+    public boolean deleteEntry(Guest toDelete) {
+        if (toDelete == null)
+            return false;
+        boolean found = false;
+        List<Guest> newList = new ArrayList<>();
+        for (Guest guest : findAllEntries()) {
+            if (guest.getGuestID() == toDelete.getGuestID()) {
+                found = true;
+                continue;
+            }
+            newList.add(guest);
+        }
+        SerializeDB.writeSerializedObject(DB.FILE_PATH + GUEST_DB_FILE_NAME, newList);
+        return found;
+
     }
 
     public boolean checkDuplicate(String name) {

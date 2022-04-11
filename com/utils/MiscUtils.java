@@ -1,5 +1,6 @@
 package com.utils;
 
+import java.time.LocalDate;
 import java.util.Random;
 
 
@@ -29,6 +30,11 @@ public abstract class MiscUtils {
 
     public static boolean isValidMonth(int i) {
         return i >= 1 && i <= 12;
+    }
+
+    public static boolean dateBeforeNow(LocalDate date)
+    {
+        return LocalDate.now().compareTo(date) > 0;
     }
 
     public static boolean isValidDay(int i, int month) {
@@ -64,7 +70,7 @@ public abstract class MiscUtils {
     }
 
     public static boolean roomNumberExists(Integer i) {
-        if (i < 100 || i > 999)
+        if (i < 100 || i > 499)
             return false;
 
         i %= 100;
