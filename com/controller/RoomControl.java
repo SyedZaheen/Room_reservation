@@ -1,13 +1,14 @@
 package com.controller;
 
-import java.sql.Date;
+import java.time.*;
+
+import com.Views;
 import com.db.roomDB.RoomDB;
 import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
-import com.utils.FrontendUtils;
 
-public class RoomControl implements Controller<Room> {
+public class RoomControl implements CreatorController<Room> {
 
     @Override
     public Room manageCreateEntry() {
@@ -26,7 +27,7 @@ public class RoomControl implements Controller<Room> {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = FrontendUtils.getUserChoice(new String[] {
+            int roomchoice = Views.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",
@@ -61,7 +62,7 @@ public class RoomControl implements Controller<Room> {
         return vacantRoom;
     }
 
-    public Room manageCreateEntry(Date cID, Date cOD) {
+    public Room manageCreateEntry(LocalDate cID, LocalDate cOD) {
         RoomTypes rType = null;
         RoomDB rmdb = new RoomDB();
 
@@ -77,7 +78,7 @@ public class RoomControl implements Controller<Room> {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = FrontendUtils.getUserChoice(new String[] {
+            int roomchoice = Views.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",
@@ -112,7 +113,7 @@ public class RoomControl implements Controller<Room> {
         return vacantRoom;
     }
 
-    private boolean all_Rooms_Are_Occupied(Date dt) {
+    private boolean all_Rooms_Are_Occupied(LocalDate dt) {
         return false;
     }
 

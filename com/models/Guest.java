@@ -1,10 +1,8 @@
 package com.models;
-
-import java.util.Random;
-
-import com.controller.GuestControl;
+import com.db.guestDB.GuestDB;
 import com.enums.IDType;
 import com.enums.PaymentType;
+import com.utils.MiscUtils;
 
 public class Guest implements Model<Guest> {
 
@@ -14,7 +12,7 @@ public class Guest implements Model<Guest> {
     private Boolean isPayingGuest;
     private PaymentType paymentType;
     private CreditCard creditCard;
-    private final int guestID = setGuestID(); // Because youre making this final, note that if we want to update 
+    private Integer guestID = setGuestID(); // Because youre making this final, note that if we want to update 
                                                                 // the guest using GuestDB.updateEntry(), we will need to query the entire
                                                                 // DB for that single guest object we want and edit its attributes
 
@@ -50,6 +48,7 @@ public class Guest implements Model<Guest> {
     public String toString() {
         String[] keys = new String[] {
                 "Name",
+                "Guest ID",
                 "Address",
                 "Country",
                 "Gender",
@@ -62,6 +61,7 @@ public class Guest implements Model<Guest> {
 
         String[] values = new String[] {
                 name,
+                guestID.toString(),
                 address,
                 country,
                 gender,
@@ -90,14 +90,19 @@ public class Guest implements Model<Guest> {
         return finalString;
     }
 
-    private int setGuestID(){
-        int id = new Random().nextInt(1000000);
-        if (GuestControl.checkDuplicateId(id)) {
+    private Integer setGuestID() {
+        int id = MiscUtils.generateID();
+        if (new GuestDB().checkDuplicate(id)) {
             return id;
-        }
-        else return setGuestID();
+        } else
+            return setGuestID();
     }
-    public int getID() {
+
+    public void setGuestID(int id) {
+        this.guestID = id;
+    }
+
+    public int getGuestID() {
         return this.guestID;
     }
 
@@ -113,6 +118,10 @@ public class Guest implements Model<Guest> {
         return paymentType;
     }
 
-    
+    public Boolean getIsPayingGuest() {
+        return isPayingGuest;
+    }
+
+
 
 }

@@ -1,6 +1,5 @@
 package com.db.roomserviceDB;
 
-
 import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
@@ -17,12 +16,12 @@ public class RoomServiceDB implements DB<RoomService> {
         // file
         listOfOrders = findAllEntries();
         listOfOrders.add(entry);
-        return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME, listOfOrders);
+        return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, listOfOrders);
     }
 
     @Override
     public List<RoomService> findAllEntries() {
-        return SerializeDB.<RoomService>readSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME);
+        return SerializeDB.<RoomService>readSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME);
     }
 
     public boolean updateEntry(RoomService rs) {
@@ -36,8 +35,12 @@ public class RoomServiceDB implements DB<RoomService> {
             }
         }
         return false;
-    } 
+    }
 
+    @Override
+    public boolean isEmpty() {
+        return findAllEntries().size() == 0;
+    }
 
 }
 

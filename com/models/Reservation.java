@@ -3,17 +3,17 @@ package com.models;
 import com.enums.ReservationStatuses;
 import com.enums.PaymentType;
 
-import java.sql.Date;
+import java.time.*;
 import java.util.ArrayList;
 
 public class Reservation implements Model<Reservation> {
 
     private Integer reservationID, numberOfAdults, numberOfChildren;
-    private ArrayList <Guest> guests;
+    private ArrayList<Guest> guests;
     private Room reservedRoom;
     private PaymentType paymentType;
     private CreditCard creditCardUsed;
-    private Date checkInDate, checkOutDate;
+    private LocalDate checkInDate, checkOutDate;
     private ReservationStatuses reservationStatus;
     private ArrayList<RoomService> roomServices;
 
@@ -21,12 +21,12 @@ public class Reservation implements Model<Reservation> {
             Integer reservationID,
             Integer numberOfAdults,
             Integer numberOfChildren,
-            ArrayList <Guest> guests,
+            ArrayList<Guest> guests,
             Room reservedRoom,
             PaymentType paymentType,
             CreditCard creditCardUsed,
-            Date checkInDate,
-            Date checkOutDate,
+            LocalDate checkInDate,
+            LocalDate checkOutDate,
             ReservationStatuses reservationStatus)
 
     {
@@ -52,7 +52,8 @@ public class Reservation implements Model<Reservation> {
                     "Guest " + (i + 1) + " : \n" + guests.get(i).toString() + "\n");
         }
 
-        String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString() : "No Credit Card";
+        String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString()
+                : "No Credit Card";
 
         String[] keys = new String[] {
                 "Reservation ID",
@@ -95,7 +96,7 @@ public class Reservation implements Model<Reservation> {
         return guests.get(guests.size() - 1);
     }
 
-    public Date getCheckInDate() {
+    public LocalDate getCheckInDate() {
         return this.checkInDate;
     }
 
@@ -127,7 +128,7 @@ public class Reservation implements Model<Reservation> {
         return roomServices;
     }
 
-    public Date getCheckOutDate() {
+    public LocalDate getCheckOutDate() {
         return this.checkOutDate;
     }
 

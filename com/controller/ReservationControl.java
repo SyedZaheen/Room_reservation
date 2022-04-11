@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.db.roomDB.RoomDB;
 import com.enums.ReservationStatuses;
@@ -8,25 +9,25 @@ import com.models.CreditCard;
 import com.models.Guest;
 import com.models.Reservation;
 import com.models.Room;
-import com.utils.FrontendUtils;
 import com.utils.MiscUtils;
-
-import java.sql.Date;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationControl implements Controller<Reservation> {
+public class ReservationControl implements CreatorController<Reservation>, UpdatorController<Reservation> {
+    
 
     public void process() {
         Reservation reservation = null;
         boolean success = false;
 
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Create a new reservation",
                 "Update reservation",
                 "Print all reservation IDs and paying guest name",
-                "Find reservation by guest name",
-                "Delete reservation"
+                "Find reservation by reservation ID or paying guest name",
+                "Delete reservation",
+                "Go back to main menu"
         });
 
         switch (choice) {
@@ -67,25 +68,24 @@ public class ReservationControl implements Controller<Reservation> {
                 break;
 
             case 3:
-                try {
-                    List<Reservation> r = new ReservationDB().findAllEntries();
-                    if (r.size() == 0) {
-                        System.out.println("There are no reservations currently");
-                        break;
-                    }
-                    for (Reservation eachReservation : r) {
-                        System.out.println("Reservation ID: " + eachReservation.getReservationID());
-                        System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
-                    }
 
-                } catch (NullPointerException npe) {
-                    System.out.println("There are no reservations currently");
+                List<Reservation> r = new ReservationDB().findAllEntries();
+                if (r.size() == 0) {
+                    System.out.println("There are no reservations for any room currently");
+                    break;
+                }
+                MiscUtils.printLightTransition();
+                System.out.println("The following are all the reservations in the DB currently: ");
+                for (Reservation eachReservation : r) {
+                    System.out.println("");
+                    System.out.println("Reservation ID: " + eachReservation.getReservationID());
+                    System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
                 }
 
                 break;
 
             case 4:
-                String key = FrontendUtils.getEachFieldFromUser(
+                String key = Views.getEachFieldFromUser(
                         "Please enter the name of the paying adult for the reservation: ",
                         "Error. please enter a string between 3 and 50 characters long.",
                         i -> MiscUtils.stringWithinLength(i, 3, 50),
@@ -104,6 +104,9 @@ public class ReservationControl implements Controller<Reservation> {
             case 5:
                 // Reservation toDelete = new
                 // reservation = manageDeleteEntry(toDelete);
+
+            case 6:
+                return;
         }
     }
 
@@ -115,25 +118,27 @@ public class ReservationControl implements Controller<Reservation> {
         PaymentType paymentType;
         CreditCard creditCardUsed;
         Room reservedRoom;
-        Date checkInDate, checkOutDate;
+        LocalDate checkInDate, checkOutDate;
         ReservationStatuses reservationStatus;
         Guest payingGuest = null;
 
-        numberOfAdults = FrontendUtils.getEachFieldFromUser(
+        numberOfAdults = Views.getEachFieldFromUser(
                 "Please enter the number of non-paying adults: ",
                 "Please enter a non-negative number up to 5.",
                 i -> (i >= 0 && i <= 5),
                 "Integer");
 
-        numberOfChildren = FrontendUtils.<Integer>getEachFieldFromUser(
+        numberOfChildren = Views.<Integer>getEachFieldFromUser(
                 "Please enter the number of children: ",
                 "Please enter a non-negative number up to 5.",
                 i -> (i >= 0 && i <= 5),
                 "Integer");
 
-        System.out.println("Please enter the details for the non-paying guests: ");
-        for (int j = 0; j < numberOfAdults + numberOfChildren; j++)
-            guests.add(new GuestControl().manageCreateEntry(false));
+        if (numberOfAdults + numberOfChildren != 0) {
+            System.out.println("Please enter the details for the non-paying guests: ");
+            for (int j = 0; j < numberOfAdults + numberOfChildren; j++)
+                guests.add(new GuestControl().manageCreateEntry(false));
+        }
 
         System.out.println("Please enter the details for the paying adult: ");
         payingGuest = new GuestControl().manageCreateEntry(true);
@@ -143,51 +148,51 @@ public class ReservationControl implements Controller<Reservation> {
 
         creditCardUsed = payingGuest.getCreditCard();
 
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
+        year = Views.<Integer>getEachFieldFromUser(
                 "Please enter the year (For Check-In): ",
                 "Error. Please enter a valid year!",
                 i -> MiscUtils.isValidYear(i),
                 "Integer");
 
-        monthIn = FrontendUtils.<Integer>getEachFieldFromUser(
+        monthIn = Views.<Integer>getEachFieldFromUser(
                 "Please enter the month (For Check-In): ",
                 "Error. Please enter a valid month!",
                 i -> MiscUtils.isValidMonth(i),
                 "Integer");
 
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
+        day = Views.<Integer>getEachFieldFromUser(
                 "Please enter the day (For Check-In): ",
                 "Error. Please enter a valid day!",
                 i -> MiscUtils.isValidDay(i, monthIn),
                 "Integer");
 
-        checkInDate = Date.valueOf(MiscUtils.dateConvertor(year, monthIn, day));
+        checkInDate = LocalDate.of(year, monthIn, day);
 
-        year = FrontendUtils.<Integer>getEachFieldFromUser(
+        year = Views.<Integer>getEachFieldFromUser(
                 "Please enter the year (For Check-Out): ",
                 "Error. Please enter a valid year!",
                 i -> MiscUtils.isValidYear(i),
                 "Integer");
 
-        monthOut = FrontendUtils.<Integer>getEachFieldFromUser(
+        monthOut = Views.<Integer>getEachFieldFromUser(
                 "Please enter the month (For Check-Out): ",
                 "Error. Please enter a valid month!",
                 i -> MiscUtils.isValidMonth(i),
                 "Integer");
 
-        day = FrontendUtils.<Integer>getEachFieldFromUser(
+        day = Views.<Integer>getEachFieldFromUser(
                 "Please enter the day (For Check-Out): ",
                 "Error. Please enter a valid day!",
                 i -> MiscUtils.isValidDay(i, monthOut),
                 "Integer");
 
-        checkOutDate = Date.valueOf(MiscUtils.dateConvertor(year, monthOut, day));
+        checkOutDate = LocalDate.of(year, monthOut, day);
 
         boolean hotelIsFull = new RoomDB().checkIfHotelIsFull(checkInDate, checkOutDate);
         if (hotelIsFull) {
             System.out.println(
                     "It seems that all of the hotel rooms are full during this timing! Select from the options below: ");
-            int choice = FrontendUtils.getUserChoice(new String[] {
+            int choice = Views.getUserChoice(new String[] {
                     "Choose new date",
                     "Go back to Main Menu"
             });
@@ -208,16 +213,18 @@ public class ReservationControl implements Controller<Reservation> {
         Reservation newReservation = new Reservation(reservationID, numberOfAdults, numberOfChildren, guests,
                 reservedRoom, paymentType, creditCardUsed, checkInDate, checkOutDate, reservationStatus);
 
-        if (!FrontendUtils.<Reservation>userDoubleConfirmDetails(newReservation))
+        if (!Views.<Reservation>userDoubleConfirmDetails(newReservation))
             newReservation = manageCreateEntry();
 
         return newReservation;
     }
 
-    private Reservation manageUpdateEntry() {
+    @Override
+    public Reservation manageUpdateEntry() {
+        // TODO: Print out all the reservations currently
 
         System.out.println("Reservation to be updated (Search by ID): ");
-        Integer key = FrontendUtils.getEachFieldFromUser(
+        Integer key = Views.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
@@ -230,7 +237,7 @@ public class ReservationControl implements Controller<Reservation> {
         }
 
         System.out.println("Please update reservation details: ");
-        int choice = FrontendUtils.getUserChoice(new String[] {
+        int choice = Views.getUserChoice(new String[] {
                 "Reservation in Waitlist.",
                 "Reservation Confirmed.",
                 "Reservation Checked-in.",

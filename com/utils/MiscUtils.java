@@ -1,15 +1,14 @@
 package com.utils;
 
-import com.models.MenuItem;
+import java.util.Random;
+
 
 public abstract class MiscUtils {
-    public static boolean isValidSingaporeNumber(int j)
-    {
-        return j > 6* 1e7 && j < 1e8;
+    public static boolean isValidSingaporeNumber(int j) {
+        return j > 6 * 1e7 && j < 1e8;
     }
 
-    public static boolean stringWithinLength(String str, int min, int max)
-    {
+    public static boolean stringWithinLength(String str, int min, int max) {
         return str.length() >= min && str.length() <= max;
     }
 
@@ -35,7 +34,7 @@ public abstract class MiscUtils {
     public static boolean isValidDay(int i, Integer month) {
 
         boolean value;
-        switch(month) {
+        switch (month) {
             case 2:
                 value = i >= 1 && i <= 29;
                 break;
@@ -57,25 +56,38 @@ public abstract class MiscUtils {
 
     public static String dateConvertor(Integer year, Integer month, Integer day) {
         String date = "";
-        
+
         date = date.concat(
-            year.toString() + "-" + month.toString() + "-" + day.toString()
-        );
+                year.toString() + "-" + month.toString() + "-" + day.toString());
 
         return date;
     }
 
     public static boolean roomNumberExists(Integer i) {
-        if(i < 100 || i > 999)
+        if (i < 100 || i > 999)
             return false;
 
         i %= 100;
-        if(i < 1 || i > 12)
+        if (i < 1 || i > 12)
             return false;
 
         return true;
     }
 
+    public static boolean isValidID(int id) {
+        return id >= 1e6 && id < 1e7;
+    }
 
+    public static void printTransition() {
+        System.out.println("=========================================================");
+
+    }
+
+    public static int generateID() {
+        return new Random().nextInt(1000000) + (new Random().nextInt(9) + 1) * 1000000;
+    }
+
+    public static void printLightTransition() {
+        System.out.println("_________________________________________________________\n");
+    }
 }
-
