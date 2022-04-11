@@ -3,6 +3,8 @@ package com.db.reservationDB;
 import com.db.DB;
 import com.db.SerializeDB;
 import com.db.roomDB.RoomDB;
+import com.enums.ReservationStatuses;
+import com.models.Guest;
 import com.models.Reservation;
 import com.models.Room;
 
@@ -23,7 +25,8 @@ public class ReservationDB implements DB<Reservation> {
 
         listOfReservations.add(resv);
 
-        return SerializeDB.<Reservation>writeSerializedObject(RESERVATION_DB_FILE_NAME, listOfReservations);
+        return SerializeDB.<Reservation>writeSerializedObject(DB.FILE_PATH + RESERVATION_DB_FILE_NAME,
+                listOfReservations);
     }
 
     @Override
@@ -32,14 +35,19 @@ public class ReservationDB implements DB<Reservation> {
                 DB.FILE_PATH + RESERVATION_DB_FILE_NAME);
     }
 
-    // TODO : To implement method
     public boolean updateEntry(Reservation resv) {
-
-        return false;
-    }
-
-    // TODO : Flawed logic for time series.
-    public boolean searchByDate(LocalDate checkInDate) {
+        if (resv == null)
+            return false;
+        int rmnumber = resv.getReservationID();
+        listOfReservations = findAllEntries();
+        for (int i = 0; i < listOfReservations.size(); i++) {
+            if (rmnumber == listOfReservations.get(i).getReservationID()) {
+                listOfReservations.set(i, resv);
+                SerializeDB.<Reservation>writeSerializedObject(DB.FILE_PATH + RESERVATION_DB_FILE_NAME,
+                        listOfReservations);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -56,20 +64,59 @@ public class ReservationDB implements DB<Reservation> {
         return false;
     }
 
-    public boolean isOccupied(Room requestedRoom, LocalDate checkInDate) {
-        if (searchByRoom(requestedRoom) && searchByDate(checkInDate))
-            return true;
+    public boolean roomIsOccupied(Room requestedRoom, LocalDate checkInDate, LocalDate checkoutDate) {
 
-        return false;
+        boolean vacant = true;
+
+        for (Reservation reservation : findAllEntries()) {
+            if (reservation.getReservedRoom().getRoomNumber() == requestedRoom.getRoomNumber()) {
+                if (reservationClash(reservation, checkInDate, checkoutDate))
+                    vacant = false;
+            }
+        }
+        return !vacant;
     }
 
-    public Reservation findReservationByID(Integer reservationID) {
+    public Reservation findSingleEntry(Integer reservationID) {
         for (Reservation eachReservation : findAllEntries()) {
             if (reservationID == eachReservation.getReservationID())
                 return eachReservation;
         }
 
         return null;
+    }
+
+    public Reservation findSingleEntry(String guestName) {
+
+        for (Reservation eachReservation : findAllEntries()) {
+            List<Guest> guests = eachReservation.getGuests();
+            for (Guest g : guests) {
+                if (g.getName().equals(guestName)) {
+                    return eachReservation;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public boolean checkIfHotelIsFull(LocalDate checkInDate, LocalDate checkOutDate) {
+        // Get all reservations
+        boolean isFull = true;
+        RoomDB rdb = new RoomDB();
+        List<Room> rooms = rdb.findAllEntries();
+        for (Room room : rooms) {
+            if (!roomIsOccupied(room, checkInDate, checkOutDate))
+                isFull = false;
+        }
+        return isFull;
+    }
+
+    public boolean reservationClash(Reservation target, LocalDate checkInDate, LocalDate checkOutDate) {
+        // only no clash if checkindate AFTER target.checkout AND tartget.chein AFTER
+        // cehckout
+        return !(target.getCheckInDate().compareTo(checkOutDate) >= 0
+                && checkInDate.compareTo(target.getCheckOutDate()) >= 0);
     }
 
     @Override

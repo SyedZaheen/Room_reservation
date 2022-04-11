@@ -13,6 +13,7 @@ public class Room implements Model<Room> {
 
         this.status = status;
         this.roomType = roomType;
+        this.roomNumber = roomNumber;
     }
 
     public RoomTypes getRoomType() {

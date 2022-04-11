@@ -15,7 +15,7 @@ public class HotelApp {
         MiscUtils.printTransition();
         System.out.println("\n\n");
 
-        System.out.println("What would you like to do today?: ");
+        System.out.println("What would you like to do today? ");
         while (true) {
             choice = showMainMenuAndReturnChoice();
 
@@ -48,9 +48,9 @@ public class HotelApp {
         return Views.getUserChoice(new String[] {
                 "Manage Guests\n - See all guests' details\n - Update guest's details\n - Find guest by name\n",
                 "Manage Reservations\n - Create new reservation\n - Update reservation status (e.g. check in)\n - See all reservations\n - Find reservation\n - Delete Reservation\n",
-                "Manage Room Service Orders\n - Create new room service order\n - Update/Cancel current order status\n - Manage room service menu items\n",
-                "Manage Payment\n - Make payment and check out from room \n - See payment slip for reservation\n",
-                "Manage Rooms\n - See room availabilities\n",
+                // "Manage Room Service Orders\n - Create new room service order\n - Update/Cancel current order status\n - Manage room service menu items\n",
+                // "Manage Payment\n - Make payment and check out from room \n - See payment slip for reservation\n",
+                // "Manage Rooms\n - See room availabilities\n",
                 "Quit application\n",
         });
     }

@@ -47,7 +47,7 @@ public class Reservation implements Model<Reservation> {
     public String toString() {
 
         String allGuests = "";
-        for (int i = 0; i < (numberOfAdults + numberOfChildren); i++) {
+        for (int i = 0; i < (numberOfAdults + numberOfChildren +1); i++) {
             allGuests = allGuests.concat(
                     "Guest " + (i + 1) + " : \n" + guests.get(i).toString() + "\n");
         }

@@ -34,7 +34,7 @@ public abstract class PaymentControl {
                 i -> (i >= 1e6 && i < 1e7),
                 "Integer");
 
-        Reservation toCheckOut = new ReservationDB().findReservationByID(reservationID);
+        Reservation toCheckOut = new ReservationDB().findSingleEntry(reservationID);
         if (toCheckOut == null) {
             System.out.println("Reservation ID is invalid!");
             return;
@@ -53,7 +53,7 @@ public abstract class PaymentControl {
                 i -> (i >= 1e6 && i < 1e7),
                 "Integer");
 
-        Reservation toBill = new ReservationDB().findReservationByID(reservationID);
+        Reservation toBill = new ReservationDB().findSingleEntry(reservationID);
 
         int discountChoice = Views.<Integer>getEachFieldFromUser(
                 "Do you wish to apply a discount? (1) Apply discount.\n(2) Do not have discount.",

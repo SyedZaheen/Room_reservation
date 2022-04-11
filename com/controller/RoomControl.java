@@ -67,7 +67,7 @@ public class RoomControl implements CreatorController<Room> {
         RoomDB rmdb = new RoomDB();
 
         // Display all room options to user
-        System.out.println("The following are the room options avaliable currently: ");
+        System.out.println("The following are the room options for this hotel: ");
         System.out.println("");
         printRoomOptionByType(RoomTypes.SINGLE);
         printRoomOptionByType(RoomTypes.DOUBLE);
@@ -82,7 +82,8 @@ public class RoomControl implements CreatorController<Room> {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",
-                    "VIP Suite"
+                    "VIP Suite",
+                    "Return to reservation menu"
             });
 
             switch (roomchoice) {
@@ -98,12 +99,14 @@ public class RoomControl implements CreatorController<Room> {
                 case 4:
                     rType = RoomTypes.VIPSUITE;
                     break;
+                case 5:
+                    return null;
                 default:
-                    break;
+                    return null;
             }
             if (rmdb.findVacantRoom(rType, cID, cOD) == null)
-                System.out.println("That room type is all occupied! Please choose another room!");
-        } while (rmdb.findVacantRoom(rType, cID, cOD) != null);
+                System.out.println("That room type is occupied during that time! Please choose another room!");
+        } while (rmdb.findVacantRoom(rType, cID, cOD) == null);
         // Update the db that the room is occupied
         Room vacantRoom = rmdb.findVacantRoom(rType, cID, cOD);
 
@@ -113,9 +116,6 @@ public class RoomControl implements CreatorController<Room> {
         return vacantRoom;
     }
 
-    private boolean all_Rooms_Are_Occupied(LocalDate dt) {
-        return false;
-    }
 
     private void printRoomOptionByType(RoomTypes rt) {
         System.out.println("Type: " + rt.inString);

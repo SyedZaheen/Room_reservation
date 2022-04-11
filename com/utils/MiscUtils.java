@@ -31,7 +31,7 @@ public abstract class MiscUtils {
         return i >= 1 && i <= 12;
     }
 
-    public static boolean isValidDay(int i, Integer month) {
+    public static boolean isValidDay(int i, int month) {
 
         boolean value;
         switch (month) {
