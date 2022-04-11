@@ -18,7 +18,6 @@ public class Test {
                 List<Guest> g = new ArrayList<>();
                 List<Reservation> r = new ArrayList<>();
                 SerializeDB.writeSerializedObject(DB.FILE_PATH + "guestDB/listOfGuests.ser", g);
-
                 SerializeDB.writeSerializedObject(DB.FILE_PATH + "reservationDB/all_reservations_data.ser", r);
         }
 }
