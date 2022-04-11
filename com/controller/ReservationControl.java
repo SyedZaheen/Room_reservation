@@ -23,7 +23,7 @@ public class ReservationControl
         ReservationDB rdb = new ReservationDB();
         while (true) {
             int choice = Views.getUserChoice(new String[] {
-                    "Create a new reservation",
+                    "Create a new reservation (walk-in or advanced)",
                     "Update reservation status",
                     "Print all reservation IDs and paying guest name",
                     "Find reservation by reservation ID or paying guest name",
@@ -82,7 +82,7 @@ public class ReservationControl
                     System.out.println("The following are all the reservations in the DB currently: ");
                     for (Reservation eachReservation : r) {
                         System.out.println("");
-                        System.out.println("Reservation ID: " + eachReservation.getReservationID());
+                        System.out.println("Reservation ID: " + eachReservation.getReservationID() );
                         System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
                     }
 
@@ -110,8 +110,10 @@ public class ReservationControl
 
                         Reservation foundReservation = rdb.findSingleEntry(key);
                         if (foundReservation != null) {
-                            System.out.println("The following are the relevant resevation data: ");
+                            System.out.println("\nThe following are the relevant resevation data: ");
                             System.out.println(foundReservation);
+                            System.out.println("");
+                            found = true;
                         }
 
                         if (!found)
@@ -122,7 +124,7 @@ public class ReservationControl
                         boolean found = false;
                         Integer key = Views.<Integer>getEachFieldFromUser(
                                 "Please enter the reservation ID: ",
-                                "Error. Please enter a 6 digit number",
+                                "Error. Please enter a 7 digit number",
                                 i -> MiscUtils.isValidID(i),
                                 "Integer");
 
@@ -130,6 +132,8 @@ public class ReservationControl
                         if (foundReservation != null) {
                             System.out.println("The following are the relevant resevation data: ");
                             System.out.println(foundReservation);
+                            System.out.println("");
+                            found = true;
                         }
 
                         if (!found)
@@ -216,7 +220,6 @@ public class ReservationControl
         paymentType = payingGuest.getPaymentType();
         creditCardUsed = payingGuest.getCreditCard();
 
-
         checkInDate = LocalDate.now();
         do {
             if (isWalkIn) {
@@ -240,7 +243,7 @@ public class ReservationControl
 
                 checkInDate = LocalDate.of(year, monthIn, day);
             }
-            
+
             year = Views.<Integer>getEachFieldFromUser(
                     "Please enter the year (For Check-Out): ",
                     "Error. Please enter a valid year!",
@@ -285,7 +288,7 @@ public class ReservationControl
         if (reservedRoom == null)
             return null;
 
-        reservationStatus = ReservationStatuses.CONFIRMED;
+        reservationStatus = isWalkIn ? ReservationStatuses.CHECKED_IN : ReservationStatuses.CONFIRMED;
 
         Integer reservationID = MiscUtils.generateID();
 
@@ -304,7 +307,7 @@ public class ReservationControl
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = Views.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
+                "Error. Please enter a 7 digit number.",
                 i -> MiscUtils.isValidID(i),
                 "Integer");
 
@@ -354,7 +357,7 @@ public class ReservationControl
         System.out.println("Reservation to be delete (Search by ID): ");
         Integer key = Views.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
+                "Error. Please enter a 7 digit number.",
                 i -> MiscUtils.isValidID(i),
                 "Integer");
 

@@ -49,7 +49,7 @@ public class Reservation implements Model<Reservation> {
         String allGuests = "";
         for (int i = 0; i < (numberOfAdults + numberOfChildren +1); i++) {
             allGuests = allGuests.concat(
-                    "Guest " + (i + 1) + " : \n" + guests.get(i).toString() + "\n");
+                    "\n\n Guest " + (i + 1) + " : " + guests.get(i).toString() + "\n");
         }
 
         String creditCardUsedString = creditCardUsed != null ? "Credit Card: \n" + creditCardUsed.toString()
@@ -60,7 +60,7 @@ public class Reservation implements Model<Reservation> {
                 "Paying Guest Name",
                 "Number of Adults",
                 "Number of Children",
-                "Reserved Room",
+                "Reserved Room Number",
                 "Guests",
                 "Payment Type",
                 "Credit Card Used",
@@ -74,7 +74,7 @@ public class Reservation implements Model<Reservation> {
                 guests.get(guests.size() - 1).getName(),
                 numberOfAdults.toString(),
                 numberOfChildren.toString(),
-                reservedRoom.toString(),
+                reservedRoom.getRoomNumber().toString(),
                 allGuests,
                 paymentType.inString,
                 creditCardUsedString,
@@ -129,11 +129,11 @@ public class Reservation implements Model<Reservation> {
     }
 
     public LocalDate getCheckOutDate() {
-        return this.checkOutDate;
+        return checkOutDate;
     }
 
     public int getReservationID() {
-        return 0;
+        return reservationID;
     }
 
     public ArrayList<Guest> getGuests() {
