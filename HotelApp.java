@@ -28,15 +28,15 @@ public class HotelApp {
                 case 2:
                     new ReservationControl().process();
                     break;
-                case 3:
-                    new RoomServiceControl().manageCreateEntry();
-                    break;
-                case 4:
-                    new RoomServiceControl().manageUpdateOrderStatus();
-                    break;
-                case 5:
-                    PaymentControl.process();
-                    break;
+                // case 3:
+                //     new RoomServiceControl().manageCreateEntry();
+                //     break;
+                // case 4:
+                //     new RoomServiceControl().manageUpdateOrderStatus();
+                //     break;
+                // case 5:
+                //     PaymentControl.process();
+                //     break;
 
                 default:
                     return;
