@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
-import com.db.menuDB.MenuItemDB;
 import com.db.roomDB.RoomDB;
 import com.enums.IDType;
 import com.enums.PaymentType;
@@ -17,10 +16,11 @@ import com.views.UserInputViews;
 // TODO: DELETE FUNCTION WHEN DONE!
 public class Test {
         public static void main(String[] args) {
-                List<MenuItem> rms = new MenuItemDB().findAllEntries();
-
-                for (MenuItem menuItem : rms) {
-                        System.out.println(menuItem);
-                }
+                List<MenuItem> rms = new ArrayList<>();
+                rms.add(new MenuItem("Chicken Rice", "Delicious Rice served with chicken", 21));
+                rms.add(new MenuItem("Fish Rice", "Delicious Rice served with Fish", 10.5));
+                rms.add(new MenuItem("Beef Rice", "Delicious Rice served with Beef", 30));
+                rms.add(new MenuItem("Not rice", "It's not actually rice this time I promise", 5));
+                SerializeDB.writeSerializedObject(DB.FILE_PATH + "/menuDB/all_menu_items.ser", rms);
         }
 }

@@ -28,15 +28,15 @@ public class MenuViews implements Views {
                     break;
 
                 case 2:
-                    if (controller.manageMutateEntry() == null)
-                        System.out.println("Something went wrong trying to save the menu item");
-                    else
-                        System.out.println("Menu item has been successfully added to the menu");
+                    if (controller.manageMutateEntry() != null)
+                    
+                        System.out.println("Menu has been successfully updated");
                     break;
                 case 3:
                     for (MenuItem item : new MenuItemDB().findAllEntries()) {
                         System.out.println(item + "\n");
                     }
+                    break;
                 default:
                     return;
             }
