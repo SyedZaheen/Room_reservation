@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.models.Menu;
-import com.models.MenuItem;
 import com.models.Order;
 import com.models.Reservation;
 import com.models.RoomService;
@@ -68,26 +67,6 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         }
     }
 
-    // public void printServiceOrders(RoomService rsv) {
-    // Integer count = 1;
-    // int roomServiceID = rsv.getRoomServiceID();
-
-    // System.out.println("Orders: ");
-    // for (RoomService eachRoomService : new RoomServiceDB().findAllEntries()) {
-    // if (roomServiceID == eachRoomService.getRoomServiceID()) {
-    // for (Order menuitem : eachRoomService.getOrders()) {
-    // System.out.println("Order number:" + count.toString() + " : " +
-    // menuitem.toString() + "\n"); // print
-    // // order
-    // // with
-    // // number
-    // count++;
-    // }
-    // }
-    // break;
-    // }
-    // }
-
     public RoomService getRoomServiceFromDB(int RoomServiceID) {
         for (RoomService eachRoomService : new RoomServiceDB().findAllEntries()) {
             if (RoomServiceID == eachRoomService.getRoomServiceID()) {
@@ -98,13 +77,17 @@ public class RoomServiceControl implements CreatorController<RoomService> {
     }
 
     public void manageUpdateEntry(RoomService rsv) {
+        RoomServiceDB db = new RoomServiceDB();
 
         List<Order> orders = rsv.getOrders();
         int ch;
-
+        System.out.println(
+                "\nA guest is only entitled to pay for the room service only after ALL of the order statuses are completed!\n");
+        if (attachToReservation(rsv))
+            return;
         for (Order order : orders) {
-            System.out.println("The current status of the " + order.getName() + " is " + order.getStatus().inString);
-            System.out.printf("What would you like to change the order of the " + order.getName() + "to?");
+            System.out.println("The current status of the " + order.getName() + " is: " + order.getStatus().inString);
+            System.out.printf("What would you like to change the order of the " + order.getName() + " to?");
             ch = UserInputViews.getUserChoice(new String[] {
                     "Preparing",
                     "Completed",
@@ -128,35 +111,75 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         }
         System.out.println("\n The following is the summary of orders: \n");
         viewOrder(rsv.getOrders());
-        if (allOrdersCompleted(rsv.getOrders())){
-            
-        } else
-        System.out.println("All have been updated!");
 
-        // System.out.println("Reservation of the guest who had order the room service,
-        // to be updated: ");
-        // Integer key = UserInputViews.getEachFieldFromUser(
-        // "Please enter the reservation ID: ",
-        // "Error. Please enter a 7 digit number.",
-        // i -> MiscUtils.isValidID(i),
-        // "Integer");
+        if (attachToReservation(rsv))
+            return;
 
-        // Reservation toUpdate = new ReservationDB().findSingleEntry(key);
-        // if (toUpdate == null) {
-        // System.out.println(
-        // "Reservation ID does not exist! Check the full reservation list to see if the
-        // ID is correct");
-        // return;
-        // }
-
-        // System.out.println("\nReservation found! The following are the reservation
-        // details: ");
-        // System.out.println(toUpdate);
+        if (db.updateEntry(rsv))
+            System.out.println("All have been updated!");
+        else
+            System.out.println("Something went wrong. Contact the administrators");
 
     }
 
-    private boolean allOrdersCompleted(List<Order> list) {
+    private boolean attachToReservation(RoomService rsv) {
+        int ch;
+        RoomServiceDB db = new RoomServiceDB();
+        ReservationDB reservationDB = new ReservationDB();
+        if (!allOrdersCompleted(rsv.getOrders()))
+            return false;
+
+        System.out.println(
+                "All of the necessary orders have been completed! Would you like to attach the payment for the service to the guest's reservation?");
+        ch = UserInputViews.getUserChoice(new String[] {
+                "Yes",
+                "No. I would want to do that later. "
+        });
+
+        if (ch == 2)
+            return false;
+
+        System.out.println("Reservation of the guest who had order the room service, to be updated: ");
+        Integer key = UserInputViews.getEachFieldFromUser(
+                "Please enter the reservation ID: ",
+                "Error. Please enter a 7 digit number.",
+                i -> MiscUtils.isValidID(i),
+                "Integer");
+
+        Reservation toUpdate = new ReservationDB().findSingleEntry(key);
+        if (toUpdate == null) {
+            System.out.println(
+                    "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
+            return false;
+        }
+
+        System.out.println("\nReservation found! The following are the reservation details: ");
+        System.out.println(toUpdate);
+        ArrayList<RoomService> ls = toUpdate.getRoomServices();
+        ls.add(rsv);
+        toUpdate.setRoomServices(ls);
+
+        if (reservationDB.updateEntry(toUpdate) && db.deleteEntry(rsv)) {
+            System.out.println("Orders considered done, guest will now be charged with the payment for the room service.");
+            return true;
+        }
+
         return false;
+    }
+
+    private boolean allOrdersCompleted(List<Order> list) {
+        if (list.isEmpty())
+            return false;
+
+        boolean allAreCompleted = true;
+        for (Order order : list) {
+            if (order.getStatus() != OrderStatus.COMPLETED) {
+                allAreCompleted = false;
+                break;
+            }
+        }
+
+        return allAreCompleted;
     }
 
 }

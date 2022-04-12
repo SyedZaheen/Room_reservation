@@ -47,4 +47,20 @@ public class RoomServiceDB implements DB<RoomService> {
         return findAllEntries().isEmpty();
     }
 
+    public boolean deleteEntry(RoomService toDelete) {
+        if (toDelete == null)
+            return false;
+        boolean found = false;
+        List<RoomService> newList = new ArrayList<>();
+        for (RoomService roomService : findAllEntries()) {
+            if (roomService.getRoomServiceID() == toDelete.getRoomServiceID()) {
+                found = true;
+                continue;
+            }
+            newList.add(roomService);
+        }
+        SerializeDB.writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, newList);
+        return found;
+    }
+
 }

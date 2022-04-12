@@ -1,4 +1,4 @@
-package com.models;
+package testing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import com.db.SerializeDB;
 import com.db.roomDB.RoomDB;
 import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
+import com.models.Model;
+import com.models.Room;
 
 public class Hotel implements Model<Hotel> {
 
