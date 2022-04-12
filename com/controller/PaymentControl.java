@@ -1,11 +1,16 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
-import com.enums.RoomStatuses;
+import com.models.MenuItem;
 import com.models.Reservation;
-import java.time.*;
+import com.models.RoomService;
+import com.utils.MiscUtils;
+import com.enums.OrderStatus;
 
 public abstract class PaymentControl {
 
@@ -73,7 +78,9 @@ public abstract class PaymentControl {
         System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
         System.out.printf("Net Total Room Charges: %.2f\n", computeRoomCharges(toBill));
         System.out.println("");
-        System.out.printf("Net Total Room Service Charges: %.2f\n", computeRoomServiceCharges(toBill));
+        System.out.println("Menu Item : Price");
+        printMenuItemDetails(toBill);
+        System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
         System.out.printf("Additional Surcharges: %.2f\n", computeTax(toBill));
 
@@ -115,13 +122,31 @@ public abstract class PaymentControl {
 
     // TODO : To amend after receiving Jayden's code.
     private static double computeRoomServiceCharges(Reservation r) {
-        return 0;
+        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
+        double totalCharge = 0; 
+        for (RoomService roomService : listOfRoomServices) {
+            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
+            for (MenuItem menuitem : orderlist.keySet()) {
+               totalCharge += menuitem.getPrice();
+            }
+        }
+        return totalCharge;
     }
 
     private static double computeTax(Reservation r) {
         final double TAX = 17;
         return ((TAX / 100.0) * (computeRoomCharges(r) + computeRoomServiceCharges(r)));
 
+    }
+
+    private static void printMenuItemDetails(Reservation r) {
+        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
+        for (RoomService roomService : listOfRoomServices) {
+            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
+            for (MenuItem menuitem : orderlist.keySet()) {
+               System.out.println(menuitem);
+            }
+        }
     }
 
     // Ask the user for the name of the guest paying

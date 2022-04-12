@@ -14,4 +14,11 @@ public class MenuItem {
     public String toString() {
         return String.format("%s: %s - %.2f", this.name, this.description, this.price);
     }
+
+    public double getPrice() {
+        return this.price;
+    }
+    
 }
+
+
