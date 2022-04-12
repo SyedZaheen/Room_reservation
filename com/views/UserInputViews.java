@@ -1,4 +1,4 @@
-package com;
+package com.views;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,7 +6,9 @@ import java.util.Scanner;
 import com.utils.AnonymousFunction;
 import com.utils.MiscUtils;
 
-public abstract class Views {
+public abstract class UserInputViews {
+
+    public abstract void process();
 
     public static int getUserChoice(String[] choices) {
         @SuppressWarnings("resource") /*

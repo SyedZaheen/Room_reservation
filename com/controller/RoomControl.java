@@ -2,19 +2,15 @@ package com.controller;
 
 import java.time.*;
 
-import com.Views;
 import com.db.roomDB.RoomDB;
 import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
+import com.views.UserInputViews;
 
-public class RoomControl implements CreatorController<Room>, MasterController {
+public class RoomControl implements CreatorController<Room> {
 
-    @Override
-    public void process()
-    {
-
-    }
+    
 
     @Override
     public Room manageCreateEntry() {
@@ -28,7 +24,7 @@ public class RoomControl implements CreatorController<Room>, MasterController {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = Views.getUserChoice(new String[] {
+            int roomchoice = UserInputViews.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",
@@ -74,7 +70,7 @@ public class RoomControl implements CreatorController<Room>, MasterController {
         System.out.println("Please enter your room type choice: ");
 
         do {
-            int roomchoice = Views.getUserChoice(new String[] {
+            int roomchoice = UserInputViews.getUserChoice(new String[] {
                     "Single Room",
                     "Double Room",
                     "Deluxe Room",

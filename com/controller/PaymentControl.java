@@ -1,41 +1,15 @@
 package com.controller;
 
-import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.models.Reservation;
 import com.utils.MiscUtils;
+import com.views.UserInputViews;
 
-public class PaymentControl implements MasterController {
-    @Override
-    public void process() {
+public class PaymentControl {
 
-        int choice;
-
-        while (true) {
-
-            choice = Views.getUserChoice(new String[] {
-                    "Make payment and check out from room",
-                    "See payment slip for reservation",
-                    "Return to main menu"
-            });
-
-            switch (choice) {
-                case 1:
-                    printBill(true);
-                    break;
-
-                case 2:
-                    printBill(false);
-                    break;
-                default:
-                    return;
-            }
-        }
-    }
-
-    private void printBill(boolean checkout) {
-        int reservationID = Views.<Integer>getEachFieldFromUser(
+    public void printBill(boolean checkout) {
+        int reservationID = UserInputViews.<Integer>getEachFieldFromUser(
                 "Please enter the reservation ID to see reservation bill: ",
                 "Error. Please enter a 7 digit number.",
                 i -> MiscUtils.isValidID(i),
@@ -51,7 +25,7 @@ public class PaymentControl implements MasterController {
         System.out.println(toBill);
         System.out.println("");
 
-        int discountChoice = Views.<Integer>getEachFieldFromUser(
+        int discountChoice = UserInputViews.<Integer>getEachFieldFromUser(
                 "Does the guest have a valid discount? (1) Apply discount.\n(2) Do not have discount.",
                 "Error. Please enter either 1 or 2.",
                 i -> (i == 1 || i == 2),
@@ -59,7 +33,7 @@ public class PaymentControl implements MasterController {
 
         double discount = 1D;
         if (discountChoice == 1) {
-            discount = Views.<Double>getEachFieldFromUser(
+            discount = UserInputViews.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
                     "Error. Please enter a valid non-integer value between 0 and 1 (exclusive)!",
                     i -> (i > 0 && i < 1),
@@ -67,6 +41,7 @@ public class PaymentControl implements MasterController {
         }
         MiscUtils.printLightTransition();
         System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
+        System.out.println("Number of nights of stay: " + toBill.getCheckOutDate().compareTo(toBill.getCheckInDate()));
         System.out.printf("Net Total Room Charges: %.2d\n", computeRoomCharges(toBill));
         System.out.println("");
         System.out.printf("Net Total Room Service Charges: %.2f\n", computeRoomServiceCharges(toBill));
@@ -94,14 +69,14 @@ public class PaymentControl implements MasterController {
             System.out.println("Payment by cash (SGD only)");
 
         System.out.println("\nPlease confirm that the above bill is correct: ");
-        int choice = Views.getUserChoice(new String[] {
+        int choice = UserInputViews.getUserChoice(new String[] {
                 "Enter 1 if the above data are all correct",
                 "Enter 2 if the data has errors"
         });
 
         if (choice == 1) {
             System.out.println("Please confirm that the guest has confirmed payment and is checking out: ");
-            int ch2 = Views.getUserChoice(new String[] {
+            int ch2 = UserInputViews.getUserChoice(new String[] {
                     "The guest has payed and has successfully checked out",
                     "The guest has not payed and is not checking out currently",
             });

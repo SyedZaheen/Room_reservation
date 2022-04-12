@@ -1,10 +1,11 @@
-import com.Views;
-import com.controller.GuestControl;
+
 import com.controller.RoomServiceControl;
 import com.utils.MiscUtils;
-import com.controller.ReservationControl;
-import com.controller.RoomControl;
-import com.controller.PaymentControl;
+import com.views.GuestViews;
+import com.views.PaymentViews;
+import com.views.ReservationViews;
+import com.views.RoomViews;
+import com.views.UserInputViews;
 
 public class HotelApp {
     public static void main(String[] args) {
@@ -23,22 +24,23 @@ public class HotelApp {
             // For each choice of the menu, execute what we want to do.
             switch (choice) {
                 case 1:
-                    new GuestControl().process();
+                    new GuestViews().process();
                     break;
 
                 case 2:
-                    new ReservationControl().process();
+                    new ReservationViews().process();
                     break;
+                    
                 case 3:
                     new RoomServiceControl().manageCreateEntry();
                     break;
 
                 case 4:
-                    new PaymentControl().process();
+                    new PaymentViews().process();
                     break;
 
                 case 5:
-                    new RoomControl().process();
+                    new RoomViews().process();
                 default:
                     return;
             }
@@ -46,7 +48,7 @@ public class HotelApp {
     }
 
     public static int showMainMenuAndReturnChoice() {
-        return Views.getUserChoice(new String[] {
+        return UserInputViews.getUserChoice(new String[] {
                 "Manage Guests\n - See all guests' details\n - Update guest's details\n - Find guest by name\n",
                 "Manage Reservations\n - Create new reservation (walk-in or advanced)\n - Update reservation status (e.g. checked-in)\n - See all reservations\n - Find reservation\n - Delete Reservation\n",
                 "Manage Room Service Orders\n - Create new room service order\n - Update/Cancel current order status\n - Manage room service menu items\n",
