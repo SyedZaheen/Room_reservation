@@ -1,16 +1,16 @@
 package com.controller;
 
 import java.time.*;
+import java.util.List;
 
 import com.db.roomDB.RoomDB;
 import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
+import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
 public class RoomControl implements CreatorController<Room> {
-
-    
 
     @Override
     public Room manageCreateEntry() {
@@ -119,14 +119,64 @@ public class RoomControl implements CreatorController<Room> {
         System.out.println("");
     }
 
-    public void displayAllOptions()
-    {
+    public void displayAllOptions() {
         System.out.println("The following are the room options for this hotel: ");
         System.out.println("");
         printRoomOptionByType(RoomTypes.SINGLE);
         printRoomOptionByType(RoomTypes.DOUBLE);
         printRoomOptionByType(RoomTypes.DELUXE);
         printRoomOptionByType(RoomTypes.VIPSUITE);
+    }
+
+    public Room getRoom(int roomnumber) {
+        RoomDB db = new RoomDB();
+        Room rm = db.findSingleEntry(roomnumber);
+        if (rm == null)
+            return null;
+        return rm;
+    }
+
+    public Room manageUpdateEntry() {
+        int roomnumber = UserInputViews.<Integer>getEachFieldFromUser("Please enter the room number to update",
+                "Not a valid room number", i -> MiscUtils.roomNumberExists(i), "Integer");
+        RoomDB db = new RoomDB();
+        Room rm = db.findSingleEntry(roomnumber);
+        if (rm == null)
+            return null;
+
+        System.out.println("\nThe following is the details of the room that you wish to update: ");
+        System.out.println(rm);
+        System.out.println("\nPlease choose the status to update the room status to: ");
+        int statusChoice = UserInputViews.getUserChoice(new String[] {
+                "Occupied",
+                "Vacant",
+                "Maintenance",
+                "Reserved",
+                "Maintain current status"
+        });
+
+        switch (statusChoice) {
+            case 1:
+                return db.updateRoomStatus(rm, RoomStatuses.OCCUPIED) ? rm : null;
+
+            case 2:
+                return db.updateRoomStatus(rm, RoomStatuses.VACANT) ? rm : null;
+
+            case 3:
+                return db.updateRoomStatus(rm, RoomStatuses.MAINTENANCE) ? rm : null;
+
+            case 4:
+                return db.updateRoomStatus(rm, RoomStatuses.RESERVED) ? rm : null;
+
+            default:
+                break;
+        }
+
+        return null;
+    }
+
+    public List<Room> getAllRooms() {
+        return new RoomDB().findAllEntries();
     }
 
 }

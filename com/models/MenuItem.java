@@ -10,6 +10,10 @@ public class MenuItem {
         this.price = price;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return String.format("%s: %s - %.2f", this.name, this.description, this.price);

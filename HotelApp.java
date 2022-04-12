@@ -4,6 +4,7 @@ import com.utils.MiscUtils;
 import com.views.GuestViews;
 import com.views.PaymentViews;
 import com.views.ReservationViews;
+import com.views.RoomServiceViews;
 import com.views.RoomViews;
 import com.views.UserInputViews;
 
@@ -30,9 +31,9 @@ public class HotelApp {
                 case 2:
                     new ReservationViews().process();
                     break;
-                    
+
                 case 3:
-                    new RoomServiceControl().manageCreateEntry();
+                    new RoomServiceViews().process();
                     break;
 
                 case 4:
@@ -41,6 +42,8 @@ public class HotelApp {
 
                 case 5:
                     new RoomViews().process();
+                    break;
+
                 default:
                     return;
             }
@@ -51,9 +54,9 @@ public class HotelApp {
         return UserInputViews.getUserChoice(new String[] {
                 "Manage Guests\n - See all guests' details\n - Update guest's details\n - Find guest by name\n",
                 "Manage Reservations\n - Create new reservation (walk-in or advanced)\n - Update reservation status (e.g. checked-in)\n - See all reservations\n - Find reservation\n - Delete Reservation\n",
-                "Manage Room Service Orders\n - Create new room service order\n - Update/Cancel current order status\n - Manage room service menu items\n",
+                "Manage Room Service Orders\n - Create new room service order\n - View all orders\n - View/update/cancel current order \n - Manage room service menu items\n",
                 "Manage Payment\n - Make payment and check out from room \n - See payment slip for reservation\n",
-                "Manage Rooms\n - See room availabilities\n",
+                "Manage Rooms\n - View all room options for this hotel \n - Check room availability by room number\n - Update room status\n - View full room status report\n",
                 "Quit application\n",
         });
     }

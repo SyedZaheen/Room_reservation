@@ -43,7 +43,8 @@ public class RoomDB implements DB<Room> {
     }
 
     public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst) {
-        if (toUpdate == null) return false;
+        if (toUpdate == null)
+            return false;
         int rmnumber = toUpdate.getRoomNumber();
         listOfRooms = findAllEntries();
         for (int i = 0; i < listOfRooms.size(); i++) {
@@ -60,7 +61,7 @@ public class RoomDB implements DB<Room> {
     public Room findVacantRoom(RoomTypes rType, LocalDate cID, LocalDate cOD) {
         listOfRooms = findAllEntries();
         ReservationDB rdb = new ReservationDB();
-        
+
         List<Reservation> reservations = rdb.findAllEntries();
         boolean vacant = true;
         for (Room room : listOfRooms) {
@@ -79,4 +80,12 @@ public class RoomDB implements DB<Room> {
         return null;
     }
 
+    public Room findSingleEntry(int roomnumber) {
+        List<Room> rooms = findAllEntries();
+        for (Room room : rooms) {
+            if (room.getRoomNumber() == roomnumber)
+                return room;
+        }
+        return null;
+    }
 }

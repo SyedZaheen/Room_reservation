@@ -19,9 +19,10 @@ public class RoomServiceViews implements Views {
 
         while (true) {
             choice = UserInputViews.getUserChoice(new String[] {
-                    "Take an order",
-                    "View order status",
-                    "Cancel order",
+                    "Create new room service order",
+                    "View all orders",
+                    "View/update/cancel order status",
+                    "Manage menu items",
                     "Return to main menu"
             });
             // For each, we call the corresponding function.
