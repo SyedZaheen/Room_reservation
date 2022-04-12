@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.time.temporal.ChronoUnit;
+
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.models.Reservation;
@@ -40,22 +42,28 @@ public class PaymentControl {
                     "Double");
         }
         MiscUtils.printLightTransition();
+
+        int numberOfNightsOfStay = (int) ChronoUnit.DAYS.between(toBill.getCheckInDate(), toBill.getCheckOutDate());
+
         System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
-        System.out.println("Number of nights of stay: " + toBill.getCheckOutDate().compareTo(toBill.getCheckInDate()));
-        System.out.printf("Net Total Room Charges: %.2d\n", computeRoomCharges(toBill));
+        System.out.println("Number of nights of stay: " + numberOfNightsOfStay);
+        System.out.printf("Net Total Room Charges: %.2f\n", (double) computeRoomCharges(toBill, numberOfNightsOfStay));
         System.out.println("");
-        System.out.printf("Net Total Room Service Charges: %.2f\n", computeRoomServiceCharges(toBill));
+
+        System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
-        System.out.printf("Additional Surcharges: %.2f\n", computeTax(toBill));
+        System.out.printf("Additional Surcharges: %.2f\n", (double) computeTax(toBill, numberOfNightsOfStay));
 
         if (discount != 1) {
             System.out.println((discount * 100) + "% Discount applied!");
             System.out.printf("Grand Total: %.2f\n", (1 - discount)
-                    * (computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill)));
+                    * (computeRoomCharges(toBill, numberOfNightsOfStay) + computeRoomServiceCharges(toBill)
+                            + computeTax(toBill, numberOfNightsOfStay)));
             System.out.println("");
         } else {
             System.out.printf("Grand Total: %.2f\n",
-                    computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill));
+                    computeRoomCharges(toBill, numberOfNightsOfStay) + computeRoomServiceCharges(toBill)
+                            + computeTax(toBill, numberOfNightsOfStay));
             System.out.println("");
         }
 
@@ -95,19 +103,19 @@ public class PaymentControl {
             printBill(checkout);
     }
 
-    private static int computeRoomCharges(Reservation r) {
-        int daysOfStay = r.getCheckOutDate().compareTo(r.getCheckInDate());
+    private static int computeRoomCharges(Reservation r, int daysOfStay) {
         return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
     }
 
     // TODO : To amend after receiving Jayden's code.
     private static double computeRoomServiceCharges(Reservation r) {
+
         return 0;
     }
 
-    private static double computeTax(Reservation r) {
+    private static double computeTax(Reservation r, int n) {
         final double TAX = 17;
-        return ((TAX / 100.0) * (computeRoomCharges(r) + computeRoomServiceCharges(r)));
+        return ((TAX / 100.0) * (computeRoomCharges(r, n) + computeRoomServiceCharges(r)));
 
     }
 

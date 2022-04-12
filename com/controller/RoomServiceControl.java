@@ -15,8 +15,6 @@ public class RoomServiceControl implements CreatorController<RoomService> {
 
     private Menu menu = new Menu();
 
-
-
     @Override
     public RoomService manageCreateEntry() {
         int orderID;

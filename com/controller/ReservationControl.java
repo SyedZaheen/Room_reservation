@@ -54,7 +54,7 @@ public class ReservationControl
         if (numberOfAdults + numberOfChildren != 0) {
             System.out.println("Please enter the details for the non-paying guests: ");
             for (int j = 0; j < numberOfAdults + numberOfChildren; j++) {
-                System.out.printf("Please enter the details of the %dth non-paying guest: \n", j);
+                System.out.printf("Please enter the details of the number %d non-paying guest: \n", j+1);
                 nonpayingguest = new GuestControl().manageCreateEntry(false);
                 if (!gdb.createEntry(nonpayingguest))
                     System.out.println("Something went wrong with trying to save the guest details. Contact the administrators. ");

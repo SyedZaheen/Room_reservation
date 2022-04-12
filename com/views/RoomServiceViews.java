@@ -28,7 +28,7 @@ public class RoomServiceViews implements Views {
             // For each, we call the corresponding function.
             switch (choice) {
                 case 1:
-                    roomservice = new RoomServiceControl().manageCreateEntry();
+                    roomservice = control.manageCreateEntry();
                     success = new RoomServiceDB().createEntry(roomservice);
                     // Let's send the guest to the database
 
@@ -74,7 +74,8 @@ public class RoomServiceViews implements Views {
                     break;
 
                 // update roomservice item in database
-
+                case 4:
+                    new MenuViews().process();
                 default:
                     return;
             }

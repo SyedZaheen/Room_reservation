@@ -16,10 +16,11 @@ public class RoomDB implements DB<Room> {
     private final String ROOM_DB_FILE_NAME = "roomDB/all_rooms_data.ser";
     List<Room> listOfRooms = null;
 
-    // todo: Create entry doesnt make sense here
     @Override
     public boolean createEntry(Room room) {
-        return false;
+        listOfRooms.add(room);
+        return SerializeDB.writeSerializedObject(
+            DB.FILE_PATH + ROOM_DB_FILE_NAME, listOfRooms);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package com.models;
-public class MenuItem {
+public class MenuItem implements Model<MenuItem> {
     private String name;
     private String description;
     private double price;

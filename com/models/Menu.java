@@ -10,7 +10,7 @@ public class Menu {
     public List<MenuItem> items; // id = key, value = "name, description of how it's prepared, price"
 
     public Menu() {
-        this.items = new MenuItemDB().findAllEntries();
+        items = new MenuItemDB().findAllEntries();
         for (MenuItem menuItem : items) {
             this.menuSize++;
         }

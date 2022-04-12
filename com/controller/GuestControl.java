@@ -41,7 +41,7 @@ public class GuestControl implements UpdatorController<Guest> {
                                 "String");
 
                 gender = UserInputViews.<String>getEachFieldFromUser(
-                                "Please e8nter the gender (may not be male or female): ",
+                                "Please enter the gender (may not be male or female): ",
                                 "Error. Please enter a string less than 10 characters long",
                                 i -> MiscUtils.stringWithinLength(i, 1, 10),
                                 "String");
