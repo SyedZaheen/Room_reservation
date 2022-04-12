@@ -10,6 +10,7 @@ import com.models.Menu;
 import com.models.MenuItem;
 import com.models.Reservation;
 import com.models.Room;
+import com.models.RoomService;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
@@ -23,4 +24,10 @@ public class Test {
                 rms.add(new MenuItem("Not rice", "It's not actually rice this time I promise", 5));
                 SerializeDB.writeSerializedObject(DB.FILE_PATH + "/menuDB/all_menu_items.ser", rms);
         }
+
+        // public static void main(String[] args) {
+        //         List<RoomService> rms = new ArrayList<>();
+        //         SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", rms);
+
+        // }
 }

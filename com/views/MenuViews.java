@@ -10,6 +10,7 @@ public class MenuViews implements Views {
     public void process() {
         int choice;
         MenuItemController controller = new MenuItemController();
+        MenuItemDB db = new MenuItemDB();
 
         while (true) {
             choice = UserInputViews.getUserChoice(new String[] {
@@ -28,12 +29,20 @@ public class MenuViews implements Views {
                     break;
 
                 case 2:
+                    if (db.isEmpty()) {
+                        System.out.println("There are no items in the menu currently. Please add them!");
+                        break;
+                    }
                     if (controller.manageMutateEntry() != null)
-                    
+
                         System.out.println("Menu has been successfully updated");
                     break;
                 case 3:
-                    for (MenuItem item : new MenuItemDB().findAllEntries()) {
+                    if (db.isEmpty()) {
+                        System.out.println("There are no items in the menu currently. Please add them!");
+                        break;
+                    }
+                    for (MenuItem item : db.findAllEntries()) {
                         System.out.println(item + "\n");
                     }
                     break;

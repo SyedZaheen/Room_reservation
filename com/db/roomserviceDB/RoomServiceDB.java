@@ -1,5 +1,6 @@
 package com.db.roomserviceDB;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
@@ -14,6 +15,7 @@ public class RoomServiceDB implements DB<RoomService> {
     public boolean createEntry(RoomService entry) {
         // We want to synchronise the listOfGuests with the files stored inside the .ser
         // file
+        if (entry == null) return false;
         listOfOrders = findAllEntries();
         listOfOrders.add(entry);
         return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, listOfOrders);
@@ -26,19 +28,23 @@ public class RoomServiceDB implements DB<RoomService> {
 
     public boolean updateEntry(RoomService rs) {
         listOfOrders = findAllEntries();
+        List<RoomService> newlist = new ArrayList<>();
+        boolean found = false;
         for (RoomService eachRoomService : listOfOrders) {
-            if (rs.getOrderID() == eachRoomService.getOrderID()) {
-                eachRoomService = rs;
-                SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, listOfOrders);
-                return true;
+            if (rs.getRoomServiceID() == eachRoomService.getRoomServiceID()) {
+                newlist.add(rs);
+                found = true;
+            } else {
+                newlist.add(eachRoomService);
             }
         }
-        return false;
+        return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, newlist)
+                && found;
     }
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 
 }

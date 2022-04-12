@@ -135,6 +135,6 @@ public class ReservationDB implements DB<Reservation> {
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 }

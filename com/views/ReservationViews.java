@@ -68,7 +68,7 @@ public class ReservationViews implements Views {
                 case 3:
 
                     List<Reservation> r = rdb.findAllEntries();
-                    if (r.size() == 0) {
+                    if (r.isEmpty()) {
                         System.out.println("There are no reservations for any room currently");
                         break;
                     }

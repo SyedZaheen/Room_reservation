@@ -53,7 +53,7 @@ public class MenuItemDB implements DB<MenuItem> {
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 
 }
