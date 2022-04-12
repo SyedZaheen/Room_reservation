@@ -1,5 +1,5 @@
 package com.models;
-public class MenuItem {
+public class MenuItem implements Model<MenuItem> {
     private String name;
     private String description;
     private double price;
@@ -8,6 +8,10 @@ public class MenuItem {
         this.name = name;
         this.description = description;
         this.price = price;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

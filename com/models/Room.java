@@ -13,6 +13,21 @@ public class Room implements Model<Room> {
 
         this.status = status;
         this.roomType = roomType;
+        this.roomNumber = roomNumber;
+    }
+
+    @Override
+    public String toString() {
+        RoomTypes rt = roomType;
+        String toReturn = "Room number: " + roomNumber.toString() + "\n" +
+                "Room Status: " + status.inString + "\n" +
+                "Type: " + rt.inString + "\n" +
+                "Rate Per Night: SGD$" + rt.getRatePerNight() + "\n" +
+                "BedType: " + rt.getBedType().inString + "\n" +
+                "Has Nice View: " + rt.getWithView().toString() + "\n" +
+                "Has Wifi Enabled: " + rt.getWifiEnabled().toString() + "\n" +
+                "Smoking Is Allowed: " + rt.getSmokingIsAllowed().toString() + "\n";
+        return toReturn;
     }
 
     public RoomTypes getRoomType() {

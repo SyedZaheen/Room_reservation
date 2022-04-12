@@ -1,9 +1,9 @@
 package com.controller;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.Views;
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
@@ -11,114 +11,109 @@ import com.models.MenuItem;
 import com.models.Reservation;
 import com.models.RoomService;
 import com.utils.MiscUtils;
+import com.views.UserInputViews;
 import com.enums.OrderStatus;
 
-public abstract class PaymentControl {
 
-    public static void process() {
 
-        int choice = Views.getUserChoice(new String[] {
-                "- Make payment and check out from room",
-                "Print payment slip"
-        });
+public class PaymentControl {
 
-        switch (choice) {
-            case 1:
-                checkOut();
-                break;
-
-            case 2:
-                printBill();
-                break;
-        }
-    }
-
-    public static void checkOut() {
-        int reservationID = Views.<Integer>getEachFieldFromUser(
-                "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
-                i -> (i >= 1e6 && i < 1e7),
+    public void printBill(boolean checkout) {
+        int reservationID = UserInputViews.<Integer>getEachFieldFromUser(
+                "Please enter the reservation ID to see reservation bill: ",
+                "Error. Please enter a 7 digit number.",
+                i -> MiscUtils.isValidID(i),
                 "Integer");
 
-        Reservation toCheckOut = new ReservationDB().findReservationByID(reservationID);
-        if (toCheckOut == null) {
-            System.out.println("Reservation ID is invalid!");
+        Reservation toBill = new ReservationDB().findSingleEntry(reservationID);
+        if (toBill == null) {
+            System.out.println("Could not find a reservation with that ID! Try again");
             return;
         }
 
-        toCheckOut.getReservedRoom().setStatus(RoomStatuses.VACANT);
-        // After checkout is done, user must return to Main Menu, go to Reservation
-        // Menu, and delete reservation.
-    }
+        System.out.println("\nThe following are the reservation details in full: \n");
+        System.out.println(toBill);
+        System.out.println("");
 
-    // TODO: Complete this - not done because number of days need to be calculated
-    public static void printBill() {
-        int reservationID = Views.<Integer>getEachFieldFromUser(
-                "Please enter the reservation ID: ",
-                "Error. Please enter a 6 digit number.",
-                i -> (i >= 1e6 && i < 1e7),
-                "Integer");
-
-        Reservation toBill = new ReservationDB().findReservationByID(reservationID);
-
-        int discountChoice = Views.<Integer>getEachFieldFromUser(
-                "Do you wish to apply a discount? (1) Apply discount.\n(2) Do not have discount.",
+        int discountChoice = UserInputViews.<Integer>getEachFieldFromUser(
+                "Does the guest have a valid discount? (1) Apply discount.\n(2) Do not have discount.",
                 "Error. Please enter either 1 or 2.",
                 i -> (i == 1 || i == 2),
                 "Integer");
 
-        double discount = 1;
+        double discount = 1D;
         if (discountChoice == 1) {
-            discount = Views.<Double>getEachFieldFromUser(
+            discount = UserInputViews.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
-                    "Error. Please enter a valid double value!",
+                    "Error. Please enter a valid non-integer value between 0 and 1 (exclusive)!",
                     i -> (i > 0 && i < 1),
                     "Double");
         }
+        MiscUtils.printLightTransition();
+
+        int numberOfNightsOfStay = (int) ChronoUnit.DAYS.between(toBill.getCheckInDate(), toBill.getCheckOutDate());
 
         System.out.println("Room Charges per night: " + toBill.getReservedRoom().getRoomType().getRatePerNight());
-        System.out.printf("Net Total Room Charges: %.2f\n", computeRoomCharges(toBill));
+        System.out.println("Number of nights of stay: " + numberOfNightsOfStay);
+        System.out.printf("Net Total Room Charges: %.2f\n", (double) computeRoomCharges(toBill, numberOfNightsOfStay));
         System.out.println("");
         System.out.println("Menu Item : Price");
         printMenuItemDetails(toBill);
         System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
-        System.out.printf("Additional Surcharges: %.2f\n", computeTax(toBill));
+        System.out.printf("Additional Surcharges: %.2f\n", (double) computeTax(toBill, numberOfNightsOfStay));
 
         if (discount != 1) {
             System.out.println((discount * 100) + "% Discount applied!");
             System.out.printf("Grand Total: %.2f\n", (1 - discount)
-                    * (computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill)));
+                    * (computeRoomCharges(toBill, numberOfNightsOfStay) + computeRoomServiceCharges(toBill)
+                            + computeTax(toBill, numberOfNightsOfStay)));
             System.out.println("");
         } else {
             System.out.printf("Grand Total: %.2f\n",
-                    computeRoomCharges(toBill) + computeRoomServiceCharges(toBill) + computeTax(toBill));
+                    computeRoomCharges(toBill, numberOfNightsOfStay) + computeRoomServiceCharges(toBill)
+                            + computeTax(toBill, numberOfNightsOfStay));
             System.out.println("");
         }
+
+        if (!checkout)
+            return;
 
         if (toBill.getPayingGuest().getPaymentType() == PaymentType.CREDITCARD) {
             System.out.println("Payment billed to:");
             System.out.println(toBill.getPayingGuest().getCreditCard());
         } else if (toBill.getPayingGuest().getPaymentType() == PaymentType.CASH)
-            System.out.println("Payment by Cash (SGD only).");
+            System.out.println("Payment by cash (SGD only)");
 
-        System.out.println("Please confirm that the above bill is correct: ");
-        int choice = Views.getUserChoice(new String[] {
+        System.out.println("\nPlease confirm that the above bill is correct: ");
+        int choice = UserInputViews.getUserChoice(new String[] {
                 "Enter 1 if the above data are all correct",
                 "Enter 2 if the data has errors"
         });
 
-        if (choice == 1)
-            System.out.println("Payment Successful! Thank you for staying with us.");
+        if (choice == 1) {
+            System.out.println("Please confirm that the guest has confirmed payment and is checking out: ");
+            int ch2 = UserInputViews.getUserChoice(new String[] {
+                    "The guest has payed and has successfully checked out",
+                    "The guest has not payed and is not checking out currently",
+            });
+            if (ch2 == 2)
+                return;
+            boolean succ = new ReservationDB().deleteEntry(toBill);
+            if (succ)
+                System.out.println(
+                        "Update successful! Remember to thank the guest for staying with us!\n Note that all guest data is now deleted, and room is now vacant");
+            else
+                System.out.println("Something went wrong! Contact the administrators.");
+            return;
+        }
 
         if (choice == 2)
-            printBill();
+            printBill(checkout);
     }
 
-    // TODO : To amend after receiving Zaheen's implementation of calculation of
-    // time
-    private static double computeRoomCharges(Reservation r) {
-        return 0;
+    private static int computeRoomCharges(Reservation r, int daysOfStay) {
+        return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
     }
 
     // TODO : To amend after receiving Jayden's code.
@@ -134,9 +129,9 @@ public abstract class PaymentControl {
         return totalCharge;
     }
 
-    private static double computeTax(Reservation r) {
+    private static double computeTax(Reservation r, int n) {
         final double TAX = 17;
-        return ((TAX / 100.0) * (computeRoomCharges(r) + computeRoomServiceCharges(r)));
+        return ((TAX / 100.0) * (computeRoomCharges(r, n) + computeRoomServiceCharges(r)));
 
     }
 
