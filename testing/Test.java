@@ -19,8 +19,10 @@ import com.views.UserInputViews;
 public class Test {
         public static void main(String[] args) {
 
-                List<RoomService> listOfRoomServices = new ArrayList<>();
-                SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", listOfRoomServices);
+                List<Guest> listOfRoomService = new ArrayList<>();
+                SerializeDB.writeSerializedObject(DB.FILE_PATH + "guestDB/listOfGuests.ser", listOfRoomService);
+
+
         }
         // public static void main(String[] args) {
         //         List<RoomService> rms = new ArrayList<>();
