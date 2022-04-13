@@ -8,13 +8,12 @@ import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.MenuItem;
+import com.models.Order;
 import com.models.Reservation;
 import com.models.RoomService;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 import com.enums.OrderStatus;
-
-
 
 public class PaymentControl {
 
@@ -41,7 +40,7 @@ public class PaymentControl {
                 i -> (i == 1 || i == 2),
                 "Integer");
 
-        double discount = 1D;
+        double discount =1;
         if (discountChoice == 1) {
             discount = UserInputViews.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
@@ -57,7 +56,6 @@ public class PaymentControl {
         System.out.println("Number of nights of stay: " + numberOfNightsOfStay);
         System.out.printf("Net Total Room Charges: %.2f\n", (double) computeRoomCharges(toBill, numberOfNightsOfStay));
         System.out.println("");
-        System.out.println("Menu Item : Price");
         printMenuItemDetails(toBill);
         System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
@@ -118,12 +116,11 @@ public class PaymentControl {
 
     // TODO : To amend after receiving Jayden's code.
     private static double computeRoomServiceCharges(Reservation r) {
-        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
-        double totalCharge = 0; 
+        ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
+        double totalCharge = 0;
         for (RoomService roomService : listOfRoomServices) {
-            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
-            for (MenuItem menuitem : orderlist.keySet()) {
-               totalCharge += menuitem.getPrice();
+            for (Order menuitem : roomService.getOrders()) {
+                totalCharge += menuitem.getPrice();
             }
         }
         return totalCharge;
@@ -136,12 +133,11 @@ public class PaymentControl {
     }
 
     private static void printMenuItemDetails(Reservation r) {
-        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
+        ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
         for (RoomService roomService : listOfRoomServices) {
-            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
-            for (MenuItem menuitem : orderlist.keySet()) {
-               System.out.println(menuitem);
-            }
+            System.out.println("\nThis is room service number: " + roomService.getRoomServiceID());
+            System.out.println("These were the orders: ");
+            new RoomServiceControl().viewOrder(roomService.getOrders());
         }
     }
 

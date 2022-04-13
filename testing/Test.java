@@ -19,10 +19,9 @@ import com.views.UserInputViews;
 public class Test {
         public static void main(String[] args) {
 
-                List<Reservation> listOfRoomServices = new ArrayList<>();
-                SerializeDB.writeSerializedObject(DB.FILE_PATH + "reservationDB/all_reservations_data", listOfRoomServices);
+                List<RoomService> listOfRoomServices = new ArrayList<>();
+                SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", listOfRoomServices);
         }
-
         // public static void main(String[] args) {
         //         List<RoomService> rms = new ArrayList<>();
         //         SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", rms);
