@@ -50,7 +50,7 @@ public class ReservationViews implements Views {
                     }
                     reservation = rsvc.manageUpdateEntry();
                     if (reservation == null)
-                        return;
+                        break;
 
                     success = rdb.updateEntry(reservation);
 

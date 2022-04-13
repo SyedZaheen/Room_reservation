@@ -150,6 +150,7 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         if (toUpdate == null) {
             System.out.println(
                     "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
+            System.out.println("We will update the reservation status first. Please come back and attach to guest later.");
             return false;
         }
 

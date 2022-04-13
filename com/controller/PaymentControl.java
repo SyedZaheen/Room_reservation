@@ -16,8 +16,6 @@ import com.utils.MiscUtils;
 import com.views.UserInputViews;
 import com.enums.OrderStatus;
 
-
-
 public class PaymentControl {
 
     public void printBill(boolean checkout) {
@@ -43,7 +41,7 @@ public class PaymentControl {
                 i -> (i == 1 || i == 2),
                 "Integer");
 
-        double discount = 1D;
+        double discount =1;
         if (discountChoice == 1) {
             discount = UserInputViews.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
@@ -59,8 +57,7 @@ public class PaymentControl {
         System.out.println("Number of nights of stay: " + numberOfNightsOfStay);
         System.out.printf("Net Total Room Charges: %.2f\n", (double) computeRoomCharges(toBill, numberOfNightsOfStay));
         System.out.println("");
-        System.out.println("Menu Item : Price");
-        printOrderDetails(toBill);
+        printMenuItemDetails(toBill);
         System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
         System.out.printf("Additional Surcharges: %.2f\n", (double) computeTax(toBill, numberOfNightsOfStay));
@@ -120,12 +117,11 @@ public class PaymentControl {
 
     // TODO : To amend after receiving Jayden's code.
     private static double computeRoomServiceCharges(Reservation r) {
-        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
-        double totalCharge = 0; 
+        ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
+        double totalCharge = 0;
         for (RoomService roomService : listOfRoomServices) {
-            List <Order> orderlist = roomService.getOrders();
-            for (Order item : orderlist) {
-               totalCharge += (double) item.getPrice();
+            for (Order menuitem : roomService.getOrders()) {
+                totalCharge += menuitem.getPrice();
             }
         }
         return totalCharge;
@@ -137,13 +133,12 @@ public class PaymentControl {
 
     }
 
-    private static void printOrderDetails(Reservation r) {
-        ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
+    private static void printMenuItemDetails(Reservation r) {
+        ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
         for (RoomService roomService : listOfRoomServices) {
-            List <Order> orderlist= roomService.getOrders();
-            for (Order item : orderlist) {
-               System.out.println(item);
-            }
+            System.out.println("\nThis is room service number: " + roomService.getRoomServiceID());
+            System.out.println("These were the orders: ");
+            new RoomServiceControl().viewOrder(roomService.getOrders());
         }
     }
 

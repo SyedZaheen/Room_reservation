@@ -7,14 +7,12 @@ import com.utils.MiscUtils;
 public class Guest implements Model<Guest> {
 
     private String name, address, country, gender, identity, nationality;
-    private Integer contact;
+    private Integer contact, guestID;
     private IDType idType;
     private Boolean isPayingGuest;
     private PaymentType paymentType;
     private CreditCard creditCard;
-    private Integer guestID = setGuestID(); // Because youre making this final, note that if we want to update 
-                                                                // the guest using GuestDB.updateEntry(), we will need to query the entire
-                                                                // DB for that single guest object we want and edit its attributes
+
 
     public Guest(
             String name,
@@ -41,7 +39,7 @@ public class Guest implements Model<Guest> {
         this.isPayingGuest = isPayingGuest;
         this.paymentType = isPayingGuest ? paymentType : null;
         this.creditCard = paymentType == PaymentType.CREDITCARD ? creditCard : null;
- 
+        this.guestID = setGuestID();
     }
 
     @Override
@@ -90,7 +88,7 @@ public class Guest implements Model<Guest> {
         return finalString;
     }
 
-    private Integer setGuestID() {
+    private int setGuestID() {
         int id = MiscUtils.generateID();
         if (new GuestDB().checkDuplicate(id)) {
             return id;
@@ -109,6 +107,7 @@ public class Guest implements Model<Guest> {
     public CreditCard getCreditCard() {
         return creditCard;
     }
+    
 
     public String getName() {
         return name;

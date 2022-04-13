@@ -18,10 +18,12 @@ import com.views.UserInputViews;
 // TODO: DELETE FUNCTION WHEN DONE!
 public class Test {
         public static void main(String[] args) {
-                List<RoomService> rms = new ArrayList<>();
-                SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", rms);
-        }
 
+                List<Guest> listOfRoomService = new ArrayList<>();
+                SerializeDB.writeSerializedObject(DB.FILE_PATH + "guestDB/listOfGuests.ser", listOfRoomService);
+
+
+        }
         // public static void main(String[] args) {
         //         List<RoomService> rms = new ArrayList<>();
         //         SerializeDB.writeSerializedObject(DB.FILE_PATH + "/roomserviceDB/listOfOrders", rms);

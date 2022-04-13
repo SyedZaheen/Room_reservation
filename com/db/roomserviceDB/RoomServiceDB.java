@@ -27,7 +27,6 @@ public class RoomServiceDB implements DB<RoomService> {
     }
 
     public boolean updateEntry(RoomService rs) {
-        int rsID = rs.getRoomServiceID();
         listOfOrders = findAllEntries();
         List<RoomService> newlist = new ArrayList<>();
         boolean found = false;

@@ -26,8 +26,4 @@ public class MenuItem implements Model<MenuItem> {
     public String toString() {
         return String.format("%s: %s - %.2f", this.name, this.description, this.price);
     }
-
-    
 }
-
-

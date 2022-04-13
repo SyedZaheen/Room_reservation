@@ -15,7 +15,7 @@ import java.time.*;
 
 public class ReservationDB implements DB<Reservation> {
 
-    private final String RESERVATION_DB_FILE_NAME = "reservationDB/all_reservations_data.ser";
+    private final String RESERVATION_DB_FILE_NAME = "reservationDB/all_reservations_data";
     private List<Reservation> listOfReservations = new ArrayList<>();
 
     @Override
@@ -83,9 +83,10 @@ public class ReservationDB implements DB<Reservation> {
         boolean vacant = true;
 
         for (Reservation reservation : findAllEntries()) {
-            if (reservation.getReservedRoom().getRoomNumber() == requestedRoom.getRoomNumber()) {
+            if (reservation.getReservedRoom().getRoomNumber().equals(requestedRoom.getRoomNumber())) {
                 if (reservationClash(reservation, checkInDate, checkoutDate))
                     vacant = false;
+                    break;
             }
         }
         return !vacant;
@@ -129,8 +130,9 @@ public class ReservationDB implements DB<Reservation> {
     public boolean reservationClash(Reservation target, LocalDate checkInDate, LocalDate checkOutDate) {
         // only no clash if checkindate AFTER target.checkout AND tartget.chein AFTER
         // cehckout
-        return !(target.getCheckInDate().compareTo(checkOutDate) >= 0
-                && checkInDate.compareTo(target.getCheckOutDate()) >= 0);
+
+        return !(checkInDate.compareTo(target.getCheckOutDate()) >= 0
+                || target.getCheckInDate().compareTo(checkOutDate) >= 0);
     }
 
     @Override
