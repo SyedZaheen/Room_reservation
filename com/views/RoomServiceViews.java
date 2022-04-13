@@ -45,7 +45,6 @@ public class RoomServiceViews implements Views {
                     RoomServiceControl.printOrder();
                     break;
                 case 3:
-                    // this is some shitty ass code jesus christ
 
                     int count = 1;
                     int orderID = UserInputViews.<Integer>getEachFieldFromUser(

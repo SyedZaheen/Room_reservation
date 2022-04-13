@@ -17,7 +17,7 @@ import com.views.UserInputViews;
 // TODO: DELETE FUNCTION WHEN DONE!
 public class Test {
         public static void main(String[] args) {
-                List<MenuItem> rms = new MenuItemDB().findAllEntries();
+                List<RoomService> rms = new MenuItemDB().findAllEntries();
 
                 for (MenuItem menuItem : rms) {
                         System.out.println(menuItem);

@@ -11,8 +11,10 @@ public class Menu {
 
     public Menu() {
         items = new MenuItemDB().findAllEntries();
-        for (MenuItem menuItem : items) {
-            this.menuSize++;
+        if(items != null) {
+            for (MenuItem menuItem : items) {
+                this.menuSize++;
+            }
         }
     }
 

@@ -27,10 +27,10 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         boolean success = false;
         do {
             orderID = MiscUtils.generateID();
-            for (RoomService rs : new RoomServiceDB().findAllEntries()) {
+            for (RoomService rs : new RoomServiceDB().findAllEntries())  { //findsingleentry
                 if (rs != null) {
                     if (orderID == rs.getOrderID()) {
-                        break;
+                        break; //break and generate new id
                     }
                 }
             }
@@ -76,7 +76,7 @@ public class RoomServiceControl implements CreatorController<RoomService> {
     public static void printOrder() {
         int count = 1;
         int orderID = UserInputViews.<Integer>getEachFieldFromUser(
-                "Enter Order ID: ", "Please enter a valid ID", i -> true, "Integer");
+                "Enter Order ID: ", "Please enter a valid ID", i -> MiscUtils.isValidID(i), "Integer");
 
         System.out.println("Orders: ");
         for (RoomService eachRoomService : new RoomServiceDB().findAllEntries()) {
@@ -87,7 +87,6 @@ public class RoomServiceControl implements CreatorController<RoomService> {
                 }
             }
             break;
-
         }
     }
 
