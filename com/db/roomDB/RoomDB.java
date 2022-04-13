@@ -49,7 +49,7 @@ public class RoomDB implements DB<Room> {
         int rmnumber = toUpdate.getRoomNumber();
         listOfRooms = findAllEntries();
         for (int i = 0; i < listOfRooms.size(); i++) {
-            if (rmnumber == listOfRooms.get(i).getRoomNumber()) {
+            if (listOfRooms.get(i).getRoomNumber().equals(rmnumber)) {
                 toUpdate.setStatus(rst);
                 listOfRooms.set(i, toUpdate);
                 SerializeDB.<Room>writeSerializedObject(DB.FILE_PATH + ROOM_DB_FILE_NAME, listOfRooms);
@@ -69,7 +69,7 @@ public class RoomDB implements DB<Room> {
             if (room.getRoomType() == rType) {
                 vacant = true;
                 for (Reservation reservation : reservations) {
-                    if (reservation.getReservedRoom().getRoomNumber() == room.getRoomNumber()) {
+                    if (reservation.getReservedRoom().getRoomNumber().equals(room.getRoomNumber())) {
                         if (rdb.reservationClash(reservation, cID, cOD))
                             vacant = false;
                     }
@@ -84,7 +84,7 @@ public class RoomDB implements DB<Room> {
     public Room findSingleEntry(int roomnumber) {
         List<Room> rooms = findAllEntries();
         for (Room room : rooms) {
-            if (room.getRoomNumber() == roomnumber)
+            if (room.getRoomNumber().equals(roomnumber))
                 return room;
         }
         return null;

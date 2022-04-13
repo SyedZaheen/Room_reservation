@@ -107,6 +107,7 @@ public class Guest implements Model<Guest> {
     public CreditCard getCreditCard() {
         return creditCard;
     }
+    
 
     public String getName() {
         return name;
