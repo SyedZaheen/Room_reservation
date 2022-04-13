@@ -86,6 +86,7 @@ public class ReservationDB implements DB<Reservation> {
             if (reservation.getReservedRoom().getRoomNumber().equals(requestedRoom.getRoomNumber())) {
                 if (reservationClash(reservation, checkInDate, checkoutDate))
                     vacant = false;
+                    break;
             }
         }
         return !vacant;
@@ -129,8 +130,9 @@ public class ReservationDB implements DB<Reservation> {
     public boolean reservationClash(Reservation target, LocalDate checkInDate, LocalDate checkOutDate) {
         // only no clash if checkindate AFTER target.checkout AND tartget.chein AFTER
         // cehckout
-        
-        return !(checkInDate.isAfter(target.getCheckOutDate()) && target.getCheckInDate().isAfter(checkOutDate)) ;
+
+        return !(checkInDate.compareTo(target.getCheckOutDate()) >= 0
+                || target.getCheckInDate().compareTo(checkOutDate) >= 0);
     }
 
     @Override

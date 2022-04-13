@@ -72,6 +72,7 @@ public class RoomDB implements DB<Room> {
                     if (reservation.getReservedRoom().getRoomNumber().equals(room.getRoomNumber())) {
                         if (rdb.reservationClash(reservation, cID, cOD))
                             vacant = false;
+                            break;
                     }
                 }
                 if (vacant)
