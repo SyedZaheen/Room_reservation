@@ -71,7 +71,7 @@ public class GuestDB implements DB<Guest> {
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 
     public boolean deleteEntry(Guest toDelete) {

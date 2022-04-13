@@ -1,5 +1,6 @@
 package com.db.roomserviceDB;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.db.DB;
 import com.db.SerializeDB;
@@ -14,6 +15,7 @@ public class RoomServiceDB implements DB<RoomService> {
     public boolean createEntry(RoomService entry) {
         // We want to synchronise the listOfGuests with the files stored inside the .ser
         // file
+        if (entry == null) return false;
         listOfOrders = findAllEntries();
         listOfOrders.add(entry);
         return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, listOfOrders);
@@ -27,19 +29,39 @@ public class RoomServiceDB implements DB<RoomService> {
     public boolean updateEntry(RoomService rs) {
         int rsID = rs.getOrderID();
         listOfOrders = findAllEntries();
-        for (int i = 0; i < listOfOrders.size(); i++) {
-            if(rsID == listOfOrders.get(i).getOrderID()) {
-                listOfOrders.set(i,rs);
-                SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH+ROOMSERVICE_DB_FILE_NAME, listOfOrders);
-                return true;
+        List<RoomService> newlist = new ArrayList<>();
+        boolean found = false;
+        for (RoomService eachRoomService : listOfOrders) {
+            if (rs.getRoomServiceID() == eachRoomService.getRoomServiceID()) {
+                newlist.add(rs);
+                found = true;
+            } else {
+                newlist.add(eachRoomService);
             }
         }
-        return false;
+        return SerializeDB.<RoomService>writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, newlist)
+                && found;
     }
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
+    }
+
+    public boolean deleteEntry(RoomService toDelete) {
+        if (toDelete == null)
+            return false;
+        boolean found = false;
+        List<RoomService> newList = new ArrayList<>();
+        for (RoomService roomService : findAllEntries()) {
+            if (roomService.getRoomServiceID() == toDelete.getRoomServiceID()) {
+                found = true;
+                continue;
+            }
+            newList.add(roomService);
+        }
+        SerializeDB.writeSerializedObject(DB.FILE_PATH + ROOMSERVICE_DB_FILE_NAME, newList);
+        return found;
     }
 
 }

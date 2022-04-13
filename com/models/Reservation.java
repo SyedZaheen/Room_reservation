@@ -47,7 +47,7 @@ public class Reservation implements Model<Reservation> {
     public String toString() {
 
         String allGuests = "";
-        for (int i = 0; i < (numberOfAdults + numberOfChildren +1); i++) {
+        for (int i = 0; i < (numberOfAdults + numberOfChildren + 1); i++) {
             allGuests = allGuests.concat(
                     "\n\nGuest " + (i + 1) + " : " + guests.get(i).toString() + "\n");
         }
@@ -90,6 +90,10 @@ public class Reservation implements Model<Reservation> {
         }
 
         return finalString;
+    }
+
+    public void setRoomServices(ArrayList<RoomService> roomServices) {
+        this.roomServices = roomServices;
     }
 
     public Guest getPayingGuest() {

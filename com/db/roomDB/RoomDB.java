@@ -31,7 +31,7 @@ public class RoomDB implements DB<Room> {
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 
     public Room findVacantRoomByType(RoomTypes type) {

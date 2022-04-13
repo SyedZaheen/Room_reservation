@@ -14,6 +14,14 @@ public class MenuItem implements Model<MenuItem> {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
     @Override
     public String toString() {
         return String.format("%s: %s - %.2f", this.name, this.description, this.price);

@@ -1,5 +1,6 @@
 package com.db.menuDB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.db.DB;
@@ -14,8 +15,10 @@ public class MenuItemDB implements DB<MenuItem> {
     @Override
     public boolean createEntry(MenuItem entry) {
         listOfMenuItems = findAllEntries();
-        if (listOfMenuItems == null) return false;
-        return SerializeDB.writeSerializedObject(DB.FILE_PATH+MENU_DB_FILE_NAME, listOfMenuItems);
+        if (listOfMenuItems == null)
+            return false;
+        listOfMenuItems.add(entry);
+        return SerializeDB.writeSerializedObject(DB.FILE_PATH + MENU_DB_FILE_NAME, listOfMenuItems);
     }
 
     @Override
@@ -28,19 +31,29 @@ public class MenuItemDB implements DB<MenuItem> {
         List<MenuItem> items = findAllEntries();
         if (items != null)
             for (MenuItem menuItem : items) {
-                if (menuItem.getName() == itemname)
+                if (itemname.toLowerCase().equals(menuItem.getName().toLowerCase()))
                     return menuItem;
             }
         return null;
     }
 
     public boolean deleteEntry(MenuItem item) {
-        return false;
+        boolean found = false;
+        List<MenuItem> newList = new ArrayList<>();
+
+        for (MenuItem menuItem : findAllEntries()) {
+            if (item.getName().toLowerCase().equals(menuItem.getName().toLowerCase())) {
+                found = true;
+                continue;
+            }
+            newList.add(menuItem);
+        }
+        return SerializeDB.writeSerializedObject(DB.FILE_PATH + MENU_DB_FILE_NAME, newList) && found;
     }
 
     @Override
     public boolean isEmpty() {
-        return findAllEntries().size() == 0;
+        return findAllEntries().isEmpty();
     }
 
 }
