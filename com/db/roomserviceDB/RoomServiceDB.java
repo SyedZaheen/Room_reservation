@@ -27,12 +27,12 @@ public class RoomServiceDB implements DB<RoomService> {
     }
 
     public boolean updateEntry(RoomService rs) {
-        int rsID = rs.getOrderID();
+        int rsID = rs.getRoomServiceID();
         listOfOrders = findAllEntries();
         List<RoomService> newlist = new ArrayList<>();
         boolean found = false;
         for (RoomService eachRoomService : listOfOrders) {
-            if (rs.getRoomServiceID() == eachRoomService.getRoomServiceID()) {
+            if (rsID == eachRoomService.getRoomServiceID()) {
                 newlist.add(rs);
                 found = true;
             } else {

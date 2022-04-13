@@ -29,8 +29,8 @@ public class CreditCardControl implements CreatorController<CreditCard> {
 
                 // todo: create a function that validates this date. Im lazy.
                 expiryDate = UserInputViews.<String>getEachFieldFromUser(
-                                "Please enter the expiry date, in DD/MM format: ",
-                                "Error. Please enter a string in DD/MM format",
+                                "Please enter the expiry date, in MM/YY format: ",
+                                "Error. Please enter a string in MM/YY format",
                                 i -> MiscUtils.stringWithinLength(i, 5, 5),
                                 "String");
 

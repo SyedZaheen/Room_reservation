@@ -3,11 +3,13 @@ package com.controller;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
 import com.enums.RoomStatuses;
 import com.models.MenuItem;
+import com.models.Order;
 import com.models.Reservation;
 import com.models.RoomService;
 import com.utils.MiscUtils;
@@ -58,7 +60,7 @@ public class PaymentControl {
         System.out.printf("Net Total Room Charges: %.2f\n", (double) computeRoomCharges(toBill, numberOfNightsOfStay));
         System.out.println("");
         System.out.println("Menu Item : Price");
-        printMenuItemDetails(toBill);
+        printOrderDetails(toBill);
         System.out.printf("Net Total Room Service Charges: %.2f\n", (double) computeRoomServiceCharges(toBill));
         System.out.println("");
         System.out.printf("Additional Surcharges: %.2f\n", (double) computeTax(toBill, numberOfNightsOfStay));
@@ -121,9 +123,9 @@ public class PaymentControl {
         ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
         double totalCharge = 0; 
         for (RoomService roomService : listOfRoomServices) {
-            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
-            for (MenuItem menuitem : orderlist.keySet()) {
-               totalCharge += menuitem.getPrice();
+            List <Order> orderlist = roomService.getOrders();
+            for (Order item : orderlist) {
+               totalCharge += (double) item.getPrice();
             }
         }
         return totalCharge;
@@ -135,12 +137,12 @@ public class PaymentControl {
 
     }
 
-    private static void printMenuItemDetails(Reservation r) {
+    private static void printOrderDetails(Reservation r) {
         ArrayList<RoomService> listOfRoomServices= r.getRoomServices();
         for (RoomService roomService : listOfRoomServices) {
-            HashMap<MenuItem, OrderStatus> orderlist = roomService.getOrders();
-            for (MenuItem menuitem : orderlist.keySet()) {
-               System.out.println(menuitem);
+            List <Order> orderlist= roomService.getOrders();
+            for (Order item : orderlist) {
+               System.out.println(item);
             }
         }
     }

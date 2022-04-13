@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RoomService implements Model<RoomService> {
     private List<Order> orders = new ArrayList<>();
-    private int roomServiceID;
+    private Integer roomServiceID;
 
     public RoomService(List<Order> orders) {
         this.orders = orders;
@@ -21,7 +21,7 @@ public class RoomService implements Model<RoomService> {
     }
 
     public int getRoomServiceID() {
-        return this.roomServiceID;
+        return (int) this.roomServiceID;
     }
 
     public void removeItemFromOrder(MenuItem menuitem) {
@@ -31,10 +31,10 @@ public class RoomService implements Model<RoomService> {
     @Override
     @SuppressWarnings("Depreciated")
     public String toString() {
-        String finalString = "RoomServiceID : " + new Integer(roomServiceID).toString();
+        String finalString = "RoomServiceID : " + roomServiceID.toString();
         finalString += "\nThe following is the full reciept: \n\nItem : Price\n\n";
         for (Order item : orders) {
-            finalString += item.getName() + " : " + new Double(item.getPrice()).toString() + "\n";
+            finalString += item.getName() + " : " + item.getPrice().toString() + "\n";
         }
         return finalString;
     }

@@ -2,7 +2,7 @@ package com.models;
 public class MenuItem implements Model<MenuItem> {
     private String name;
     private String description;
-    private double price;
+    private Double price;
 
     public MenuItem(String name, String description, double price) {
         this.name = name;
@@ -18,7 +18,7 @@ public class MenuItem implements Model<MenuItem> {
         return description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -27,9 +27,6 @@ public class MenuItem implements Model<MenuItem> {
         return String.format("%s: %s - %.2f", this.name, this.description, this.price);
     }
 
-    public double getPrice() {
-        return this.price;
-    }
     
 }
 
