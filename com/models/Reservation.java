@@ -143,7 +143,9 @@ public class Reservation implements Model<Reservation> {
     public ArrayList<Guest> getGuests() {
         return guests;
     }
-
+public void setGuests(ArrayList<Guest> guests) {
+    this.guests = guests;
+}
     public void setReservationStatus(ReservationStatuses reservationStatus) {
         this.reservationStatus = reservationStatus;
     }

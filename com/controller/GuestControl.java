@@ -1,16 +1,19 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import com.db.guestDB.GuestDB;
+import com.db.reservationDB.ReservationDB;
 import com.enums.IDType;
 import com.enums.PaymentType;
 import com.models.CreditCard;
 import com.models.Guest;
+import com.models.Reservation;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
 public class GuestControl implements UpdatorController<Guest> {
-
 
         public Guest manageCreateEntry(boolean isPaying) {
                 // Initialise the guest data that we want
@@ -137,6 +140,29 @@ public class GuestControl implements UpdatorController<Guest> {
                 System.out.println("Please enter all of the relevant updated details about this guest: ");
                 newGuest = manageCreateEntry(toUpdate.getIsPayingGuest());
                 newGuest.setGuestID(toUpdate.getGuestID());
+                // For every reservation, get guests;
+                for (Reservation rv : new ReservationDB().findAllEntries()) {
+                        int count = 0;
+                        boolean found = false;
+                        ArrayList<Guest> gst = rv.getGuests();
+                        // For every guest, get ID
+                        for (Guest g : gst) {
+                                if (g.getGuestID() == newGuest.getGuestID()) {
+                                        gst.set(count, newGuest);
+                                        rv.setGuests(gst);
+                                        new ReservationDB().updateEntry(rv);
+                                        found = true;
+                                        break;
+                                }
+                                count++;
+
+                        }
+                        if (found)
+                                break;
+
+                }
+                // Put the list in the reservation
+                // Put back into the DB
                 if (db.updateEntry(toUpdate))
                         return newGuest;
                 return null;
