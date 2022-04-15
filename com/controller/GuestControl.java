@@ -163,7 +163,7 @@ public class GuestControl implements UpdatorController<Guest> {
                 }
                 // Put the list in the reservation
                 // Put back into the DB
-                if (db.updateEntry(toUpdate))
+                if (db.updateEntry(newGuest))
                         return newGuest;
                 return null;
         }

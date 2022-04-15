@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Test",
+            "request": "launch",
+            "mainClass": "testing.Test",
+            "projectName": "Room_reservation_5fbcb88f"
+        },
+        {
+            "type": "java",
             "name": "Launch HotelApp",
             "request": "launch",
             "mainClass": "HotelApp",

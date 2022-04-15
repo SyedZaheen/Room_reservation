@@ -47,6 +47,7 @@ public class GuestViews implements Views {
                                         System.out.println(
                                                         "The guest details were successfully updated! These are the updated guest data: ");
 
+
                                         break;
                                 case 3:
                                         if (controller.getDB().isEmpty()) {

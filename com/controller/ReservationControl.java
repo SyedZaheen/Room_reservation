@@ -209,7 +209,7 @@ public class ReservationControl
                 "Error. Please enter a 7 digit number.",
                 i -> MiscUtils.isValidID(i),
                 "Integer");
-ReservationDB db = new ReservationDB();
+        ReservationDB db = new ReservationDB();
         Reservation toDelete = db.findSingleEntry(key);
         if (toDelete == null) {
             System.out.println(
