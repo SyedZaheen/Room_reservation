@@ -9,6 +9,7 @@ import com.models.Reservation;
 import com.models.RoomService;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
+import com.db.menuDB.MenuItemDB;
 import com.db.reservationDB.ReservationDB;
 import com.db.roomserviceDB.RoomServiceDB;
 import com.enums.OrderStatus;
@@ -17,9 +18,10 @@ public class RoomServiceControl implements CreatorController<RoomService> {
 
     @Override
     public RoomService manageCreateEntry() {
+        RoomServiceDB db = new RoomServiceDB();
         List<Order> orders = takeOrders();
         RoomService roomservice = new RoomService(orders);
-        return roomservice;
+        return db.createEntry(roomservice) ? roomservice : null;
     }
 
     private List<Order> takeOrders() {
@@ -150,7 +152,8 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         if (toUpdate == null) {
             System.out.println(
                     "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
-            System.out.println("We will update the reservation status first. Please come back and attach to guest later.");
+            System.out.println(
+                    "We will update the reservation status first. Please come back and attach to guest later.");
             return false;
         }
 
@@ -161,7 +164,8 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         toUpdate.setRoomServices(ls);
 
         if (reservationDB.updateEntry(toUpdate) && db.deleteEntry(rsv)) {
-            System.out.println("Orders considered done, guest will now be charged with the payment for the room service.");
+            System.out.println(
+                    "Orders considered done, guest will now be charged with the payment for the room service.");
             return true;
         }
 
@@ -183,4 +187,11 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         return allAreCompleted;
     }
 
+    public RoomServiceDB getDB() {
+        return new RoomServiceDB();
+    }
+
+    public MenuItemDB getMenu() {
+        return new MenuItemDB();
+    }
 }

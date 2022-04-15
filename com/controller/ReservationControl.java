@@ -20,7 +20,6 @@ public class ReservationControl
     @Override
     public Reservation manageCreateEntry() {
         ReservationDB db = new ReservationDB();
-        GuestDB gdb = new GuestDB();
         Guest nonpayingguest = null;
 
         Integer numberOfAdults, numberOfChildren, year, day;
@@ -53,18 +52,14 @@ public class ReservationControl
         if (numberOfAdults + numberOfChildren != 0) {
             System.out.println("Please enter the details for the non-paying guests: ");
             for (int j = 0; j < numberOfAdults + numberOfChildren; j++) {
-                System.out.printf("Please enter the details of the number %d non-paying guest: \n", j+1);
+                System.out.printf("Please enter the details of the number %d non-paying guest: \n", j + 1);
                 nonpayingguest = new GuestControl().manageCreateEntry(false);
-                if (!gdb.createEntry(nonpayingguest))
-                    System.out.println("Something went wrong with trying to save the guest details. Contact the administrators. ");
                 guests.add(nonpayingguest);
             }
         }
 
         System.out.println("Please enter the details for the paying adult: ");
         payingGuest = new GuestControl().manageCreateEntry(true);
-        if (!gdb.createEntry(payingGuest))
-            return null;
         guests.add(payingGuest);
 
         paymentType = payingGuest.getPaymentType();
@@ -149,12 +144,15 @@ public class ReservationControl
         if (!UserInputViews.<Reservation>userDoubleConfirmDetails(newReservation))
             newReservation = manageCreateEntry();
 
-        return newReservation;
+        for (Guest guest : newReservation.getGuests()) {
+            new GuestDB().createEntry(guest);
+        }
+        return db.createEntry(newReservation) ? newReservation : null ;
     }
 
     @Override
     public Reservation manageUpdateEntry() {
-
+        ReservationDB db = new ReservationDB();
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = UserInputViews.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
@@ -162,7 +160,7 @@ public class ReservationControl
                 i -> MiscUtils.isValidID(i),
                 "Integer");
 
-        Reservation toUpdate = new ReservationDB().findSingleEntry(key);
+        Reservation toUpdate = db.findSingleEntry(key);
         if (toUpdate == null) {
             System.out.println(
                     "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
@@ -201,7 +199,7 @@ public class ReservationControl
                 return null;
         }
 
-        return toUpdate;
+        return db.updateEntry(toUpdate)? toUpdate: null;
     }
 
     public Reservation manageDeleteEntry() {
@@ -211,8 +209,8 @@ public class ReservationControl
                 "Error. Please enter a 7 digit number.",
                 i -> MiscUtils.isValidID(i),
                 "Integer");
-
-        Reservation toDelete = new ReservationDB().findSingleEntry(key);
+ReservationDB db = new ReservationDB();
+        Reservation toDelete = db.findSingleEntry(key);
         if (toDelete == null) {
             System.out.println(
                     "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
@@ -229,11 +227,15 @@ public class ReservationControl
 
         switch (choice) {
             case 1:
-                return toDelete;
+                return db.deleteEntry(toDelete)? toDelete :null;
 
             default:
                 return null;
         }
 
+    }
+
+    public ReservationDB getDB() {
+        return new ReservationDB();
     }
 }

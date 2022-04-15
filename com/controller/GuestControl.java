@@ -1,7 +1,6 @@
 package com.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.db.guestDB.GuestDB;
 import com.db.reservationDB.ReservationDB;
@@ -140,6 +139,7 @@ public class GuestControl implements UpdatorController<Guest> {
                 System.out.println("Please enter all of the relevant updated details about this guest: ");
                 newGuest = manageCreateEntry(toUpdate.getIsPayingGuest());
                 newGuest.setGuestID(toUpdate.getGuestID());
+
                 // For every reservation, get guests;
                 for (Reservation rv : new ReservationDB().findAllEntries()) {
                         int count = 0;
@@ -166,5 +166,10 @@ public class GuestControl implements UpdatorController<Guest> {
                 if (db.updateEntry(toUpdate))
                         return newGuest;
                 return null;
+        }
+
+        public GuestDB getDB()
+        {
+                return new GuestDB();
         }
 }
