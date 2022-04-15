@@ -83,4 +83,8 @@ public class MenuItemController implements CreatorController<MenuItem> {
         return null;
     }
 
+    public MenuItemDB getDB() {
+        return new MenuItemDB();
+    }
+
 }

@@ -3,17 +3,14 @@ package com.views;
 import java.util.List;
 
 import com.controller.GuestControl;
-import com.db.guestDB.GuestDB;
 import com.models.Guest;
 import com.utils.MiscUtils;
 
-public class GuestViews implements Views{
-    @Override
+public class GuestViews implements Views {
+        @Override
         public void process() {
                 Guest newguest = null;
-                boolean success = false;
-                GuestDB db = new GuestDB();
-GuestControl controller = new GuestControl();
+                GuestControl controller = new GuestControl();
                 int choice;
 
                 MiscUtils.printTransition();
@@ -28,11 +25,11 @@ GuestControl controller = new GuestControl();
                         // For each, we call the corresponding function.
                         switch (choice) {
                                 case 1:
-                                        if (db.isEmpty()) {
+                                        if (controller.getDB().isEmpty()) {
                                                 System.out.println("There are no guests in the hotel currently!");
                                                 break;
                                         }
-                                        List<Guest> guests = db.findAllEntries();
+                                        List<Guest> guests = controller.getDB().findAllEntries();
                                         System.out.println("The following are all the available guest data so far: ");
                                         for (Guest eachGuest : guests) {
                                                 System.out.println("");
@@ -40,26 +37,19 @@ GuestControl controller = new GuestControl();
                                         }
                                         break;
                                 case 2:
-                                        if (db.isEmpty()) {
+                                        if (controller.getDB().isEmpty()) {
                                                 System.out.println("There are no guests in the hotel currently!");
                                                 break;
                                         }
                                         newguest = controller.manageUpdateEntry();
                                         if (newguest == null)
                                                 break;
+                                        System.out.println(
+                                                        "The guest details were successfully updated! These are the updated guest data: ");
 
-                                        success = db.updateEntry(newguest);
-
-                                        if (success) {
-                                                System.out.println(
-                                                                "The guest details were successfully updated! These are the updated guest data: ");
-                                                System.out.println(newguest);
-                                        } else
-                                                System.out.println(
-                                                                "Something went wrong trying to save the guest data. Contact the administrators");
                                         break;
                                 case 3:
-                                        if (db.isEmpty()) {
+                                        if (controller.getDB().isEmpty()) {
                                                 System.out.println("There are no guests in the hotel currently!");
                                                 break;
                                         }
@@ -68,7 +58,7 @@ GuestControl controller = new GuestControl();
                                                         "Error. please enter a string between 3 and 50 characters long",
                                                         i -> MiscUtils.stringWithinLength(i, 3, 50),
                                                         "String");
-                                        newguest = db.findSingleEntry(name);
+                                        newguest = controller.getDB().findSingleEntry(name);
                                         if (newguest == null)
                                                 System.out.println(
                                                                 "Could not find that guest in the system! Check your spelling maybe?");

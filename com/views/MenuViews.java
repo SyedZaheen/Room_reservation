@@ -1,7 +1,6 @@
 package com.views;
 
 import com.controller.MenuItemController;
-import com.db.menuDB.MenuItemDB;
 import com.models.MenuItem;
 
 public class MenuViews implements Views {
@@ -10,7 +9,6 @@ public class MenuViews implements Views {
     public void process() {
         int choice;
         MenuItemController controller = new MenuItemController();
-        MenuItemDB db = new MenuItemDB();
 
         while (true) {
             choice = UserInputViews.getUserChoice(new String[] {
@@ -29,7 +27,7 @@ public class MenuViews implements Views {
                     break;
 
                 case 2:
-                    if (db.isEmpty()) {
+                    if (controller.getDB().isEmpty()) {
                         System.out.println("There are no items in the menu currently. Please add them!");
                         break;
                     }
@@ -38,11 +36,11 @@ public class MenuViews implements Views {
                         System.out.println("Menu has been successfully updated");
                     break;
                 case 3:
-                    if (db.isEmpty()) {
+                    if (controller.getDB().isEmpty()) {
                         System.out.println("There are no items in the menu currently. Please add them!");
                         break;
                     }
-                    for (MenuItem item : db.findAllEntries()) {
+                    for (MenuItem item : controller.getDB().findAllEntries()) {
                         System.out.println(item + "\n");
                     }
                     break;

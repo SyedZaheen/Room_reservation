@@ -3,7 +3,6 @@ package com.views;
 import java.util.List;
 
 import com.controller.ReservationControl;
-import com.db.reservationDB.ReservationDB;
 import com.models.Reservation;
 import com.utils.MiscUtils;
 
@@ -11,10 +10,9 @@ public class ReservationViews implements Views {
     @Override
     public void process() {
         Reservation reservation = null;
-        boolean success = false;
+
         ReservationControl rsvc = new ReservationControl();
 
-        ReservationDB rdb = new ReservationDB();
         while (true) {
             int choice = UserInputViews.getUserChoice(new String[] {
                     "Create a new reservation (walk-in or advanced)",
@@ -28,46 +26,38 @@ public class ReservationViews implements Views {
                 case 1:
                     reservation = rsvc.manageCreateEntry();
                     if (reservation == null)
+                    {
+                        System.out.println("Something went wrong. Contact the administrators");
                         break;
-
-                    success = rdb.createEntry(reservation);
-
-                    if (success) {
-                        System.out.println(
-                                "A new reservation was successfully created! These are the saved reservation data: ");
-
-                        System.out.println(reservation);
-                    } else
-                        System.out.println(
-                                "Something went wrong trying to save the reservation data. Contact the adminstrators.");
+                    }
+                    System.out.println(
+                            "A new reservation was successfully created! These are the saved reservation data: ");
+                    System.out.println(reservation);
 
                     break;
 
                 case 2:
-                    if (rdb.isEmpty()) {
+                    if (rsvc.getDB().isEmpty()) {
                         System.out.println("There are no reservations for any room currently");
                         break;
                     }
                     reservation = rsvc.manageUpdateEntry();
                     if (reservation == null)
+                    {
+                        System.out.println("Something went wrong. Contact the administrators");
                         break;
+                    }
 
-                    success = rdb.updateEntry(reservation);
+                    System.out.println(
+                            "The reservation was successfully updated! These are the current reservation data: ");
 
-                    if (success) {
-                        System.out.println(
-                                "The reservation was successfully updated! These are the current reservation data: ");
-
-                        System.out.println(reservation);
-                    } else
-                        System.out.println(
-                                "Something went wrong trying to save the reservation data. Contact the administrators.");
+                    System.out.println(reservation);
 
                     break;
 
                 case 3:
 
-                    List<Reservation> r = rdb.findAllEntries();
+                    List<Reservation> r = rsvc.getDB().findAllEntries();
                     if (r.isEmpty()) {
                         System.out.println("There are no reservations for any room currently");
                         break;
@@ -76,14 +66,14 @@ public class ReservationViews implements Views {
                     System.out.println("The following are all the reservations in the DB currently: ");
                     for (Reservation eachReservation : r) {
                         System.out.println("");
-                        System.out.println("Reservation ID: " + eachReservation.getReservationID() );
+                        System.out.println("Reservation ID: " + eachReservation.getReservationID());
                         System.out.println("Paying Guest Name: " + eachReservation.getPayingGuest().getName());
                     }
 
                     break;
 
                 case 4:
-                    if (rdb.isEmpty()) {
+                    if (rsvc.getDB().isEmpty()) {
                         System.out.println("There are no reservations for any room currently");
                         break;
                     }
@@ -102,7 +92,7 @@ public class ReservationViews implements Views {
                                 i -> MiscUtils.stringWithinLength(i, 3, 50),
                                 "String");
 
-                        Reservation foundReservation = rdb.findSingleEntry(key);
+                        Reservation foundReservation = rsvc.getDB().findSingleEntry(key);
                         if (foundReservation != null) {
                             System.out.println("\nThe following are the relevant resevation data: ");
                             System.out.println(foundReservation);
@@ -122,7 +112,7 @@ public class ReservationViews implements Views {
                                 i -> MiscUtils.isValidID(i),
                                 "Integer");
 
-                        Reservation foundReservation = rdb.findSingleEntry(key);
+                        Reservation foundReservation = rsvc.getDB().findSingleEntry(key);
                         if (foundReservation != null) {
                             System.out.println("The following are the relevant resevation data: ");
                             System.out.println(foundReservation);
@@ -135,26 +125,23 @@ public class ReservationViews implements Views {
                     }
                     break;
                 case 5:
-                    if (rdb.isEmpty()) {
+                    if (rsvc.getDB().isEmpty()) {
                         System.out.println("There are no reservations for any room currently");
                         break;
                     }
                     reservation = rsvc.manageDeleteEntry();
                     if (reservation == null)
-                        return;
+                    {
+                        System.out.println("Something went wrong. Contact the administrators");
+                        break;
+                    }
 
-                    success = rdb.deleteEntry(reservation);
+                    System.out.println(
+                            "The reservation with the following details were successfully deleted: \n");
 
-                    if (success) {
-                        System.out.println(
-                                "The reservation with the following details were successfully deleted: \n");
-
-                        System.out.println(reservation);
-                        System.out.println(
-                                "\nNote: the guest details were also deleted, and the room status has been updated");
-                    } else
-                        System.out.println(
-                                "Something went wrong trying to save the reservation data. Contact the administrators.");
+                    System.out.println(reservation);
+                    System.out.println(
+                            "\nNote: the guest details were also deleted, and the room status has been updated");
 
                     break;
                 case 6:

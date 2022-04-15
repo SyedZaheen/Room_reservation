@@ -2,18 +2,14 @@ package com.controller;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.db.reservationDB.ReservationDB;
 import com.enums.PaymentType;
-import com.enums.RoomStatuses;
-import com.models.MenuItem;
 import com.models.Order;
 import com.models.Reservation;
 import com.models.RoomService;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
-import com.enums.OrderStatus;
 
 public class PaymentControl {
 
@@ -113,8 +109,6 @@ public class PaymentControl {
     private static int computeRoomCharges(Reservation r, int daysOfStay) {
         return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
     }
-
-    // TODO : To amend after receiving Jayden's code.
     private static double computeRoomServiceCharges(Reservation r) {
         ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
         double totalCharge = 0;

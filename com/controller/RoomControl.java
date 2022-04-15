@@ -102,7 +102,8 @@ public class RoomControl implements CreatorController<Room> {
         // Update the db that the room is occupied
         Room vacantRoom = rmdb.findVacantRoom(rType, cID, cOD);
 
-        rmdb.updateRoomStatus(vacantRoom, RoomStatuses.OCCUPIED);
+        RoomStatuses status = cID.compareTo(LocalDate.now()) == 0 ? RoomStatuses.OCCUPIED : RoomStatuses.VACANT;
+        rmdb.updateRoomStatus(vacantRoom, status);
         // Return the room that has just been occupied
 
         return vacantRoom;
