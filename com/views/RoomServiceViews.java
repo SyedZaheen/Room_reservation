@@ -3,7 +3,11 @@ package com.views;
 import com.controller.RoomServiceControl;
 import com.models.RoomService;
 import com.utils.MiscUtils;
-
+/**
+ * The class that provides the API for the presentation layer interacting with the user to get input for the Room Service feature. 
+ * @author DSF1 Group 1
+ *
+ */
 public class RoomServiceViews implements Views {
 
     @Override

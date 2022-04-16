@@ -7,7 +7,11 @@ import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Room;
 import com.utils.MiscUtils;
-
+/**
+ * The class that provides the API for the presentation layer interacting with the user to get input on generating summaries on Room data and updating Room Statuses.  
+ * @author DSF1 Group 1
+ *
+ */
 public class RoomViews implements Views {
     @Override
     public void process() {

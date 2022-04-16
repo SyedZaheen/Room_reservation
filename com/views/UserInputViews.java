@@ -5,7 +5,11 @@ import java.util.Scanner;
 
 import com.utils.AnonymousFunction;
 import com.utils.MiscUtils;
-
+/**
+ * The class that provides the API for the presentation layer to get appropriate user input.
+ * @author DSF1 Group 1
+ *
+ */
 public abstract class UserInputViews {
 
     public abstract void process();
