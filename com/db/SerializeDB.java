@@ -11,9 +11,19 @@ import java.util.ArrayList;
 // Note : When structure of the Object type (the class file) in the list changed
 // the Serialized file may fail.
 
+/**
+ * The class that provides the lowest-level interface for de-/serialising objects 
+ * and writing/reading to/from the serialised files
+ * @author DSF 1 Group 1
+ */
 public class SerializeDB {
 	
 
+	
+	/** Reads the object from a serialised file
+	 * @param filename
+	 * @return List<T>
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> readSerializedObject(String filename) {
 		List<T> objectFromFile = null;
@@ -34,6 +44,14 @@ public class SerializeDB {
 		return objectFromFile;
 	}
 
+	
+	/** 
+	 * Takes in an object, serialises it and stores it in a file.
+	 * The object used in this app is strictly an arraylist of models 
+	 * @param filename
+	 * @param list
+	 * @return boolean
+	 */
 	public static <T> boolean writeSerializedObject(String filename, List<T> list) {
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;

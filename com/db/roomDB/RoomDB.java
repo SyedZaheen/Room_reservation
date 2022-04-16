@@ -10,12 +10,20 @@ import com.enums.RoomStatuses;
 import com.enums.RoomTypes;
 import com.models.Reservation;
 import com.models.Room;
-
+/**
+ * The class that provides the API for interacting with the serializer DB for storing rooms 
+ * @author DSF1 Group 1
+ */
 public class RoomDB implements DB<Room> {
 
     private final String ROOM_DB_FILE_NAME = "roomDB/all_rooms_data.ser";
     List<Room> listOfRooms = null;
 
+    
+    /** 
+     * @param room
+     * @return boolean
+     */
     @Override
     public boolean createEntry(Room room) {
         listOfRooms.add(room);
@@ -23,17 +31,30 @@ public class RoomDB implements DB<Room> {
             DB.FILE_PATH + ROOM_DB_FILE_NAME, listOfRooms);
     }
 
+    
+    /** 
+     * @return List<Room>
+     */
     @Override
     public List<Room> findAllEntries() {
         return SerializeDB.readSerializedObject(
                 DB.FILE_PATH + ROOM_DB_FILE_NAME);
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isEmpty() {
         return findAllEntries().isEmpty();
     }
 
+    
+    /** 
+     * @param type
+     * @return Room
+     */
     public Room findVacantRoomByType(RoomTypes type) {
         List<Room> allEntries = findAllEntries();
         for (Room room : allEntries)
@@ -43,6 +64,12 @@ public class RoomDB implements DB<Room> {
         return null;
     }
 
+    
+    /** 
+     * @param toUpdate
+     * @param rst
+     * @return boolean
+     */
     public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst) {
         if (toUpdate == null)
             return false;
@@ -59,6 +86,13 @@ public class RoomDB implements DB<Room> {
         return false;
     }
 
+    
+    /** 
+     * @param rType
+     * @param cID
+     * @param cOD
+     * @return Room
+     */
     public Room findVacantRoom(RoomTypes rType, LocalDate cID, LocalDate cOD) {
         listOfRooms = findAllEntries();
         ReservationDB rdb = new ReservationDB();
@@ -82,6 +116,11 @@ public class RoomDB implements DB<Room> {
         return null;
     }
 
+    
+    /** 
+     * @param roomnumber
+     * @return Room
+     */
     public Room findSingleEntry(int roomnumber) {
         List<Room> rooms = findAllEntries();
         for (Room room : rooms) {
