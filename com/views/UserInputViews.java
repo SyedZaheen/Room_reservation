@@ -11,14 +11,14 @@ import com.utils.MiscUtils;
  *
  */
 public abstract class UserInputViews {
-
-    public abstract void process();
-
+    
+    /** 
+     * Prints all of the choices provided to the user, and returns an integer related to that choice
+     * @param choices
+     * @return int
+     */
     public static int getUserChoice(String[] choices) {
-        @SuppressWarnings("resource") /*
-                                       * Java does some dumb shit when I close the scanner on the first
-                                       * function run. So I won't close the scanner, just suppress the warning.
-                                       */
+        @SuppressWarnings("resource")
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
@@ -45,11 +45,15 @@ public abstract class UserInputViews {
         return choice;
     }
 
+    
+    /** 
+     *  Prints all of the choices provided to the user, and returns an integer related to that choice. However, a user can enter a negative number to exit
+     * @param choices
+     * @param exit
+     * @return int
+     */
     public static int getUserChoice(String[] choices, boolean exit) {
-        @SuppressWarnings("resource") /*
-                                       * Java does some dumb shit when I close the scanner on the first
-                                       * function run. So I won't close the scanner, just suppress the warning.
-                                       */
+        @SuppressWarnings("resource") 
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
@@ -76,10 +80,15 @@ public abstract class UserInputViews {
         return choice;
     }
 
-    // This function here is a little complicated. I'll go through step-by-step
-
-    // The generic type here refers to what type of field we want. Name will be
-    // string, phone no will be integer, etc
+    
+    /** 
+     * Allows the user to enter a field with error checking. First prints a prompt, then if the user input returns false through the validator, the error prompt is called
+     * @param prompt
+     * @param errorPrompt
+     * @param validator
+     * @param type
+     * @return T
+     */
 
     @SuppressWarnings("unchecked") // Java does not like that I am casting generic Object choice to T at the end
     public static <T> T getEachFieldFromUser(
@@ -145,6 +154,12 @@ public abstract class UserInputViews {
 
     }
 
+    
+    /** 
+     * Returns true if user confirms the printed details
+     * @param details
+     * @return boolean
+     */
     public static <T> boolean userDoubleConfirmDetails(T details) {
         MiscUtils.printLightTransition();
 
