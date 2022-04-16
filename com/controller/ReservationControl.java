@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< Updated upstream
 public class ReservationControl implements Controller<Reservation> {
 
     public void process() {
@@ -106,7 +107,24 @@ public class ReservationControl implements Controller<Reservation> {
                 // reservation = manageDeleteEntry(toDelete);
         }
     }
+=======
+/**
+ * ReservationControl.java
+ * A controller class that realises the CreatorController and UpdateController interface.
+ * It consists of methods that will enable its users to control the outcome of a Reservation object.
+ * 
+ * @author DSF1 Group 1
+ */
+public class ReservationControl
+        implements CreatorController<Reservation>, UpdatorController<Reservation> {
+>>>>>>> Stashed changes
 
+    /**
+     * manageCreateEntry()
+     * It is a method that would create a new Reservation object. If the object created is valid, it will be subsequently serialised into the ReservationDB.
+     * 
+     * @return the Reservation object that is created
+     */
     @Override
     public Reservation manageCreateEntry() {
 
@@ -211,11 +229,30 @@ public class ReservationControl implements Controller<Reservation> {
         if (!FrontendUtils.<Reservation>userDoubleConfirmDetails(newReservation))
             newReservation = manageCreateEntry();
 
+<<<<<<< Updated upstream
         return newReservation;
     }
 
     private Reservation manageUpdateEntry() {
 
+=======
+        for (Guest guest : newReservation.getGuests()) {
+            new GuestDB().createEntry(guest);
+        }
+        return db.createEntry(newReservation) ? newReservation : null;
+    }
+
+    /**
+     * manageUpdateEntry()
+     * It is a method that would update the ReservationStatus of an existing Reservation object. 
+     * If the object updated is valid, it will be subsequently serialised into the ReservationDB.
+     * 
+     * @return the Reservation object that is udpated
+     */
+    @Override
+    public Reservation manageUpdateEntry() {
+        ReservationDB db = new ReservationDB();
+>>>>>>> Stashed changes
         System.out.println("Reservation to be updated (Search by ID): ");
         Integer key = FrontendUtils.getEachFieldFromUser(
                 "Please enter the reservation ID: ",
@@ -255,7 +292,61 @@ public class ReservationControl implements Controller<Reservation> {
                 break;
         }
 
+<<<<<<< Updated upstream
         return toUpdate;
     }
 
+=======
+        return db.updateEntry(toUpdate) ? toUpdate : null;
+    }
+
+    /**
+     * manageDeleteEntry()
+     * It is a method that deletes a Reservation that is in the ReservationDB.
+     * 
+     * @return the reservation that is deleted.
+     */
+    public Reservation manageDeleteEntry() {
+        System.out.println("Reservation to be delete (Search by ID): ");
+        Integer key = UserInputViews.getEachFieldFromUser(
+                "Please enter the reservation ID: ",
+                "Error. Please enter a 7 digit number.",
+                i -> MiscUtils.isValidID(i),
+                "Integer");
+        ReservationDB db = new ReservationDB();
+        Reservation toDelete = db.findSingleEntry(key);
+        if (toDelete == null) {
+            System.out.println(
+                    "Reservation ID does not exist! Check the full reservation list to see if the ID is correct");
+            return null;
+        }
+
+        System.out.println("\nReservation found! The following are the reservation details: ");
+        System.out.println(toDelete);
+        System.out.println("\nPlease confirm that you would like to delete this reservation: ");
+        int choice = UserInputViews.getUserChoice(new String[] {
+                "Confirm delete reservation",
+                "Return to menu"
+        });
+
+        switch (choice) {
+            case 1:
+                return db.deleteEntry(toDelete) ? toDelete : null;
+
+            default:
+                return null;
+        }
+
+    }
+
+    /**
+     * getDB()
+     * This is a getter function that gets the ReservationDB.
+     * 
+     * @return the ReservationDB.
+     */
+    public ReservationDB getDB() {
+        return new ReservationDB();
+    }
+>>>>>>> Stashed changes
 }

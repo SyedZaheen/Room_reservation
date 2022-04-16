@@ -20,6 +20,7 @@ public abstract class PaymentControl {
                 checkOut();
                 break;
 
+<<<<<<< Updated upstream
             case 2:
                 printBill();
                 break;
@@ -31,6 +32,26 @@ public abstract class PaymentControl {
                 "Please enter the reservation ID: ",
                 "Error. Please enter a 6 digit number.",
                 i -> (i >= 1e6 && i < 1e7),
+=======
+/**
+ * PaymentControl.java
+ * A controller class that consists of methods that will enable its users to control the outcome of a Payment object.
+ * 
+ * @author DSF1 Group 1
+ */
+public class PaymentControl {
+
+    
+    /** 
+     * It is a method that prints the bill of a particular reservation.
+     * @param checkout it is a true/false parameter to determine if a guest is keen to check-out or not.
+     */
+    public void printBill(boolean checkout) {
+        int reservationID = UserInputViews.<Integer>getEachFieldFromUser(
+                "Please enter the reservation ID to see reservation bill: ",
+                "Error. Please enter a 7 digit number.",
+                i -> MiscUtils.isValidID(i),
+>>>>>>> Stashed changes
                 "Integer");
 
         Reservation toCheckOut = new ReservationDB().findReservationByID(reservationID);
@@ -105,6 +126,7 @@ public abstract class PaymentControl {
             printBill();
     }
 
+<<<<<<< Updated upstream
     // TODO : To amend after receiving Zaheen's implementation of calculation of
     // time
     private static double computeRoomCharges(Reservation r) {
@@ -112,16 +134,62 @@ public abstract class PaymentControl {
     }
 
     // TODO : To amend after receiving Jayden's code.
+=======
+    
+    /** 
+     * It is a method that will calculate the total room charges.
+     * @param r the Reservation object that includes the Room.
+     * @param daysOfStay the number of days stayed in the hotel
+     * @return the total room charges.
+     */
+    private static int computeRoomCharges(Reservation r, int daysOfStay) {
+        return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
+    }
+    
+    /** 
+     * It is a method that will calculate the total RoomService charges.
+     * @param r the Reservation object that includes the RoomService
+     * @return the total RoomService charges
+     */
+>>>>>>> Stashed changes
     private static double computeRoomServiceCharges(Reservation r) {
         return 0;
     }
 
+<<<<<<< Updated upstream
     private static double computeTax(Reservation r) {
+=======
+    
+    /** 
+     * It is a method that will calculate the total tax levied on the sum of room charges and RoomService charges.
+     * @param r the Reservation object that includes the Room and the RoomService
+     * @param n the number of days stayed in the hotel.
+     * @return the total tax levied.
+     */
+    private static double computeTax(Reservation r, int n) {
+>>>>>>> Stashed changes
         final double TAX = 17;
         return ((TAX / 100.0) * (computeRoomCharges(r) + computeRoomServiceCharges(r)));
 
     }
 
+<<<<<<< Updated upstream
+=======
+    
+    /** 
+     * It is a method that will print out the orders that were ordered in a RoomService for a particular Reservation.
+     * @param r the Reservation object the contains the RoomService.
+     */
+    private static void printMenuItemDetails(Reservation r) {
+        ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
+        for (RoomService roomService : listOfRoomServices) {
+            System.out.println("\nThis is room service number: " + roomService.getRoomServiceID());
+            System.out.println("These were the orders: ");
+            new RoomServiceControl().viewOrder(roomService.getOrders());
+        }
+    }
+
+>>>>>>> Stashed changes
     // Ask the user for the name of the guest paying
     // Find the guest we want
     // if paying guest is not a paying guest do again.
