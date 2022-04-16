@@ -38,7 +38,7 @@ public class PaymentControl {
 
         double discount =1;
         if (discountChoice == 1) {
-            discount = UserInputViews.<Double>getEachFieldFromUser(
+            discount = (double) UserInputViews.<Double>getEachFieldFromUser(
                     "Enter discount rate: ",
                     "Error. Please enter a valid non-integer value between 0 and 1 (exclusive)!",
                     i -> (i > 0 && i < 1),
