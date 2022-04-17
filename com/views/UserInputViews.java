@@ -12,10 +12,10 @@ import com.utils.MiscUtils;
  */
 public abstract class UserInputViews {
     
-    /** 
-     * Prints all of the choices provided to the user, and returns an integer related to that choice
-     * @param choices
-     * @return int
+	/**
+     * Displays a menu of all choices to the user, Gets input from the user. 
+     * @param choices user input from given menu
+     * @return choice as int if deemed appropriate 
      */
     public static int getUserChoice(String[] choices) {
         @SuppressWarnings("resource")
@@ -46,11 +46,10 @@ public abstract class UserInputViews {
     }
 
     
-    /** 
-     *  Prints all of the choices provided to the user, and returns an integer related to that choice. However, a user can enter a negative number to exit
-     * @param choices
-     * @param exit
-     * @return int
+    /**
+     * Displays a menu of all choices to the user, Gets input from the user. Negative numbers are allowed to exit smoothly.
+     * @param choices User input from given menu.
+     * @return choice As int if deemed appropriate.
      */
     public static int getUserChoice(String[] choices, boolean exit) {
         @SuppressWarnings("resource") 
@@ -81,13 +80,14 @@ public abstract class UserInputViews {
     }
 
     
-    /** 
-     * Allows the user to enter a field with error checking. First prints a prompt, then if the user input returns false through the validator, the error prompt is called
-     * @param prompt
-     * @param errorPrompt
-     * @param validator
-     * @param type
-     * @return T
+    /**
+     * Gets a certain, appropriate input from the user, will return a specific Error Prompt if the Validator Function returns false i.e. the required condition for the input to be 'appropriate' fails.
+     * @param <T> models input
+     * @param prompt Asking the user for a particular input
+     * @param errorPrompt Error displayed if validator returns false
+     * @param validator Outlines a specific logic to be satisfied for an 'appropriate' input
+     * @param type Associated data type
+     * @return input if deemed "appropriate" by the Validator
      */
 
     @SuppressWarnings("unchecked") // Java does not like that I am casting generic Object choice to T at the end
@@ -155,10 +155,11 @@ public abstract class UserInputViews {
     }
 
     
-    /** 
-     * Returns true if user confirms the printed details
-     * @param details
-     * @return boolean
+    /**
+     *  Takes in a models object, prints out details and asks for the user to double confirm the details - retutrns true if user confirms
+     * @param <T> :models object
+     * @param details collective input from the user for the models object in question
+     * @return true if Double Confirmed, false otherwise
      */
     public static <T> boolean userDoubleConfirmDetails(T details) {
         MiscUtils.printLightTransition();
