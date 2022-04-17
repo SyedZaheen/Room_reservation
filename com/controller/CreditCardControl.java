@@ -4,7 +4,20 @@ import com.models.CreditCard;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
+/**
+ * Represents the Credit Card Controller.
+ * @author DSF 1 Group 1.
+ *
+ */
+
+
 public class CreditCardControl implements CreatorController<CreditCard> {
+	
+		/**
+		 * Creates a new Credit Card entry with a given name, credit card number, expiry date and credit card type,
+		 * by getting user inputs.
+		 * @return A credit card object.
+		 */
         
         @Override
         public CreditCard manageCreateEntry() {
