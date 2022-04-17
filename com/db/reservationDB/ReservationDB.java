@@ -25,7 +25,7 @@ public class ReservationDB implements DB<Reservation> {
     /** 
      * Takes in a reservation object and appends it to the list of reservation objects in the DB
      * @param reservation 
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean createEntry(Reservation resv) {
@@ -55,7 +55,7 @@ public class ReservationDB implements DB<Reservation> {
      * Takes in a reservation object and searches the DB for another reservation object with the same ID.
      * Once found, replaces the reservation Object in the database with the param reservation object (updating).
      * @param reservation: reservation object
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean updateEntry(Reservation resv) {
         if (resv == null)
@@ -77,7 +77,7 @@ public class ReservationDB implements DB<Reservation> {
     /** 
      * Deletes Reservation from the database
      * @param reservation
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean deleteEntry(Reservation r) {
         if (r == null)
@@ -111,7 +111,7 @@ public class ReservationDB implements DB<Reservation> {
      * @param requestedRoom
      * @param checkInDate
      * @param checkoutDate
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean roomIsOccupied(Room requestedRoom, LocalDate checkInDate, LocalDate checkoutDate) {
 
@@ -167,7 +167,7 @@ public class ReservationDB implements DB<Reservation> {
      * Returns true if, between the given dates, all rooms are full
      * @param checkInDate
      * @param checkOutDate
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean checkIfHotelIsFull(LocalDate checkInDate, LocalDate checkOutDate) {
         // Get all reservations
@@ -187,7 +187,7 @@ public class ReservationDB implements DB<Reservation> {
      * @param target
      * @param checkInDate
      * @param checkOutDate
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean reservationClash(Reservation target, LocalDate checkInDate, LocalDate checkOutDate) {
         // only no clash if checkindate AFTER target.checkout AND tartget.chein AFTER
@@ -200,7 +200,7 @@ public class ReservationDB implements DB<Reservation> {
     
     /** 
      * Returns true of the DB is empty
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean isEmpty() {

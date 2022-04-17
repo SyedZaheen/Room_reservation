@@ -18,7 +18,7 @@ public class GuestDB implements DB<Guest> {
     /** 
      * Takes in a guest object to append to the ArrayList of guest objects in the database
      * @param entry: A guest object 
-     * @return boolean 
+     * @return true if database operation successfully completed, false if database opertation fails 
      */
     @Override
     public boolean createEntry(Guest entry) {
@@ -44,7 +44,7 @@ public class GuestDB implements DB<Guest> {
      * Takes in a guest object and searches the DB for another guest object with the same ID.
      * Once found, replaces the Guest Object in the database with the param guest object (updating).
      * @param Guest: guest object
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean updateEntry(Guest guest) {
         if (guest == null)
@@ -105,7 +105,7 @@ public class GuestDB implements DB<Guest> {
     
     /** 
      * Returns true if the DB is empty
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean isEmpty() {
@@ -115,7 +115,7 @@ public class GuestDB implements DB<Guest> {
     
     /** Takes in a guests object and deletes it. returns true if deletion is successful  
      * @param toDelete: Guest object to delete
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean deleteEntry(Guest toDelete) {
         if (toDelete == null)
@@ -138,7 +138,7 @@ public class GuestDB implements DB<Guest> {
     /** 
      * Returns true of the name is a duplicate
      * @param name
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean checkDuplicate(String name) {
 
@@ -154,7 +154,7 @@ public class GuestDB implements DB<Guest> {
     /** 
      * Returns true if the ID is a duplicate
      * @param number
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean checkDuplicate(int number) {
         for (Guest eachGuest : findAllEntries()) {

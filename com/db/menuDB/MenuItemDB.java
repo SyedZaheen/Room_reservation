@@ -19,7 +19,7 @@ public class MenuItemDB implements DB<MenuItem> {
     /** 
      * Takes in a menu item object to append to the ArrayList of menu item objects in the database
      * @param entry: A guest object 
-     * @return boolean 
+     * @return true if database operation successfully completed, false if database opertation fails 
      */
     @Override
     public boolean createEntry(MenuItem entry) {
@@ -59,7 +59,7 @@ public class MenuItemDB implements DB<MenuItem> {
     
     /** Takes in a menu item to delete. Returns true if successfully deleted
      * @param item
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean deleteEntry(MenuItem item) {
         boolean found = false;
@@ -78,7 +78,7 @@ public class MenuItemDB implements DB<MenuItem> {
     
     /** 
      * Returns true if the guestDB is empty
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean isEmpty() {

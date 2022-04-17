@@ -163,7 +163,7 @@ public class Guest implements Model<Guest> {
     
     /**
      * Tells us if this guest is a paying guest or not.
-     * @return boolean of whether this guest is a paying guest.
+     * @return true if database operation successfully completed, false if database opertation fails of whether this guest is a paying guest.
      */
 
     public Boolean getIsPayingGuest() {

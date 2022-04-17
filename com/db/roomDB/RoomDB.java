@@ -22,7 +22,7 @@ public class RoomDB implements DB<Room> {
     
     /** 
      * @param room
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean createEntry(Room room) {
@@ -43,7 +43,7 @@ public class RoomDB implements DB<Room> {
 
     
     /** 
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     @Override
     public boolean isEmpty() {
@@ -68,7 +68,7 @@ public class RoomDB implements DB<Room> {
     /** 
      * @param toUpdate
      * @param rst
-     * @return boolean
+     * @return true if database operation successfully completed, false if database opertation fails
      */
     public boolean updateRoomStatus(Room toUpdate, RoomStatuses rst) {
         if (toUpdate == null)

@@ -50,7 +50,7 @@ public class SerializeDB {
 	 * The object used in this app is strictly an arraylist of models 
 	 * @param filename
 	 * @param list
-	 * @return boolean
+	 * @return true if database operation successfully completed, false if database opertation fails
 	 */
 	public static <T> boolean writeSerializedObject(String filename, List<T> list) {
 		FileOutputStream fos = null;
