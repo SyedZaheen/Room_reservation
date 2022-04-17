@@ -1,7 +1,11 @@
 package com.views;
 
 import com.controller.PaymentControl;
-
+/**
+ * The class that provides the API for the presentation layer interacting with the user to get input for Payment operations. 
+ * @author DSF1 Group 1
+ *
+ */
 public class PaymentViews implements Views {
     @Override
     public void process() {

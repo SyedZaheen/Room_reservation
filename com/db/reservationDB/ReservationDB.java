@@ -12,12 +12,21 @@ import com.models.Room;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.*;
-
+/**
+ * The class that provides the API for interacting with the serializer DB for storing reservations 
+ * @author DSF1 Group 1
+ */
 public class ReservationDB implements DB<Reservation> {
 
     private final String RESERVATION_DB_FILE_NAME = "reservationDB/all_reservations_data";
     private List<Reservation> listOfReservations = new ArrayList<>();
 
+    
+    /** 
+     * Takes in a reservation object and appends it to the list of reservation objects in the DB
+     * @param reservation 
+     * @return boolean
+     */
     @Override
     public boolean createEntry(Reservation resv) {
         for (Reservation eachReservation : findAllEntries()) {
@@ -30,12 +39,24 @@ public class ReservationDB implements DB<Reservation> {
                 listOfReservations);
     }
 
+    
+    /** 
+     * Gets all entries in the DB
+     * @return List<Reservation>
+     */
     @Override
     public List<Reservation> findAllEntries() {
         return SerializeDB.readSerializedObject(
                 DB.FILE_PATH + RESERVATION_DB_FILE_NAME);
     }
 
+    
+    /** 
+     * Takes in a reservation object and searches the DB for another reservation object with the same ID.
+     * Once found, replaces the reservation Object in the database with the param reservation object (updating).
+     * @param reservation: reservation object
+     * @return boolean
+     */
     public boolean updateEntry(Reservation resv) {
         if (resv == null)
             return false;
@@ -52,6 +73,12 @@ public class ReservationDB implements DB<Reservation> {
         return false;
     }
 
+    
+    /** 
+     * Deletes Reservation from the database
+     * @param reservation
+     * @return boolean
+     */
     public boolean deleteEntry(Reservation r) {
         if (r == null)
             return false;
@@ -78,6 +105,14 @@ public class ReservationDB implements DB<Reservation> {
         return true;
     }
 
+    
+    /** 
+     * Returns true if the requested room is already not reserved between the checkIn and checkOut dates
+     * @param requestedRoom
+     * @param checkInDate
+     * @param checkoutDate
+     * @return boolean
+     */
     public boolean roomIsOccupied(Room requestedRoom, LocalDate checkInDate, LocalDate checkoutDate) {
 
         boolean vacant = true;
@@ -92,6 +127,12 @@ public class ReservationDB implements DB<Reservation> {
         return !vacant;
     }
 
+    
+    /** 
+     * Finds reservation by reservation ID
+     * @param reservationID
+     * @return Reservation
+     */
     public Reservation findSingleEntry(Integer reservationID) {
         for (Reservation eachReservation : findAllEntries()) {
             if (reservationID == eachReservation.getReservationID())
@@ -101,6 +142,12 @@ public class ReservationDB implements DB<Reservation> {
         return null;
     }
 
+    
+    /** 
+     * Finds reservation in DB by guest name
+     * @param guestName
+     * @return Reservation
+     */
     public Reservation findSingleEntry(String guestName) {
 
         for (Reservation eachReservation : findAllEntries()) {
@@ -115,6 +162,13 @@ public class ReservationDB implements DB<Reservation> {
         return null;
     }
 
+    
+    /** 
+     * Returns true if, between the given dates, all rooms are full
+     * @param checkInDate
+     * @param checkOutDate
+     * @return boolean
+     */
     public boolean checkIfHotelIsFull(LocalDate checkInDate, LocalDate checkOutDate) {
         // Get all reservations
         boolean isFull = true;
@@ -127,6 +181,14 @@ public class ReservationDB implements DB<Reservation> {
         return isFull;
     }
 
+    
+    /** 
+     * Checks if there is a reservation clash between the given reservation param and the two dates
+     * @param target
+     * @param checkInDate
+     * @param checkOutDate
+     * @return boolean
+     */
     public boolean reservationClash(Reservation target, LocalDate checkInDate, LocalDate checkOutDate) {
         // only no clash if checkindate AFTER target.checkout AND tartget.chein AFTER
         // cehckout
@@ -135,6 +197,11 @@ public class ReservationDB implements DB<Reservation> {
                 || target.getCheckInDate().compareTo(checkOutDate) >= 0);
     }
 
+    
+    /** 
+     * Returns true of the DB is empty
+     * @return boolean
+     */
     @Override
     public boolean isEmpty() {
         return findAllEntries().isEmpty();

@@ -5,6 +5,11 @@ import java.util.List;
 import com.controller.ReservationControl;
 import com.models.Reservation;
 import com.utils.MiscUtils;
+/**
+ * The class that provides the API for the presentation layer interacting with the user to get input for operations on the Reservation Object. 
+ * @author DSF1 Group 1
+ *
+ */
 
 public class ReservationViews implements Views {
     @Override

@@ -2,7 +2,11 @@ package com.views;
 
 import com.controller.MenuItemController;
 import com.models.MenuItem;
-
+/**
+ * The class that provides the API for the presentation layer interacting with the user to get input for operations on the MenuItem Object. 
+ * @author DSF1 Group 1
+ *
+ */
 public class MenuViews implements Views {
 
     @Override
