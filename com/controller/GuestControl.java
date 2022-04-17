@@ -12,7 +12,21 @@ import com.models.Reservation;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
+/**
+ * Represents the Guest model controller. 
+ * @author DSF 1 Group 1.
+ *
+ */
+
+
 public class GuestControl implements UpdatorController<Guest> {
+	
+		/**
+		 * Creates a new Guest entry with a given isPaying field. Gets name, address, country, gender, nationality and contact 
+		 * from user.
+		 * @param isPaying Boolean value of whether the guest is a paying guest.
+		 * @return Newly created Guest object.
+		 */
 
         public Guest manageCreateEntry(boolean isPaying) {
                 // Initialise the guest data that we want
@@ -104,6 +118,12 @@ public class GuestControl implements UpdatorController<Guest> {
 
                 return newGuest;
         }
+        /**
+		 * Updates a Guest entry. Gets the name of guest or id from the user, searches through the GuestDB for the guest object,
+		 * and recreates the guest object by calling the ManageCreateEntry method.
+		 * @return Updated Guest object.
+		 */
+        
 
         public Guest manageUpdateEntry() {
                 GuestDB db = new GuestDB();
@@ -167,7 +187,10 @@ public class GuestControl implements UpdatorController<Guest> {
                         return newGuest;
                 return null;
         }
-
+        /**
+         * Creates a new GuestDB instance to implement its methods.
+         * @return GuestDB instance.
+         */
         public GuestDB getDB()
         {
                 return new GuestDB();
