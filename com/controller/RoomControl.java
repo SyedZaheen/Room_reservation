@@ -10,7 +10,21 @@ import com.models.Room;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
+/**
+ * RoomControl.java
+ * A controller class that realises the CreatorController interface.
+ * It consists of methods that will enable its users to control the outcome of a Room object.
+ * 
+ * @author DSF1 Group 1
+ */
+
 public class RoomControl implements CreatorController<Room> {
+
+    /** 
+     * manageCreateEntry()
+     * It is a method that would create a new Room object. If the object created is valid, it will be subsequently serialised into the RoomDB.
+     * @return the Room object that is created
+     */
 
     @Override
     public Room manageCreateEntry() {
@@ -58,6 +72,14 @@ public class RoomControl implements CreatorController<Room> {
 
         return vacantRoom;
     }
+
+    /** 
+     * manageCreateEntry()
+     * It is an overloaded method that takes in date parameters in the process of creating a Room object. If the object created is valid, it will be subsequently serialised into the RoomDB.
+     * @param cID this is the check-in date.
+     * @param cOD this is the check-out date.
+     * @return the Room object that is created.
+     */
 
     public Room manageCreateEntry(LocalDate cID, LocalDate cOD) {
         RoomTypes rType = null;
@@ -109,6 +131,12 @@ public class RoomControl implements CreatorController<Room> {
         return vacantRoom;
     }
 
+    /** 
+     * printRoomOptionByType()
+     * It is a method that will print all the amenities and rates of a Room by a specific RoomType.
+     * @param rt the particular RoomType that the user wishes to enquire on.
+     */
+
     private void printRoomOptionByType(RoomTypes rt) {
         System.out.println("Type: " + rt.inString);
         System.out.println("Rate Per Night: SGD$" + rt.getRatePerNight());
@@ -120,6 +148,11 @@ public class RoomControl implements CreatorController<Room> {
         System.out.println("");
     }
 
+    /**
+     * displayAllOptions()
+     * It is a method that will print all the amenities and rates of each RoomType in the hotel.
+     */
+
     public void displayAllOptions() {
         System.out.println("The following are the room options for this hotel: ");
         System.out.println("");
@@ -129,6 +162,13 @@ public class RoomControl implements CreatorController<Room> {
         printRoomOptionByType(RoomTypes.VIPSUITE);
     }
 
+    /** 
+     * getRoom()
+     * It is a getter function that will get a Room object by its room number.
+     * @param roomnumber the particular room number that is being searched for.
+     * @return the Room object that is being searched for.
+     */
+
     public Room getRoom(int roomnumber) {
         RoomDB db = new RoomDB();
         Room rm = db.findSingleEntry(roomnumber);
@@ -136,6 +176,12 @@ public class RoomControl implements CreatorController<Room> {
             return null;
         return rm;
     }
+
+    /** 
+     * manageUpdateEntry()
+     * It is a method that updates the status of the Room object, which will then be serialised into the DB.
+     * @return the Room object that has been just updated.
+     */
 
     public Room manageUpdateEntry() {
         int roomnumber = UserInputViews.<Integer>getEachFieldFromUser("Please enter the room number to update",
@@ -175,6 +221,12 @@ public class RoomControl implements CreatorController<Room> {
 
         return null;
     }
+
+    /** 
+     * getAllRooms()
+     * It is a method that gets all the rooms that are serialised in the RoomDB.
+     * @return the list of Room objects within the RoomDB.
+     */
 
     public List<Room> getAllRooms() {
         return new RoomDB().findAllEntries();

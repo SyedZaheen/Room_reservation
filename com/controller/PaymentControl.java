@@ -11,7 +11,19 @@ import com.models.RoomService;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
+/**
+ * PaymentControl.java
+ * A controller class that consists of methods that will enable its users to control the outcome of a Payment object.
+ * 
+ * @author DSF1 Group 1
+ */
+
 public class PaymentControl {
+
+    /** 
+     * It is a method that prints the bill of a particular reservation.
+     * @param checkout it is a true/false parameter to determine if a guest is keen to check-out or not.
+     */
 
     public void printBill(boolean checkout) {
         int reservationID = UserInputViews.<Integer>getEachFieldFromUser(
@@ -106,9 +118,23 @@ public class PaymentControl {
             printBill(checkout);
     }
 
+    /** 
+     * It is a method that will calculate the total room charges.
+     * @param r the Reservation object that includes the Room.
+     * @param daysOfStay the number of days stayed in the hotel
+     * @return the total room charges.
+     */
+
     private static int computeRoomCharges(Reservation r, int daysOfStay) {
         return daysOfStay * r.getReservedRoom().getRoomType().getRatePerNight();
     }
+
+    /** 
+     * It is a method that will calculate the total RoomService charges.
+     * @param r the Reservation object that includes the RoomService
+     * @return the total RoomService charges
+     */
+
     private static double computeRoomServiceCharges(Reservation r) {
         ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
         double totalCharge = 0;
@@ -120,11 +146,23 @@ public class PaymentControl {
         return totalCharge;
     }
 
+    /** 
+     * It is a method that will calculate the total tax levied on the sum of room charges and RoomService charges.
+     * @param r the Reservation object that includes the Room and the RoomService
+     * @param n the number of days stayed in the hotel.
+     * @return the total tax levied.
+     */
+
     private static double computeTax(Reservation r, int n) {
         final double TAX = 17;
         return ((TAX / 100.0) * (computeRoomCharges(r, n) + computeRoomServiceCharges(r)));
 
     }
+
+    /** 
+     * It is a method that will print out the orders that were ordered in a RoomService for a particular Reservation.
+     * @param r the Reservation object the contains the RoomService.
+     */
 
     private static void printMenuItemDetails(Reservation r) {
         ArrayList<RoomService> listOfRoomServices = r.getRoomServices();
@@ -134,13 +172,4 @@ public class PaymentControl {
             new RoomServiceControl().viewOrder(roomService.getOrders());
         }
     }
-
-    // Ask the user for the name of the guest paying
-    // Find the guest we want
-    // if paying guest is not a paying guest do again.
-    // Show the payment details
-    // ^call the functions below
-    // Confirm that the guest has payed, Payment is always successful (assumption)
-    // total = (room service + days) * 1.17 - svc charge
-    // parameter for below needs to be discussed
 }

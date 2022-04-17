@@ -5,8 +5,22 @@ import com.models.MenuItem;
 import com.utils.MiscUtils;
 import com.views.UserInputViews;
 
+/**
+ * MenuItemController.java
+ * A controller class that realises the CreatorController interface.
+ * It consists of methods that will enable its users to control the outcome of a MenuItem object.
+ * 
+ * @author DSF1 Group 1
+ */
 public class MenuItemController implements CreatorController<MenuItem> {
 
+    
+    /** 
+     * manageCreateEntry()
+     * It is a method that would create a new MenuItem object. If the object created is valid, it will be subsequently serialised into the MenuItemDB.
+     * 
+     * @return the MenuItem object that is created.
+     */
     @Override
     public MenuItem manageCreateEntry() {
         MenuItemDB db = new MenuItemDB();
@@ -33,6 +47,14 @@ public class MenuItemController implements CreatorController<MenuItem> {
         return null;
     }
 
+    
+    /** 
+     * manageMutateEntry()
+     * It is a method that would mutate an existing MenuItem object. 
+     * If the object updated is valid, it will be subsequently serialised into the MenuItemDB.
+     * 
+     * @return MenuItem
+     */
     public MenuItem manageMutateEntry() {
         String name, description;
         double price;
@@ -83,8 +105,14 @@ public class MenuItemController implements CreatorController<MenuItem> {
         return null;
     }
 
+    
+    /**
+     * getDB()
+     * This is a getter function that gets the ReservationDB.
+     * 
+     * @return the MenuItemDB.
+     */
     public MenuItemDB getDB() {
         return new MenuItemDB();
     }
-
 }
