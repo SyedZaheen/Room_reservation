@@ -7,6 +7,11 @@ import com.views.RoomServiceViews;
 import com.views.RoomViews;
 import com.views.UserInputViews;
 
+/**
+ * Represents Hotel Application Entry Point
+ * @author DSF 1 Group 1
+ */
+
 public class HotelApp {
     public static void main(String[] args) {
         // First thing: Show the main menu
@@ -19,7 +24,16 @@ public class HotelApp {
 
         System.out.println("What would you like to do today? ");
         while (true) {
-            choice = showMainMenuAndReturnChoice();
+            choice = UserInputViews.getUserChoice(new String[] {
+                "Manage Guests\n - See all guests' details\n - Update guest's details\n - Find guest by name\n",
+                "Manage Reservations\n - Create new reservation (walk-in or advanced)\n - Update reservation status (e.g. checked-in)\n - See all reservations\n - Find reservation\n - Delete Reservation\n",
+                "Manage Room Service Orders\n - Create new room service order\n - View all active orders\n - View/update/cancel active order \n - Manage room service menu items\n",
+                "Manage Payment\n - Make payment and check out from room \n - See payment slip for reservation\n",
+                "Manage Rooms\n - View all room options for this hotel \n - Check room availability by room number\n - Update room status\n - View full room status report\n",
+                "Quit application\n",
+        });
+        
+
 
             // For each choice of the menu, execute what we want to do.
             switch (choice) {
@@ -49,15 +63,6 @@ public class HotelApp {
         }
     }
 
-    public static int showMainMenuAndReturnChoice() {
-        return UserInputViews.getUserChoice(new String[] {
-                "Manage Guests\n - See all guests' details\n - Update guest's details\n - Find guest by name\n",
-                "Manage Reservations\n - Create new reservation (walk-in or advanced)\n - Update reservation status (e.g. checked-in)\n - See all reservations\n - Find reservation\n - Delete Reservation\n",
-                "Manage Room Service Orders\n - Create new room service order\n - View all active orders\n - View/update/cancel active order \n - Manage room service menu items\n",
-                "Manage Payment\n - Make payment and check out from room \n - See payment slip for reservation\n",
-                "Manage Rooms\n - View all room options for this hotel \n - Check room availability by room number\n - Update room status\n - View full room status report\n",
-                "Quit application\n",
-        });
-    }
+    
 
 }

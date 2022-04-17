@@ -14,7 +14,21 @@ import com.db.reservationDB.ReservationDB;
 import com.db.roomserviceDB.RoomServiceDB;
 import com.enums.OrderStatus;
 
+/**
+ * RoomServiceControl.java
+ * A controller class that realises the CreatorController interface.
+ * It consists of methods that will enable its users to control the outcome of a RoomService object.
+ * 
+ * @author DSF1 Group 1
+ */
+
 public class RoomServiceControl implements CreatorController<RoomService> {
+
+    /** 
+     * manageCreateEntry()
+     * It is a method that would create a new RoomService object. If the object created is valid, it will be subsequently serialised into the RoomServiceDB.
+     * @return the RoomService object that is created.
+     */
 
     @Override
     public RoomService manageCreateEntry() {
@@ -23,6 +37,13 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         RoomService roomservice = new RoomService(orders);
         return db.createEntry(roomservice) ? roomservice : null;
     }
+
+
+    /** 
+     * takeOrders()
+     * It takes in a user's choice of orders from the Menu and adds it into a List object.
+     * @return the list of Order objects that are selected by the user.
+     */
 
     private List<Order> takeOrders() {
         int choice;
@@ -51,6 +72,11 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         return orderlist;
     }
 
+    /**
+     * viewAllRoomServiceOrders()
+     * It prints out all the RoomService IDs and its corresponding RoomService orders that are stored in the RoomServiceDB
+     */
+
     public void viewAllRoomServiceOrders() {
         List<RoomService> lRS = new RoomServiceDB().findAllEntries();
         for (RoomService roomService : lRS) {
@@ -59,6 +85,12 @@ public class RoomServiceControl implements CreatorController<RoomService> {
             System.out.println("");
         }
     }
+
+    /** 
+     * viewOrder()
+     * If the list of orders in a particular RoomService object is not empty, it will print out all the orders.
+     * @param orderlist this is the corresponding order list for each RoomService object.
+     */
 
     public void viewOrder(List<Order> orderlist) {
         if (orderlist.isEmpty()) {
@@ -69,6 +101,13 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         }
     }
 
+    /** 
+     * getRoomServiceFromDB()
+     * It will search through the RoomServiceDB for a particular RoomService object that matches the RoomServiceID.
+     * @param RoomServiceID it is a particular RoomServiceID that the user wishes to search for.
+     * @return the particular RoomService object that the user is searching for.
+     */
+
     public RoomService getRoomServiceFromDB(int RoomServiceID) {
         for (RoomService eachRoomService : new RoomServiceDB().findAllEntries()) {
             if (RoomServiceID == eachRoomService.getRoomServiceID()) {
@@ -77,6 +116,12 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         }
         return null;
     }
+
+    /** 
+     * manageUpdateEntry()
+     * It will update the status of each orders within a particular RoomService object.
+     * @param rsv it is the particular RoomService object that requires updating.
+     */
 
     public void manageUpdateEntry(RoomService rsv) {
         RoomServiceDB db = new RoomServiceDB();
@@ -123,6 +168,13 @@ public class RoomServiceControl implements CreatorController<RoomService> {
             System.out.println("Something went wrong. Contact the administrators");
 
     }
+    /** 
+     * attachToReservation()
+     * It is a checker method that checks if the orders within a RoomService object has been COMPLETED.
+     * If it is completed the details for payment will be added to the corresponding Reservation object, it will update the ReservationDB and delete the entry from the RoomServiceDB.
+     * @param rsv the corresponding RoomService object that serves to be added to the Reservation.
+     * @return it will return true if the orders are all COMPLETED and execute the mentioned DB functions.
+     */
 
     private boolean attachToReservation(RoomService rsv) {
         int ch;
@@ -171,6 +223,12 @@ public class RoomServiceControl implements CreatorController<RoomService> {
 
         return false;
     }
+    /** 
+     * allOrdersCompleted()
+     * It is a checker function that checks if the orders within a RoomService object is completed.
+     * @param list this is the list of orders that would be checked.
+     * @return it will return true if the orders are all completed.
+     */
 
     private boolean allOrdersCompleted(List<Order> list) {
         if (list.isEmpty())
@@ -187,10 +245,21 @@ public class RoomServiceControl implements CreatorController<RoomService> {
         return allAreCompleted;
     }
 
+    /** 
+     * getDB()
+     * It is a getter function that gets the RoomServiceDB.
+     * @return the RoomServiceDB
+     */
     public RoomServiceDB getDB() {
         return new RoomServiceDB();
     }
 
+    
+    /** 
+     * getMenu()
+     * It is a getter function that gets the MenuItemDB.
+     * @return the MenuItemDB().
+     */
     public MenuItemDB getMenu() {
         return new MenuItemDB();
     }

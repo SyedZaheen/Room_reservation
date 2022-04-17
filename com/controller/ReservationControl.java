@@ -14,8 +14,23 @@ import com.views.UserInputViews;
 import java.time.*;
 import java.util.ArrayList;
 
+/**
+ * ReservationControl.java
+ * A controller class that realises the CreatorController and UpdateController interface.
+ * It consists of methods that will enable its users to control the outcome of a Reservation object.
+ * 
+ * @author DSF1 Group 1
+ */
+
 public class ReservationControl
         implements CreatorController<Reservation>, UpdatorController<Reservation> {
+
+    /**
+     * manageCreateEntry()
+     * It is a method that would create a new Reservation object. If the object created is valid, it will be subsequently serialised into the ReservationDB.
+     * 
+     * @return the Reservation object that is created
+     */
 
     @Override
     public Reservation manageCreateEntry() {
@@ -150,6 +165,14 @@ public class ReservationControl
         return db.createEntry(newReservation) ? newReservation : null ;
     }
 
+    /**
+     * manageUpdateEntry()
+     * It is a method that would update the ReservationStatus of an existing Reservation object. 
+     * If the object updated is valid, it will be subsequently serialised into the ReservationDB.
+     * 
+     * @return the Reservation object that is udpated
+     */
+
     @Override
     public Reservation manageUpdateEntry() {
         ReservationDB db = new ReservationDB();
@@ -202,6 +225,14 @@ public class ReservationControl
         return db.updateEntry(toUpdate)? toUpdate: null;
     }
 
+
+    /**
+     * manageDeleteEntry()
+     * It is a method that deletes a Reservation that is in the ReservationDB.
+     * 
+     * @return the reservation that is deleted.
+     */
+
     public Reservation manageDeleteEntry() {
         System.out.println("Reservation to be delete (Search by ID): ");
         Integer key = UserInputViews.getEachFieldFromUser(
@@ -235,6 +266,12 @@ public class ReservationControl
 
     }
 
+    /**
+     * getDB()
+     * This is a getter function that gets the ReservationDB.
+     * 
+     * @return the ReservationDB.
+     */
     public ReservationDB getDB() {
         return new ReservationDB();
     }

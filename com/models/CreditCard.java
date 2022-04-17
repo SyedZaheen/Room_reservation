@@ -1,4 +1,9 @@
 package com.models;
+/**
+ * A credit card model
+ * @author DSF 1 Group 1
+ *
+ */
 
 public class CreditCard implements Model<CreditCard> {
   private String name;
@@ -6,8 +11,14 @@ public class CreditCard implements Model<CreditCard> {
   private String expiryDate;
   private String creditCardType;
 
-  // todo: explain what we can or cannot store. CANNOT store cvv!!
-  // https://www.chargebee.com/blog/db-credit-card-vault/
+  /**
+   * Creates a credit card object for a given name, credit card number, expiry date and credit card type.
+   * @param name Name of this credit card's owner.
+   * @param creditCardNum This credit card number.
+   * @param expiryDate This credit card expiry date.
+   * @param creditCardType This credit card type.
+   */
+  
   public CreditCard(String name, long creditCardNum, String expiryDate, String creditCardType) {
     this.name = name;
     this.creditCardNum = creditCardNum;
