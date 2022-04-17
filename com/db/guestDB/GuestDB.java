@@ -68,7 +68,7 @@ public class GuestDB implements DB<Guest> {
     /** 
      * Takes in a guest name to return the guest object
      * @param name: guest name in string
-     * @return Guest
+     * @return Guest object 
      */
     public Guest findSingleEntry(String name) {
         Guest match = null, cur = null;
@@ -87,7 +87,7 @@ public class GuestDB implements DB<Guest> {
     /** 
      * Takes in a guest id to return the guest object
      * @param id: guest id in int
-     * @return Guest
+     * @return Guest object
      */
     public Guest findSingleEntry(int id) {
         Guest match = null, cur = null;

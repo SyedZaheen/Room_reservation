@@ -13,7 +13,7 @@ public abstract class MiscUtils {
     /** Returns true if parameter is a valid Singapore number 
      * (8 digits starting with 6,8,9, without the area code +65)
      * @param SingaporeNumber
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidSingaporeNumber(int j) {
         return j > 6 * 1e7 && j < 1e8;
@@ -25,7 +25,7 @@ public abstract class MiscUtils {
      * @param string
      * @param min
      * @param max
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean stringWithinLength(String str, int min, int max) {
         return str.length() >= min && str.length() <= max;
@@ -34,7 +34,7 @@ public abstract class MiscUtils {
     
     /** Return true of i is a valid integer
      * @param i
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidInteger(int i) {
         return i > 0;
@@ -46,7 +46,7 @@ public abstract class MiscUtils {
      * @param start
      * @param end
      * @param i
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidIntegerFromStartToEnd(int start, int end, int i) {
         if (end < start) {
@@ -59,7 +59,7 @@ public abstract class MiscUtils {
     /** 
      * Returns true if i is a valid year between 1900 and 2022
      * @param i
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidYear(int i) {
         return i >= 1900 && i <= 2022;
@@ -69,7 +69,7 @@ public abstract class MiscUtils {
     /** 
      * Returns true if i is a valid month
      * @param i
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidMonth(int i) {
         return i >= 1 && i <= 12;
@@ -78,7 +78,7 @@ public abstract class MiscUtils {
     
     /** Returns true if the passed in date object is before now
      * @param date
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean dateBeforeNow(LocalDate date)
     {
@@ -89,7 +89,7 @@ public abstract class MiscUtils {
     /** Returns true if the day exists in the month chosen. I.e., 30 does not exist for February, etc
      * @param day
      * @param month
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidDay(int i, int month) {
 
@@ -117,7 +117,7 @@ public abstract class MiscUtils {
      
     /** Returns true if i is a valid room number
      * @param i
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean roomNumberExists(Integer i) {
         if (i < 100 || i > 499)
@@ -134,7 +134,7 @@ public abstract class MiscUtils {
     /** 
      * Returns true if the ID number is valid
      * @param id
-     * @return boolean
+     * @return true if condition fulfilled, false otherwise
      */
     public static boolean isValidID(int id) {
         return id >= 1e6 && id < 1e7;
